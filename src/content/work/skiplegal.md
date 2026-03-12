@@ -1,0 +1,89 @@
+---
+title: "SkipLegal"
+subtitle: "AI-powered immigration document assistance"
+year: "Spring 2025"
+role: "UX Designer"
+category: "Capstone Project & Contract Role | Product Design"
+description: "Leveraging AI to bridge the gap between U.S. Government, lawyers, and prospective immigrants."
+order: 3
+coverAlt: "SkipLegal laptop interface showing AI-assisted form filling"
+responsibilities:
+  - "User Research"
+  - "Figma Prototyping"
+  - "UI Design"
+  - "Market Analysis and Strategy"
+  - "Quantitative & Qualitative Usability Testing"
+results:
+  - "Figma Prototype of AI assistance on filling out immigration documents"
+---
+
+## Discovery
+
+Immigration to the U.S. is a complicated bureaucratic process, where small mistakes can cost months of time and thousands in dollars. Any prospective immigrant is juggling several critical documents, navigating a chain of complicated forms, and balancing the endless combination of potential outcomes.
+
+AI can be used as a tool to keep documents organized, track tasks, minimize error, and manage the entire process.
+
+SkipLegal's founder came to our team requesting a proof of concept with a focus on 3 key factors:
+- Identify the needs of a diverse immigrant userbase
+- Validate the need for AI-powered assistance in immigration processes
+- Deliver an MVP showing how AI can be leveraged to assist with immigration law
+
+## Research
+
+To define how AI should be integrated into the immigration workflow, we conducted qualitative interviews with 4 target users, and designed and analyzed results from a quantitative survey of over 100 respondents. Our data revealed 3 key insights:
+
+1. **Immigration paperwork is overwhelming and repetitive**, even with professional assistance.
+2. **Trust in AI is conditional.** Users want transparency and proof that the AI is correct.
+3. **Users expect visible security features** to protect their data.
+
+<!-- TODO: Add image: Research findings and survey data visualization -->
+
+## Wireframes
+
+### Questionnaire
+
+I deliberately chose to present questions one at a time to counter the complexity of immigration terminology. Isolating each question reduced cognitive load at a critical moment in the onboarding process, where the user decides if they trust the product enough to continue.
+
+<!-- TODO: Add image: Questionnaire wireframes showing one-at-a-time flow -->
+
+### Form Assistance
+
+The bento box layout keeps four distinct functions on hand: document & form management, task list, form viewing, and AI assistance. It is always easy for a user to see where they are in the process, reducing anxiety about feeling lost.
+
+<!-- TODO: Add image: Form assistance bento box layout wireframes -->
+
+## Usability Testing
+
+Testing the wireframes identified three failure points.
+
+### Insight 1: Unknown Terminology
+
+Immigration terminology produced hesitation at a critical point where the product needed to build trust and confidence.
+
+**Action:** We delivered more value to users by incorporating definitions through hover interactions. This eliminates the need to jump between tabs to look up definitions, reducing mental load and keeping the focus within SkipLegal.
+
+<!-- TODO: Add image: Before/after of terminology hover interaction -->
+
+### Insight 2: Information Overload
+
+The bento layout overwhelmed users after completing the questionnaire. Too much information was introduced at once.
+
+**Action:** A tutorial introducing each panel and its function orients users and primes their mental model of SkipLegal. This also continues the one-by-one flow used by the onboarding questionnaire.
+
+<!-- TODO: Add image: Tutorial overlay walkthrough screens -->
+
+### Insight 3: Trust in AI
+
+Participants were doubtful of SkipGenius' ability to fill out forms accurately, and did not feel in control of their information.
+
+**Action:** Giving users the option to choose between "autofill" and "manual" mode helped them feel more agency over the process. Manual mode used SkipGenius minimally and darkened the form viewport to focus on only one question at a time. Autofill included a clear modal explaining what SkipGenius will do and how to enhance its results.
+
+<!-- TODO: Add image: Autofill vs manual mode comparison -->
+
+## Outcome & Reflection
+
+SkipLegal was completed in Spring 2025, deep into what will likely be remembered as the early inflection point of mainstream AI adoption. Designing an AI-powered product during that moment came with a specific tension: AI was simultaneously everywhere and nowhere people fully trusted yet.
+
+The interface isn't just communicating what the product does — it's making an argument for why the user should believe it. Trust isn't assumed; it has to be constructed deliberately through transparency, consistency, and control.
+
+The 37% improvement in trust ratings between testing rounds reinforced something I think will define good AI product design for years to come: users don't distrust AI because it makes mistakes — they distrust it because they can't tell when it might. Designing for that uncertainty is where human factors thinking becomes most valuable in an AI context.

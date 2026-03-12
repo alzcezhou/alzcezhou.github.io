@@ -1,0 +1,27 @@
+---
+interface Props {
+  insight: string;
+  action: string;
+  label?: string;
+}
+
+const { insight, action, label } = Astro.props;
+---
+
+<div class="border border-taupe-400/50 rounded-xl p-6 flex flex-col h-full">
+  <div class="flex-1">
+    <p class="font-body text-[0.6875rem] tracking-widest uppercase text-taupe-500 mb-2">
+      {label ?? "Insight"}
+    </p>
+    <p class="font-body text-sm leading-relaxed text-charcoal-700">{insight}</p>
+  </div>
+
+  <div class="my-5 h-px bg-taupe-400/40"></div>
+
+  <div>
+    <p class="font-body text-[0.6875rem] tracking-widest uppercase text-taupe-500 mb-2">
+      Action
+    </p>
+    <p class="font-body text-sm leading-relaxed text-charcoal-600">{action}</p>
+  </div>
+</div>

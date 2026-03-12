@@ -1,0 +1,69 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Spinner from "../components/Spinner.astro";
+---
+
+<BaseLayout title="About — Alice Zhou" description="About Alice Zhou — UX Designer and Front-End Developer">
+
+  <!-- Bio Section -->
+  <section class="max-w-5xl mx-auto px-6 md:px-16 pt-32 pb-20 relative overflow-hidden">
+    <div class="absolute -top-32 -right-32 pointer-events-none hidden md:block">
+      <Spinner size={480} class="text-charcoal-700 opacity-15" />
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-12 md:gap-16 items-start">
+      <!-- Left column -->
+      <div>
+        <p class="font-body text-2xl text-charcoal-600 mb-1">Hi, I'm</p>
+        <h1 class="font-heading italic text-7xl md:text-8xl text-charcoal-700 leading-none mb-8">
+          Alice
+        </h1>
+        <p class="font-body text-base leading-relaxed text-charcoal-600 max-w-lg">
+          As a designer, I believe that a product is an investment that should grow with, and easily adapt to its user. My approach to work, life, and design is to freely draw connections in even the most unlikely topics. I believe this common ground through exchange of ideas and information is truly the key to innovative products. In my current Product Design + Front-End Development role, I am tackling both creation and implementation. Through these responsibilities, I've gained a more holistic view on design.
+        </p>
+      </div>
+
+      <!-- Right column -->
+      <div class="space-y-6">
+        <div class="img-placeholder rounded-lg aspect-[3/2] w-full">
+          <span class="text-taupe-600 text-sm font-body">Photo</span>
+        </div>
+        <div>
+          <p class="font-body text-sm font-semibold text-charcoal-700">Tufts University</p>
+          <p class="font-body text-sm text-charcoal-500">
+            B.S. Human Factors Engineering | Minor in Engineering Management
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interests / Contact Strip -->
+  <section id="contact" class="bg-taupe-400 px-6 md:px-16 lg:px-24 py-14 md:py-20">
+    <div class="max-w-5xl mx-auto">
+      <p class="font-body text-base md:text-lg leading-relaxed text-charcoal-600 mb-8">
+        Outside of work, you'll find me combing through thrift stores, maintaining my Duolingo streak, or rallying my friends for our next music festival.
+      </p>
+      <h2 class="font-heading text-5xl md:text-6xl lg:text-7xl text-charcoal-700 mb-4">Contact Me</h2>
+      <div class="flex items-center gap-8">
+        <a href="#" class="font-body text-base tracking-wider text-charcoal-600 underline underline-offset-4 decoration-charcoal-400 hover:text-charcoal-700 transition-colors">
+          resume
+        </a>
+        <a href="mailto:alice@example.com" class="font-body text-base tracking-wider text-charcoal-600 underline underline-offset-4 decoration-charcoal-400 hover:text-charcoal-700 transition-colors">
+          email
+        </a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener" class="font-body text-base tracking-wider text-charcoal-600 underline underline-offset-4 decoration-charcoal-400 hover:text-charcoal-700 transition-colors">
+          linkedin
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Large Image -->
+  <section class="px-6 md:px-16 py-20 flex justify-center">
+    <div class="img-placeholder rounded-lg aspect-[3/2] w-full max-w-4xl">
+      <span class="text-taupe-600 text-sm font-body">Photo</span>
+    </div>
+  </section>
+
+</BaseLayout>

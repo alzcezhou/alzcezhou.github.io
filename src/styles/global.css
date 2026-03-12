@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens ─── */
+@theme {
+  --font-display: "UnifrakturMaguntia", cursive;
+  --font-heading: "Cormorant Garamond", serif;
+  --font-body: "DM Sans", sans-serif;
+
+  --color-taupe-50: #FAF7F4;
+  --color-taupe-100: #F0EBE4;
+  --color-taupe-200: #D4C8B8;
+  --color-taupe-300: #C4B5A4;
+  --color-taupe-400: #B8A998;
+  --color-taupe-500: #9E9285;
+  --color-taupe-600: #7A6F63;
+  --color-taupe-700: #5C544A;
+
+  --color-charcoal-50: #F5F5F5;
+  --color-charcoal-100: #E0E0E0;
+  --color-charcoal-200: #ABABAB;
+  --color-charcoal-300: #757575;
+  --color-charcoal-400: #4A4A4A;
+  --color-charcoal-500: #3A3A3A;
+  --color-charcoal-600: #2D2D2D;
+  --color-charcoal-700: #1A1A1A;
+}
+
+/* ─── Base Styles ─── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-taupe-300);
+  color: var(--color-charcoal-700);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography ─── */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+  }
+}
+
+::selection {
+  background-color: var(--color-charcoal-600);
+  color: var(--color-taupe-50);
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-taupe-200);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-taupe-500);
+  border-radius: 4px;
+}
+
+/* ─── Nav scroll state ─── */
+@layer components {
+  .nav-scrolled {
+    background-color: color-mix(in srgb, var(--color-taupe-300) 85%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+/* ─── Image placeholders (before real images are added) ─── */
+.img-placeholder {
+  background: linear-gradient(
+    135deg,
+    var(--color-taupe-200),
+    var(--color-taupe-400)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-taupe-600);
+  font-size: 0.875rem;
+}
