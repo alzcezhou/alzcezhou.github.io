@@ -1,11 +1,35 @@
 @import "tailwindcss";
 
+/* Fonts: Jacquard 24, VT323, Vollkorn via Google Fonts in BaseLayout; Kunstler (about page name) local */
+@font-face {
+  font-family: "Kunstler";
+  src: url("/fonts/KUNSTLER.TTF") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ─── Design Tokens ─── */
 @theme {
-  --font-display: "UnifrakturMaguntia", cursive;
-  --font-heading: "Cormorant Garamond", serif;
-  --font-body: "DM Sans", sans-serif;
+  --font-display: "Jacquard 24", serif;
+  --font-heading: "Vollkorn", serif;
+  --font-body: "Vollkorn", serif;
+  --font-accent: "VT323", monospace;
 
+  /* Main palette */
+  --color-bg-dark: #0F0F0F;
+  --color-bg-light: #C8C0B9;
+  --color-text-on-dark: #E6E6E6;
+  --color-text-on-light: #0F0F0F;
+  /* Utility aliases: bg-dark, bg-light, text-on-dark, text-on-light */
+  --color-dark: #0F0F0F;
+  --color-light: #C8C0B9;
+  --color-on-dark: #E6E6E6;
+  --color-on-light: #0F0F0F;
+  --color-bone: #E6E6E6; /* --bone alias for card category text */
+  --bone: #E6E6E6;
+
+  /* Taupe scale (accents / UI) */
   --color-taupe-50: #FAF7F4;
   --color-taupe-100: #F0EBE4;
   --color-taupe-200: #D4C8B8;
@@ -15,6 +39,7 @@
   --color-taupe-600: #7A6F63;
   --color-taupe-700: #5C544A;
 
+  /* Charcoal scale (accents / UI) */
   --color-charcoal-50: #F5F5F5;
   --color-charcoal-100: #E0E0E0;
   --color-charcoal-200: #ABABAB;
@@ -32,8 +57,8 @@ html {
 
 body {
   font-family: var(--font-body);
-  background-color: var(--color-taupe-300);
-  color: var(--color-charcoal-700);
+  background-color: var(--color-bg-light);
+  color: var(--color-text-on-light);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -48,8 +73,8 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-charcoal-600);
-  color: var(--color-taupe-50);
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-on-dark);
 }
 
 /* ─── Scrollbar ─── */
@@ -57,19 +82,142 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-taupe-200);
+  background: var(--color-bg-light);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-taupe-500);
+  background: var(--color-bg-dark);
   border-radius: 4px;
 }
 
-/* ─── Nav scroll state ─── */
+/* ─── Nav: no bg; on scroll desktop links collapse into menu button ─── */
 @layer components {
-  .nav-scrolled {
-    background-color: color-mix(in srgb, var(--color-taupe-300) 85%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+  .nav-row {
+    min-height: 3rem;
+    position: relative;
+  }
+
+  .nav-links {
+    display: none;
+    transition: opacity 0.3s ease;
+  }
+  @media (min-width: 768px) {
+    .nav-links {
+      display: flex;
+      opacity: 1;
+    }
+    .nav.is-collapsed .nav-links {
+      position: absolute;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+    }
+  }
+
+  .nav-menu-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    min-height: 3rem;
+    padding: 0.5rem 1.25rem;
+    transition: opacity 0.3s ease;
+  }
+  @media (min-width: 768px) {
+    .nav-menu-btn {
+      position: absolute;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+    }
+    .nav.is-collapsed .nav-menu-btn {
+      position: relative;
+      left: auto;
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+  }
+
+  #mobile-menu.open {
+    display: block;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  @media (min-width: 768px) {
+    #mobile-menu.open {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      max-height: 80vh;
+      background: var(--color-bg-dark);
+      padding: 1rem;
+    }
+  }
+
+  /* Dropdown list: vertical list of nav buttons with glass/dark styling */
+  .nav-dropdown-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    color: var(--color-text-on-dark);
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.90);
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.01) 100%), var(--bg2, #0F0F0F);
+    box-shadow: 0 0 4px 4px rgba(255, 255, 255, 0.25) inset;
+    filter: blur(1px);
+    padding: 0.5rem 1.25rem;
+    transition: opacity 0.2s ease, filter 0.2s ease;
+  }
+  .nav-dropdown-btn:hover {
+    filter: none;
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-accent {
+    font-family: var(--font-accent);
+  }
+
+  .font-about-name {
+    font-family: "Kunstler", var(--font-heading);
+  }
+
+  /* Button style: nav links, footer links, etc. */
+  .btn {
+    border-radius: 64px;
+    border: 1px solid rgba(255, 255, 255, 0.93);
+    background: rgba(255, 255, 255, 0.01);
+    filter: blur(1px);
+    padding: 0.5rem 1.25rem;
+  }
+
+  .btn:hover {
+    border-radius: 64px;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.01) 100%), var(--bone, #E6E6E6);
+    box-shadow: 0 0 4px 4px rgba(255, 255, 255, 0.25) inset;
+    filter: none;
+    backdrop-filter: none;
+  }
+
+  /* Project card: default + smooth transition into hover */
+  .project-card {
+    background: rgba(103, 103, 103, 0.80);
+    transition:
+      background 0.5s ease-in-out,
+      border-color 0.5s ease-in-out,
+      transform 0.3s ease-out;
+  }
+
+  .group:hover .project-card {
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.50);
+    background: var(--color-bg-dark) !important;
   }
 }
 

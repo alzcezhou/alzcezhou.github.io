@@ -1,0 +1,55 @@
+---
+/**
+ * Figma-style texture overlay: size = noise scale, radius = blur softening.
+ * Use over hero/animation for a grain effect.
+ */
+interface Props {
+  /** Grain scale (Figma "size") - larger = coarser. Default 6. */
+  size?: number;
+  /** Blur radius (Figma "radius") for softening. Default 5.3. */
+  radius?: number;
+  /** Opacity of the texture layer (0–1). Default 0.2. */
+  opacity?: number;
+  /** Optional class for the overlay wrapper. */
+  class?: string;
+}
+
+const { size = 6, radius = 5.3, opacity = 0.2, class: className = "" } = Astro.props;
+// Map Figma size to SVG baseFrequency (inverse: larger size = slightly finer grain scale)
+const baseFreq = 1 / size;
+const filterId = `texture-${size}-${radius}`.replace(/\./g, "-");
+---
+
+<div
+  class:list={["texture-overlay pointer-events-none", className]}
+  style={`--texture-opacity: ${opacity};`}
+  aria-hidden="true"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 h-full w-full">
+    <defs>
+      <filter id={filterId} x="0" y="0">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency={baseFreq}
+          numOctaves="3"
+          result="noise"
+        />
+        <feGaussianBlur in="noise" stdDeviation={radius} result="blurred" />
+      </filter>
+    </defs>
+    <rect width="100%" height="100%" filter={`url(#${filterId})`} />
+  </svg>
+</div>
+
+<style>
+  .texture-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    mix-blend-mode: overlay;
+    opacity: var(--texture-opacity, 0.2);
+  }
+  .texture-overlay svg {
+    filter: contrast(1.2);
+  }
+</style>

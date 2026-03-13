@@ -6,6 +6,7 @@ role: "Product Designer"
 category: "Hackathon Project | Product Design"
 description: "Crowd-sourced harm reduction and accountability."
 order: 1
+cover: "/images/work/haven-cover.png"
 coverAlt: "Haven mobile app screens showing map interface and incident reporting"
 responsibilities:
   - "User Research"

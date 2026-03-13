@@ -1,0 +1,60 @@
+---
+/**
+ * Displays Haven app prototype screens in phone mockups.
+ * Images live in public/images/haven/ — see README there for filenames.
+ */
+interface Screen {
+  src: string;
+  alt: string;
+  /** Optional section label, e.g. "Onboarding" */
+  section?: string;
+}
+
+interface Props {
+  screens: Screen[];
+}
+
+const { screens } = Astro.props;
+---
+
+<section class="haven-app-screens mt-16 mb-12" aria-label="Haven app prototype screens">
+  <div class="haven-app-screens-inner max-w-6xl mx-auto px-4 md:px-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+      {screens.map((screen, i) => (
+        <figure class="haven-phone-mockup flex flex-col items-center">
+          <div class="haven-phone-frame relative rounded-[2.5rem] p-2 bg-charcoal-700 shadow-xl border border-charcoal-600">
+            <div class="haven-phone-notch absolute top-0 left-1/2 -translate-x-1/2 w-24 h-5 bg-charcoal-700 rounded-b-xl z-10" aria-hidden="true" />
+            <img
+              src={screen.src}
+              alt={screen.alt}
+              class="haven-phone-screen w-full aspect-[9/19] object-cover object-top rounded-[2rem] bg-taupe-100"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          {screen.section && (
+            <figcaption class="font-body text-sm text-on-light mt-3 text-center">
+              {screen.section}
+            </figcaption>
+          )}
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .haven-app-screens {
+    width: 100%;
+  }
+
+  .haven-phone-frame {
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .haven-phone-screen {
+    display: block;
+  }
+</style>

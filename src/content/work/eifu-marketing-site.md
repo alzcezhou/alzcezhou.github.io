@@ -6,6 +6,7 @@ role: "UX Designer"
 category: "B2B SaaS Website | UX Design"
 description: "Website for our cloud-native platform to manage, publish, and distribute regulated product documentation."
 order: 2
+cover: "/images/work/eifu-cover.png"
 coverAlt: "eIFU marketing website showing responsive laptop and mobile views"
 responsibilities:
   - "Web Design"

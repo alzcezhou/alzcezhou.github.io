@@ -1,7 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Spinner from "../components/Spinner.astro";
+import LottieHero from "../components/LottieHero.astro";
+import TextureOverlay from "../components/TextureOverlay.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 
 const projects = (await getCollection("work")).sort(
@@ -11,21 +12,21 @@ const projects = (await getCollection("work")).sort(
 
 <BaseLayout title="Alice Zhou — Portfolio">
 
-  <!-- Hero -->
-  <section class="min-h-[80vh] flex items-center justify-center relative overflow-hidden pt-16">
-    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <Spinner size={600} class="text-charcoal-700 opacity-35" />
-    </div>
-    <h1 class="font-display text-7xl md:text-[8.5rem] text-charcoal-700 relative z-10 text-center leading-none">
+  <!-- Hero + Tagline: first viewport has hero filling space, band aligned to bottom; then scrolls normally -->
+  <div class="min-h-screen flex flex-col">
+    <section class="min-h-0 flex-1 flex items-center justify-center relative overflow-hidden pt-16">
+      <LottieHero src="https://lottie.host/e4d88611-377d-4635-85d9-c8fe85c50e5f/uyUsUdbNEa.lottie" size={800} class="opacity-35" />
+      <TextureOverlay size={6} radius={5.3} opacity={0.25} />
+<h1 class="font-display font-normal leading-normal text-[#000] relative z-10 text-center whitespace-nowrap" style="font-size: clamp(2.5rem, 12vw, 16rem);">
       Alice Zhou
     </h1>
-  </section>
+    </section>
 
-  <!-- Tagline -->
-  <div class="bg-taupe-400/80 py-4">
-    <p class="font-body text-[11px] md:text-xs tracking-[0.2em] text-center text-charcoal-600 uppercase">
-      product designer &amp; front end developer at enlabel global services
-    </p>
+    <div class="bg-dark py-4 flex-shrink-0">
+      <p class="font-accent font-normal leading-normal text-[#FFF] text-center" style="font-size: clamp(0.5rem, 1.69vw, 2.25rem);">
+        product designer &amp; front end developer at enlabel global services
+      </p>
+    </div>
   </div>
 
   <!-- Projects -->
@@ -37,6 +38,7 @@ const projects = (await getCollection("work")).sort(
           description={project.data.description}
           category={project.data.category}
           href={`/work/${project.id}`}
+          cover={project.data.cover}
           coverAlt={project.data.coverAlt}
         />
       ))}

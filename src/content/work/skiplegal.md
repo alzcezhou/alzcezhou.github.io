@@ -6,6 +6,7 @@ role: "UX Designer"
 category: "Capstone Project & Contract Role | Product Design"
 description: "Leveraging AI to bridge the gap between U.S. Government, lawyers, and prospective immigrants."
 order: 3
+cover: "/images/work/skiplegal-cover.png"
 coverAlt: "SkipLegal laptop interface showing AI-assisted form filling"
 responsibilities:
   - "User Research"

@@ -11,6 +11,7 @@ const work = defineCollection({
     category: z.string(),
     description: z.string(),
     order: z.number(),
+    cover: z.string().optional(), // path in public/, e.g. "/images/work/haven-cover.jpg"
     coverAlt: z.string(),
     responsibilities: z.array(z.string()),
     results: z.array(z.string()),

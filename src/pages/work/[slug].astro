@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
 import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
+import Slideshow from "../../components/Slideshow.astro";
+import HavenAppScreens from "../../components/HavenAppScreens.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("work");
@@ -12,6 +14,23 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+const havenSlides = [
+  { src: "/images/haven-slides/persona1.png", alt: "User persona: Nikki Park" },
+  { src: "/images/haven-slides/persona2.png", alt: "User persona: Jake Logan" },
+  { src: "/images/haven-slides/persona3.png", alt: "User persona: Lani Stevens" },
+  { src: "/images/haven-slides/survey-overview.png", alt: "Market research survey statistics" },
+];
+
+const havenAppScreens = [
+  { src: "/images/haven/onboarding-1.png", alt: "Haven welcome screen — Create Account", section: "Onboarding" },
+  { src: "/images/haven/onboarding-2.png", alt: "Haven welcome screen", section: "Onboarding" },
+  { src: "/images/haven/resource-finder.png", alt: "Resource finder map view", section: "Harm reduction" },
+  { src: "/images/haven/hospital-detail.png", alt: "Hospital detail card — Lawrence Memorial", section: "Harm reduction" },
+  { src: "/images/haven/incident-date-rape.png", alt: "Date rape drug report modal", section: "Incident map" },
+  { src: "/images/haven/incident-physical-fight.png", alt: "Physical fight report modal", section: "Incident map" },
+  { src: "/images/haven/submit-report.png", alt: "Submit a report form", section: "Incident map" },
+];
 ---
 
 <CaseStudyLayout
@@ -23,5 +42,11 @@ const { Content } = await render(entry);
   responsibilities={entry.data.responsibilities}
   results={entry.data.results}
 >
+  {entry.id === "haven" && (
+    <Slideshow slot="slideshow" slides={havenSlides} label="Haven research: personas and survey" />
+  )}
   <Content />
+  {entry.id === "haven" && (
+    <HavenAppScreens slot="appScreens" screens={havenAppScreens} />
+  )}
 </CaseStudyLayout>

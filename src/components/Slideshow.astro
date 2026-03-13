@@ -1,0 +1,143 @@
+---
+interface Slide {
+  src: string;
+  alt: string;
+}
+
+interface Props {
+  slides: Slide[];
+  /** Optional aria label for the slideshow. */
+  label?: string;
+}
+
+const { slides, label = "Image slideshow" } = Astro.props;
+const id = `slideshow-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div
+  class="slideshow my-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-4 md:px-8"
+  role="region"
+  aria-label={label}
+  id={id}
+>
+  <div class="slideshow-inner max-w-5xl mx-auto rounded-2xl overflow-hidden slideshow-bg">
+    <!-- Large image: only the active slide visible -->
+    <div class="slideshow-main relative">
+      {slides.map((slide, i) => (
+        <div
+          class:list={["slideshow-slide", i === 0 && "active"]}
+          data-index={i}
+          aria-hidden={i !== 0}
+          role="group"
+          aria-label={`Slide ${i + 1} of ${slides.length}`}
+        >
+          <img
+            src={slide.src}
+            alt={slide.alt}
+            class="slideshow-main-img w-full h-auto object-contain max-h-[85vh]"
+            loading={i === 0 ? "eager" : "lazy"}
+            decoding="async"
+          />
+        </div>
+      ))}
+    </div>
+
+    {slides.length > 1 && (
+      <!-- Thumbnail row: same width as large image; active slide thumbnail is hidden -->
+      <div class="slideshow-thumbnails flex w-full gap-1 mt-1" role="tablist" aria-label="Slide navigation">
+        {slides.map((slide, i) => (
+          <button
+            type="button"
+            class:list={["slideshow-thumb flex-1 min-w-0 overflow-hidden rounded cursor-pointer border-0 p-0 bg-transparent", i === 0 && "slideshow-thumb-active"]}
+            data-index={i}
+            role="tab"
+            aria-selected={i === 0}
+            aria-label={`Show slide ${i + 1}: ${slide.alt}`}
+          >
+            <img
+              src={slide.src}
+              alt=""
+              class="slideshow-thumb-img w-full h-auto object-cover aspect-video"
+              loading="lazy"
+              decoding="async"
+            />
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
+
+<script define:vars={{ slides, id }}>
+  const el = document.getElementById(id);
+  if (!el || !slides || slides.length <= 1) return;
+
+  const slideEls = el.querySelectorAll(".slideshow-slide");
+  const thumbs = el.querySelectorAll(".slideshow-thumb");
+
+  let current = 0;
+  const total = slides.length;
+
+  function goTo(index) {
+    current = ((index % total) + total) % total;
+    slideEls.forEach((slide, i) => {
+      slide.setAttribute("aria-hidden", i !== current);
+      slide.classList.toggle("active", i === current);
+    });
+    thumbs.forEach((thumb, i) => {
+      thumb.setAttribute("aria-selected", i === current);
+      thumb.classList.toggle("slideshow-thumb-active", i === current);
+    });
+  }
+
+  thumbs.forEach((thumb, i) => {
+    thumb.addEventListener("click", () => goTo(i));
+  });
+
+  goTo(0);
+</script>
+
+<style>
+  .slideshow {
+    position: relative;
+  }
+
+  .slideshow-main {
+    width: 100%;
+  }
+
+  .slideshow-slide {
+    display: none;
+  }
+
+  .slideshow-slide.active {
+    display: block;
+  }
+
+  .slideshow-thumbnails {
+    width: 100%;
+  }
+
+  .slideshow-thumb {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+
+  .slideshow-thumb:hover {
+    opacity: 1;
+  }
+
+  .slideshow-thumb-active {
+    display: none !important;
+  }
+
+  /* Match page background so transparent areas in images never show black */
+  .slideshow-bg {
+    background-color: var(--color-bg-light);
+  }
+
+  .slideshow-main-img,
+  .slideshow-thumb-img {
+    background-color: transparent;
+  }
+</style>
