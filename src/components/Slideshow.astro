@@ -20,7 +20,7 @@ const id = `slideshow-${Math.random().toString(36).slice(2, 9)}`;
   aria-label={label}
   id={id}
 >
-  <div class="slideshow-inner max-w-5xl mx-auto rounded-2xl overflow-hidden slideshow-bg">
+  <div class="slideshow-inner w-full max-w-[1128px] mx-auto rounded-2xl overflow-hidden slideshow-bg">
     <!-- Large image: only the active slide visible -->
     <div class="slideshow-main relative">
       {slides.map((slide, i) => (
@@ -100,6 +100,11 @@ const id = `slideshow-${Math.random().toString(36).slice(2, 9)}`;
 <style>
   .slideshow {
     position: relative;
+  }
+
+  .slideshow-inner {
+    width: 100%;
+    max-width: 1128px;
   }
 
   .slideshow-main {

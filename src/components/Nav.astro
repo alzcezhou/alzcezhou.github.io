@@ -13,13 +13,13 @@ const links = [
   id="main-nav"
   aria-label="Main navigation"
 >
-  <div class="nav-row flex items-center justify-between px-6 md:px-16 lg:px-24 py-5">
+  <div class="nav-row flex items-center justify-between pl-8 pr-6 md:pr-16 lg:pr-24">
     <ul class="nav-links items-center gap-8 justify-start">
       {links.map(({ label, href, external }) => (
         <li>
           <a
             href={href}
-            class="btn font-accent text-[32px] font-normal leading-normal tracking-widest uppercase transition-colors"
+            class="btn font-accent font-normal leading-normal tracking-widest uppercase transition-colors"
             style="color: rgba(0, 0, 0, 0.75);"
             target={external ? "_blank" : undefined}
             rel={external ? "noopener" : undefined}

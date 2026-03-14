@@ -2,10 +2,14 @@ import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
 const work = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/work" }),
+  loader: glob({
+    pattern: "**/*.{md,mdx}",
+    base: "./src/content/work",
+    generateId: ({ entry }) => entry.replace(/\.(md|mdx)$/, ""),
+  }),
   schema: z.object({
     title: z.string(),
-    subtitle: z.string(),
+    subtitle: z.string().optional(),
     year: z.string(),
     role: z.string(),
     category: z.string(),

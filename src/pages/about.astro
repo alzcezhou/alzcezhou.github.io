@@ -5,8 +5,8 @@ import LottieHero from "../components/LottieHero.astro";
 
 <BaseLayout title="About — Alice Zhou" description="About Alice Zhou — UX Designer and Front-End Developer">
 
-  <!-- Lottie: fixed to viewport top-right, only bottom-right quadrant visible -->
-  <div class="about-page-lottie fixed top-0 right-0 w-[min(55vw,55vh)] aspect-square pointer-events-none hidden md:block overflow-hidden z-0" aria-hidden="true">
+  <!-- Lottie: fixed to viewport top-right (hidden for now) -->
+  <div class="about-page-lottie fixed top-0 right-0 w-[min(55vw,55vh)] aspect-square pointer-events-none hidden overflow-hidden z-0" aria-hidden="true">
     <div class="about-page-lottie-inner absolute -top-1/2 -left-1/2 w-[200%] h-[200%]">
       <LottieHero
         src="https://lottie.host/e4d88611-377d-4635-85d9-c8fe85c50e5f/uyUsUdbNEa.lottie"
@@ -20,7 +20,7 @@ import LottieHero from "../components/LottieHero.astro";
   <!-- Bio Section -->
   <section class="max-w-5xl mx-auto px-6 md:px-16 pt-32 pb-20 relative overflow-visible">
 
-    <div class="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-12 md:gap-16 items-start">
+    <div class="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-12 md:gap-16 items-stretch">
       <!-- Left column -->
       <div>
         <p class="font-body text-2xl text-charcoal-600 mb-1">Hi, I'm</p>
@@ -35,14 +35,18 @@ import LottieHero from "../components/LottieHero.astro";
         </p>
       </div>
 
-      <!-- Right column -->
-      <div class="space-y-6">
-        <div class="img-placeholder rounded-lg aspect-[3/2] w-full">
-          <span class="text-taupe-600 text-sm font-body">Photo</span>
-        </div>
-        <div>
-          <p class="font-body text-sm font-semibold text-charcoal-700">Tufts University</p>
-          <p class="font-body text-sm text-charcoal-500">
+      <!-- Right column: photo and caption aligned to bottom -->
+      <div class="flex flex-col justify-end gap-6">
+        <img
+          src="/images/about/alicezhou.png"
+          alt="Alice Zhou"
+          class="rounded-lg aspect-[3/2] w-full object-cover"
+          loading="eager"
+          decoding="async"
+        />
+        <div class="font-accent">
+          <p class="text-sm font-semibold text-charcoal-700">Tufts University</p>
+          <p class="text-sm text-charcoal-500">
             B.S. Human Factors Engineering | Minor in Engineering Management
           </p>
         </div>
@@ -73,9 +77,13 @@ import LottieHero from "../components/LottieHero.astro";
 
   <!-- Large Image -->
   <section class="px-6 md:px-16 py-20 flex justify-center">
-    <div class="img-placeholder rounded-lg aspect-[3/2] w-full max-w-4xl">
-      <span class="text-taupe-600 text-sm font-body">Photo</span>
-    </div>
+    <img
+      src="/images/about/alicezhou.png"
+      alt="Alice Zhou"
+      class="rounded-lg aspect-[3/2] w-full max-w-4xl object-cover"
+      loading="lazy"
+      decoding="async"
+    />
   </section>
 
 </BaseLayout>

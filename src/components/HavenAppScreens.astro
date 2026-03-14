@@ -22,12 +22,11 @@ const { screens } = Astro.props;
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
       {screens.map((screen, i) => (
         <figure class="haven-phone-mockup flex flex-col items-center">
-          <div class="haven-phone-frame relative rounded-[2.5rem] p-2 bg-charcoal-700 shadow-xl border border-charcoal-600">
-            <div class="haven-phone-notch absolute top-0 left-1/2 -translate-x-1/2 w-24 h-5 bg-charcoal-700 rounded-b-xl z-10" aria-hidden="true" />
+          <div class="haven-phone-frame relative rounded-[2rem]">
             <img
               src={screen.src}
               alt={screen.alt}
-              class="haven-phone-screen w-full aspect-[9/19] object-cover object-top rounded-[2rem] bg-taupe-100"
+              class="haven-phone-screen w-full aspect-[9/19] object-cover object-top rounded-[2rem]"
               loading="lazy"
               decoding="async"
             />

@@ -1,0 +1,12 @@
+---
+import Slideshow from "./Slideshow.astro";
+
+const slides = [
+  { src: "/images/haven/persona1.png", alt: "User persona: Nikki Park" },
+  { src: "/images/haven/persona2.png", alt: "User persona: Jake Logan" },
+  { src: "/images/haven/persona3.png", alt: "User persona: Lani Stevens" },
+  { src: "/images/haven/survey%20overview.png", alt: "Market research survey statistics" },
+];
+---
+
+<Slideshow slides={slides} label="Haven research: personas and survey" />

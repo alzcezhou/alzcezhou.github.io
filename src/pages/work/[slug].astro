@@ -1,8 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
 import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
-import Slideshow from "../../components/Slideshow.astro";
 import HavenAppScreens from "../../components/HavenAppScreens.astro";
+import HavenSlideshow from "../../components/HavenSlideshow.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("work");
@@ -14,13 +14,6 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-
-const havenSlides = [
-  { src: "/images/haven-slides/persona1.png", alt: "User persona: Nikki Park" },
-  { src: "/images/haven-slides/persona2.png", alt: "User persona: Jake Logan" },
-  { src: "/images/haven-slides/persona3.png", alt: "User persona: Lani Stevens" },
-  { src: "/images/haven-slides/survey-overview.png", alt: "Market research survey statistics" },
-];
 
 const havenAppScreens = [
   { src: "/images/haven/onboarding-1.png", alt: "Haven welcome screen — Create Account", section: "Onboarding" },
@@ -35,17 +28,17 @@ const havenAppScreens = [
 
 <CaseStudyLayout
   title={entry.data.title}
-  subtitle={entry.data.subtitle}
   year={entry.data.year}
   role={entry.data.role}
   category={entry.data.category}
   responsibilities={entry.data.responsibilities}
   results={entry.data.results}
+  cover={entry.id === "haven" ? "/images/haven/header.png" : entry.data.cover}
+  coverAlt={entry.data.coverAlt}
+  coverFillHeight={true}
+  contentMaxWidth={1128}
 >
-  {entry.id === "haven" && (
-    <Slideshow slot="slideshow" slides={havenSlides} label="Haven research: personas and survey" />
-  )}
-  <Content />
+  <Content components={entry.id === "haven" ? { HavenSlideshow } : undefined} />
   {entry.id === "haven" && (
     <HavenAppScreens slot="appScreens" screens={havenAppScreens} />
   )}
