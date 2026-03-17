@@ -46,12 +46,13 @@ const links = [
 
   <div
     id="mobile-menu"
-    class="md:hidden overflow-hidden max-h-0 transition-[max-height] duration-300 ease-in-out bg-taupe-300/95 backdrop-blur-sm md:!bg-transparent"
+    class="mobile-menu-staggered md:hidden overflow-hidden max-h-0 transition-[max-height] duration-300 ease-in-out bg-taupe-300/95 backdrop-blur-sm md:!bg-transparent"
     aria-hidden="true"
+    style="max-height: 0;"
   >
-    <ul class="flex flex-col gap-3 px-6 pb-6 pt-2 md:px-4 md:py-4 md:gap-2">
+    <ul class="flex flex-col gap-3 px-6 pb-6 pt-2 md:px-4 md:py-4 md:gap-2" role="list">
       {links.map(({ label, href, external }) => (
-        <li>
+        <li class="nav-stagger-item">
           <a
             href={href}
             class="nav-dropdown-btn btn font-accent text-[32px] font-normal leading-normal tracking-widest uppercase transition-colors"
@@ -67,62 +68,71 @@ const links = [
 </nav>
 
 <script>
-  const nav = document.getElementById("main-nav")!;
-  const toggle = document.getElementById("menu-toggle")!;
-  const menu = document.getElementById("mobile-menu")!;
-  const barTop = document.getElementById("bar-top")!;
-  const barMid = document.getElementById("bar-mid")!;
-  const barBot = document.getElementById("bar-bot")!;
+  function initNav() {
+    var nav = document.getElementById("main-nav");
+    var toggle = document.getElementById("menu-toggle");
+    var menu = document.getElementById("mobile-menu");
+    var barTop = document.getElementById("bar-top");
+    var barMid = document.getElementById("bar-mid");
+    var barBot = document.getElementById("bar-bot");
+    if (!nav || !toggle || !menu) return;
 
-  let open = false;
+    var open = false;
 
-  function closeMenu() {
-    if (!open) return;
-    open = false;
-    menu.classList.remove("open");
-    toggle.setAttribute("aria-expanded", "false");
-    menu.setAttribute("aria-hidden", "true");
-    menu.style.maxHeight = "0";
-    barTop.style.transform = "";
-    barMid.style.opacity = "";
-    barBot.style.transform = "";
+    function closeMenu() {
+      if (!open) return;
+      open = false;
+      menu.classList.remove("open");
+      menu.style.maxHeight = "0";
+      toggle.setAttribute("aria-expanded", "false");
+      menu.setAttribute("aria-hidden", "true");
+      if (barTop) barTop.style.transform = "";
+      if (barMid) barMid.style.opacity = "";
+      if (barBot) barBot.style.transform = "";
+    }
+
+    function openMenu() {
+      open = true;
+      menu.classList.add("open");
+      menu.style.maxHeight = "80vh";
+      toggle.setAttribute("aria-expanded", "true");
+      menu.setAttribute("aria-hidden", "false");
+      if (barTop) barTop.style.transform = "rotate(45deg) translate(2px, 2px)";
+      if (barMid) barMid.style.opacity = "0";
+      if (barBot) barBot.style.transform = "rotate(-45deg) translate(2px, -2px)";
+    }
+
+    toggle.addEventListener("click", function () {
+      if (open) closeMenu();
+      else openMenu();
+    });
+
+    var menuLinks = menu.querySelectorAll("a");
+    for (var i = 0; i < menuLinks.length; i++) {
+      menuLinks[i].addEventListener("click", closeMenu);
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && open) {
+        closeMenu();
+        toggle.focus();
+      }
+    });
+
+    var scrolled = false;
+    function onScroll() {
+      var isScrolled = window.scrollY > 60;
+      if (isScrolled !== scrolled) {
+        scrolled = isScrolled;
+        nav.classList.toggle("is-collapsed", scrolled);
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
   }
-
-  toggle.addEventListener("click", () => {
-    open = !open;
-    menu.classList.toggle("open", open);
-    toggle.setAttribute("aria-expanded", String(open));
-    menu.setAttribute("aria-hidden", String(!open));
-
-    if (open) {
-      menu.style.maxHeight = menu.scrollHeight + "px";
-      barTop.style.transform = "rotate(45deg) translate(2px, 2px)";
-      barMid.style.opacity = "0";
-      barBot.style.transform = "rotate(-45deg) translate(2px, -2px)";
-    } else {
-      closeMenu();
-    }
-  });
-
-  menu.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", closeMenu);
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && open) {
-      closeMenu();
-      toggle.focus();
-    }
-  });
-
-  let scrolled = false;
-  const onScroll = () => {
-    const isScrolled = window.scrollY > 60;
-    if (isScrolled !== scrolled) {
-      scrolled = isScrolled;
-      nav.classList.toggle("is-collapsed", scrolled);
-    }
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initNav);
+  } else {
+    initNav();
+  }
 </script>

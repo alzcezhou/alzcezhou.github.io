@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css";
-import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import StaggeredMenu from "../components/StaggeredMenu.jsx";
 
 interface Props {
   title: string;
@@ -9,6 +9,19 @@ interface Props {
 }
 
 const { title, description = "Portfolio of Alice Zhou — UX Designer" } = Astro.props;
+
+const menuItems = [
+  { label: "Home", link: "/" },
+  { label: "About", link: "/about" },
+  { label: "Work", link: "/#work" },
+  { label: "Resume", link: "https://docs.google.com/document/d/1ccqDIQ8-zdBQ3m-IjK5elowPmIn5jeouF58dEjNE70M/edit?usp=sharing" },
+  { label: "Contact", link: "/about#contact" },
+];
+
+const socialItems = [
+  { label: "Email", link: "mailto:alice@example.com" },
+  { label: "LinkedIn", link: "https://www.linkedin.com/in/alzce/" },
+];
 ---
 
 <!doctype html>
@@ -31,7 +44,19 @@ const { title, description = "Portfolio of Alice Zhou — UX Designer" } = Astro
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-charcoal-700 focus:text-taupe-100 focus:px-4 focus:py-2 focus:rounded-lg">
       Skip to content
     </a>
-    <Nav />
+    <StaggeredMenu
+      client:load
+      items={menuItems}
+      socialItems={socialItems}
+      showLogo={false}
+      position="left"
+      isFixed={true}
+      closeOnClickAway={true}
+      menuButtonColor="#0F0F0F"
+      openMenuButtonColor="#0F0F0F"
+      accentColor="#5C544A"
+      colors={["#F0EBE4", "#C4B5A4"]}
+    />
     <main id="main-content" class="flex-1">
       <slot />
     </main>

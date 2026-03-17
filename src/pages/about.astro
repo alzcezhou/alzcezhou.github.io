@@ -1,18 +1,20 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import LottieHero from "../components/LottieHero.astro";
 ---
 
 <BaseLayout title="About — Alice Zhou" description="About Alice Zhou — UX Designer and Front-End Developer">
 
-  <!-- Lottie: fixed to viewport top-right (hidden for now) -->
+  <!-- Spinner distorted: fixed to viewport top-right (hidden for now) -->
   <div class="about-page-lottie fixed top-0 right-0 w-[min(55vw,55vh)] aspect-square pointer-events-none hidden overflow-hidden z-0" aria-hidden="true">
-    <div class="about-page-lottie-inner absolute -top-1/2 -left-1/2 w-[200%] h-[200%]">
-      <LottieHero
-        src="https://lottie.host/e4d88611-377d-4635-85d9-c8fe85c50e5f/uyUsUdbNEa.lottie"
-        size={1400}
-        soften={4}
-        class="opacity-20 text-charcoal-700"
+    <div class="about-page-lottie-inner absolute -top-1/2 -left-1/2 w-[200%] h-[200%] flex items-center justify-center">
+      <video
+        src="/animations/spinner%20distorted.webm"
+        autoplay
+        loop
+        muted
+        playsinline
+        class="w-full h-full object-contain opacity-20"
+        aria-hidden="true"
       />
     </div>
   </div>
@@ -54,9 +56,9 @@ import LottieHero from "../components/LottieHero.astro";
     </div>
   </section>
 
-  <!-- Interests / Contact Strip -->
-  <section id="contact" class="bg-dark px-6 md:px-16 lg:px-24 py-14 md:py-20">
-    <div class="max-w-5xl mx-auto">
+  <!-- Interests / Contact Strip: full-width background, text same width as rest of page -->
+  <section id="contact" class="bg-dark py-14 md:py-20">
+    <div class="max-w-5xl mx-auto px-6 md:px-16">
       <p class="font-body text-base md:text-lg leading-relaxed text-on-dark mb-8">
         Outside of work, you'll find me combing through thrift stores, maintaining my Duolingo streak, or rallying my friends for our next music festival.
       </p>
