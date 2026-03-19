@@ -8,19 +8,21 @@ interface Props {
   slides: Slide[];
   /** Optional aria label for the slideshow. */
   label?: string;
+  /** When false, slideshow stays within content width (no full-width breakout). */
+  fullWidth?: boolean;
 }
 
-const { slides, label = "Image slideshow" } = Astro.props;
+const { slides, label = "Image slideshow", fullWidth = true } = Astro.props;
 const id = `slideshow-${Math.random().toString(36).slice(2, 9)}`;
 ---
 
 <div
-  class="slideshow my-12 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-4 md:px-8"
+  class:list={["slideshow my-12", fullWidth ? "w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-4 md:px-8" : "w-full"]}
   role="region"
   aria-label={label}
   id={id}
 >
-  <div class="slideshow-inner w-full max-w-[1128px] mx-auto rounded-2xl overflow-hidden slideshow-bg">
+  <div class:list={["slideshow-inner w-full rounded-2xl overflow-hidden slideshow-bg", fullWidth && "max-w-[1128px] mx-auto"]}
     <!-- Large image: only the active slide visible -->
     <div class="slideshow-main relative">
       {slides.map((slide, i) => (
@@ -44,7 +46,7 @@ const id = `slideshow-${Math.random().toString(36).slice(2, 9)}`;
 
     {slides.length > 1 && (
       <!-- Thumbnail row: same width as large image; active slide thumbnail is hidden -->
-      <div class="slideshow-thumbnails flex w-full gap-1 mt-1" role="tablist" aria-label="Slide navigation">
+      <div class="slideshow-thumbnails flex w-full gap-4 mt-4 pb-4" role="tablist" aria-label="Slide navigation">
         {slides.map((slide, i) => (
           <button
             type="button"

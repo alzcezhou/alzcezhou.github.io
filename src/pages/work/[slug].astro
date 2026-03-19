@@ -1,29 +1,27 @@
 ---
 import { getCollection, render } from "astro:content";
 import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
-import HavenAppScreens from "../../components/HavenAppScreens.astro";
+import FullWidthDarkBanner from "../../components/FullWidthDarkBanner.astro";
+import HavenPitchPill from "../../components/HavenPitchPill.astro";
 import HavenSlideshow from "../../components/HavenSlideshow.astro";
+import SkipLegalResearchInsights from "../../components/SkipLegalResearchInsights.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("work");
-  return entries.map((entry) => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }));
+  const sorted = [...entries].sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+  return sorted.map((entry, index) => {
+    const otherProjects = sorted
+      .filter((_, i) => i !== index)
+      .map((e) => ({ slug: e.id, title: e.data.title }));
+    return {
+      params: { slug: entry.id },
+      props: { entry, otherProjects },
+    };
+  });
 }
 
-const { entry } = Astro.props;
+const { entry, otherProjects = [] } = Astro.props;
 const { Content } = await render(entry);
-
-const havenAppScreens = [
-  { src: "/images/haven/onboarding-1.png", alt: "Haven welcome screen — Create Account", section: "Onboarding" },
-  { src: "/images/haven/onboarding-2.png", alt: "Haven welcome screen", section: "Onboarding" },
-  { src: "/images/haven/resource-finder.png", alt: "Resource finder map view", section: "Harm reduction" },
-  { src: "/images/haven/hospital-detail.png", alt: "Hospital detail card — Lawrence Memorial", section: "Harm reduction" },
-  { src: "/images/haven/incident-date-rape.png", alt: "Date rape drug report modal", section: "Incident map" },
-  { src: "/images/haven/incident-physical-fight.png", alt: "Physical fight report modal", section: "Incident map" },
-  { src: "/images/haven/submit-report.png", alt: "Submit a report form", section: "Incident map" },
-];
 ---
 
 <CaseStudyLayout
@@ -37,9 +35,9 @@ const havenAppScreens = [
   coverAlt={entry.data.coverAlt}
   coverFillHeight={true}
   contentMaxWidth={1128}
+  headingExpandsRight={entry.id === "eifu-marketing-site"}
+  coverAlignBottom={entry.id === "eifu-marketing-site"}
+  otherProjects={otherProjects}
 >
-  <Content components={entry.id === "haven" ? { HavenSlideshow } : undefined} />
-  {entry.id === "haven" && (
-    <HavenAppScreens slot="appScreens" screens={havenAppScreens} />
-  )}
+  <Content components={entry.id === "haven" ? { FullWidthDarkBanner, HavenPitchPill, HavenSlideshow } : entry.id === "skiplegal" ? { SkipLegalResearchInsights } : undefined} />
 </CaseStudyLayout>

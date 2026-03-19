@@ -14,6 +14,12 @@ interface Props {
   coverFillHeight?: boolean;
   /** Optional max width (px) for all content, e.g. 1128 for Haven */
   contentMaxWidth?: number;
+  /** When true, main heading extends to the right outside the content constraint and wraps to ~2 lines */
+  headingExpandsRight?: boolean;
+  /** When true, cover image in header aligns to the bottom of its div */
+  coverAlignBottom?: boolean;
+  /** Other work projects to link to (e.g. [{ slug, title }, { slug, title }]) */
+  otherProjects?: { slug: string; title: string }[];
 }
 
 const {
@@ -27,6 +33,9 @@ const {
   coverAlt,
   coverFillHeight,
   contentMaxWidth,
+  headingExpandsRight,
+  coverAlignBottom,
+  otherProjects = [],
 } = Astro.props;
 ---
 
@@ -40,9 +49,17 @@ const {
     <header class="min-h-screen flex items-center justify-center px-6 md:px-16 lg:px-24 py-16">
       <div class={`grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-12 w-full ${coverFillHeight ? "items-stretch" : "items-start"}`}>
         <div class="space-y-6">
-          <h1 class="font-heading text-5xl md:text-6xl font-light text-on-light leading-tight">
-            {title}
-          </h1>
+          {headingExpandsRight ? (
+            <div class="heading-expand-right">
+              <h1 class="font-heading text-5xl md:text-6xl font-light text-on-light leading-tight heading-two-lines">
+                {title}
+              </h1>
+            </div>
+          ) : (
+            <h1 class="font-heading text-5xl md:text-6xl font-light text-on-light leading-tight">
+              {title}
+            </h1>
+          )}
           <div class="flex flex-col gap-0 mt-0">
             <p class="font-accent text-[32px] text-on-light py-0 my-0">
               {year}
@@ -77,11 +94,11 @@ const {
 
         {cover ? (
           coverFillHeight ? (
-            <div class="min-h-[40vh] lg:min-h-0 h-full flex overflow-hidden">
+            <div class:list={["min-h-[40vh] lg:min-h-0 h-full flex overflow-hidden", coverAlignBottom && "items-end"]}>
               <img
                 src={cover}
                 alt={coverAlt ?? title}
-                class="rounded-2xl w-full h-full min-h-[40vh] lg:min-h-0 object-contain object-center"
+                class:list={["rounded-2xl w-full h-full min-h-[40vh] lg:min-h-0 object-contain", coverAlignBottom ? "object-bottom" : "object-center"]}
                 loading="eager"
                 decoding="async"
               />
@@ -105,8 +122,8 @@ const {
       class:list={[
         "px-6 md:px-16 lg:px-24 py-16 mx-auto",
         contentMaxWidth == null && "max-w-4xl",
-        "[&_h2]:font-heading [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:italic [&_h2]:text-on-light [&_h2]:mt-16 [&_h2]:mb-6",
-        "[&_h3]:font-heading [&_h3]:text-2xl [&_h3]:text-on-light [&_h3]:mt-10 [&_h3]:mb-4",
+        "[&_h2]:font-heading [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:underline [&_h2]:text-on-light [&_h2]:mt-16 [&_h2]:mb-16",
+        "[&_h3]:font-heading [&_h3]:text-2xl [&_h3]:text-on-light [&_h3]:mt-10 [&_h3]:mb-16",
         "[&_p]:font-body [&_p]:text-on-light [&_p]:leading-relaxed [&_p]:mb-6 [&_p]:text-base",
         "[&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:space-y-2 [&_ul]:text-on-light",
         "[&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6 [&_ol]:space-y-2 [&_ol]:text-on-light",
@@ -119,14 +136,50 @@ const {
       <slot name="appScreens" />
     </section>
 
-    <nav class="px-6 md:px-16 lg:px-24 pb-24">
+    <nav class="px-6 md:px-16 lg:px-24 pb-24 flex justify-between items-center gap-4">
+      <div class="flex-1 min-w-0 flex justify-start">
+        {otherProjects[0] ? (
+          <a
+            href={`/work/${otherProjects[0].slug}`}
+            class="font-accent text-xl text-on-light hover:opacity-80 transition-opacity inline-flex items-center gap-2"
+          >
+            <span aria-hidden="true">&larr;</span>
+            {otherProjects[0].title}
+          </a>
+        ) : (
+          <span />
+        )}
+      </div>
       <a
         href="/"
-        class="inline-flex items-center gap-2 font-body text-sm tracking-wider uppercase text-on-light hover:opacity-80 transition-opacity"
+        class="font-accent text-xl text-on-light hover:opacity-80 transition-opacity flex-shrink-0"
       >
-        <span aria-hidden="true">&larr;</span> All Projects
+        All Projects
       </a>
+      <div class="flex-1 min-w-0 flex justify-end">
+        {otherProjects[1] ? (
+          <a
+            href={`/work/${otherProjects[1].slug}`}
+            class="font-accent text-xl text-on-light hover:opacity-80 transition-opacity inline-flex items-center gap-2"
+          >
+            {otherProjects[1].title}
+            <span aria-hidden="true">&rarr;</span>
+          </a>
+        ) : (
+          <span />
+        )}
+      </div>
     </nav>
     </div>
   </article>
 </BaseLayout>
+
+<style>
+  .heading-expand-right {
+    margin-right: calc(50% - 50vw);
+  }
+  .heading-expand-right .heading-two-lines {
+    /* Extend to the right outside the content constraint so heading has room for ~2 lines */
+    max-width: calc(100% + 50vw - 50%);
+  }
+</style>

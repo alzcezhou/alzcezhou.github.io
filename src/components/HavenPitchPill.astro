@@ -1,0 +1,67 @@
+---
+---
+<div class="haven-pitch-pill my-6">
+  <p class="haven-pitch-pill__text font-body leading-relaxed text-center mb-0" style="color: #fff !important;">
+    <slot />
+  </p>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const pill = document.querySelector('.haven-pitch-pill');
+    if (!pill) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('haven-pitch-pill--visible');
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px' }
+    );
+    observer.observe(pill);
+  });
+</script>
+
+<style>
+  .haven-pitch-pill {
+    background-color: var(--color-bg-dark);
+    color: #fff;
+    border-radius: 9999px;
+    box-sizing: border-box;
+    padding: 1.25rem 1.5rem;
+    max-width: 64rem;
+    margin-inline: auto;
+    opacity: 0;
+    transition: opacity 1.2s ease-out;
+  }
+  @media (min-width: 640px) {
+    .haven-pitch-pill {
+      padding: 1.5rem 2.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .haven-pitch-pill {
+      padding: 2rem 4rem;
+    }
+  }
+  .haven-pitch-pill--visible {
+    opacity: 1;
+  }
+  /* :global() ensures slot content (from MDX) gets white — it isn't in this component's scope */
+  .haven-pitch-pill :global(*),
+  .haven-pitch-pill .haven-pitch-pill__text {
+    color: #fff !important;
+  }
+  .haven-pitch-pill__text,
+  .haven-pitch-pill :global(*) {
+    font-size: 32px !important;
+    line-height: 1.5;
+  }
+  .haven-pitch-pill__text {
+    color: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+</style>

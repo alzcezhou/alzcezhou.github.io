@@ -24,13 +24,15 @@ Our goal was to address the hesitation young adults face when reporting incident
 
 ## Our Pitch
 
+<HavenPitchPill>
 Haven is a dual-purpose mobile platform that lets college students anonymously report safety incidents and access harm reduction resources — without going through institutional channels.
+</HavenPitchPill>
 
 {/* TODO: Add image: Haven pitch deck or app concept overview */}
 
 ## Research
 
-### Why are college students choosing not to report to their institutions?
+<h3 class="!no-underline font-bold">Why are college students choosing not to report to their institutions?</h3>
 
 Surveying over 100 college students, we:
 - Quantified the frequency of incidents to evaluate our market share
@@ -43,33 +45,89 @@ From these findings, I developed three user personas to represent student archet
 
 ## Wireframes & Styling
 
+<div class="haven-wireframes grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+  <img src="/images/haven/haven%20wireframe%201.png" alt="Haven wireframe 1" class="rounded-xl w-full" />
+  <img src="/images/haven/haven%20wireframe%202.png" alt="Haven wireframe 2" class="rounded-xl w-full" />
+</div>
+
+<FullWidthDarkBanner>
+
 We chose to move forward with a design that accomplishes 2 things:
 
 Using a simple toggle, students are able to report an incident and find help in one app. This streamlines the process of addressing the initial conflict and finding support after an incident, bridging a gap between what is usually two separate systems.
 
-{/* TODO: Add image: Wireframes and style guide */}
+</FullWidthDarkBanner>
+
+<div class="mt-8">
+  <img src="/images/haven/haven%20style%20guide%201.png" alt="Haven style guide" class="rounded-xl w-full" />
+</div>
 
 ## Prototype
 
-### Onboarding
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6 items-start">
+  <img
+    src="/images/haven/onboarding-1.png"
+    alt="Haven onboarding screen — Create Account"
+    class="rounded-xl w-full"
+  />
+  <img
+    src="/images/haven/onboarding-2.png"
+    alt="Haven onboarding screen — Welcome"
+    class="rounded-xl w-full"
+  />
+  <div>
+    <h3 class="font-heading text-2xl font-bold text-on-light mb-4">Onboarding</h3>
+    <p class="font-body text-on-light leading-relaxed mb-4">
+      Anonymity is the product's core promise, so it had to be established at the very first screen. Verification through a university email confirms community membership without collecting any identifying information — building trust before asking users to engage with sensitive content.
+    </p>
+  </div>
+</div>
 
-Anonymity is the product's core promise, so it had to be established at the very first screen. Verification through a university email confirms community membership without collecting any identifying information — building trust before asking users to engage with sensitive content.
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6 items-start">
+  <img
+    src="/images/haven/resource-finder.png"
+    alt="Haven harm reduction map view with resource cards"
+    class="rounded-xl w-full"
+  />
+  <img
+    src="/images/haven/hospital-detail.png"
+    alt="Haven hospital detail card"
+    class="rounded-xl w-full"
+  />
+  <div>
+    <h3 class="font-heading text-2xl font-bold text-on-light mb-4">Harm Reduction</h3>
+    <p class="font-body text-on-light leading-relaxed mb-4">
+      Consolidating resources into a single, map-based view reduces the cognitive load on users in high-stress moments. Crowdsourced ratings add a layer of peer trust that institutional directories lack.
+    </p>
+    <p class="font-body text-on-light leading-relaxed mb-0">
+      At a glance, students can see what services are offered, and evaluate how safe a provider is based on crowdsourced reviews.
+    </p>
+  </div>
+</div>
 
-{/* TODO: Add image: Onboarding flow screens */}
-
-### Harm Reduction
-
-Consolidating resources into a single, map-based view reduces the cognitive load on users in high-stress moments. Crowdsourced ratings add a layer of peer trust that institutional directories lack. At a glance, students can see what services are offered, and evaluate how safe a provider is based on crowdsourced reviews.
-
-{/* TODO: Add image: Harm reduction map view and resource cards */}
-
-### Incident Map
-
-The core insight from our research was that students don't report because they fear being identified — not because they don't want to. Removing that barrier through anonymous, crowdsourced reporting creates a form of community accountability that exists entirely outside of institutional channels.
-
-The toggle between Help and Harm modes keeps the two use cases distinct, preventing the app from feeling overwhelming while addressing both sides of the safety problem in one product.
-
-{/* TODO: Add image: Incident map view with toggle interaction */}
+<div class="my-6">
+  <h3 class="font-heading text-2xl font-bold text-on-light mb-4">Incident Map</h3>
+  <p class="font-body text-on-light leading-relaxed mb-6">
+    The core insight from our research was that students don't report because they fear being identified — not because they don't want to. Removing that barrier through anonymous, crowdsourced reporting creates a form of community accountability that exists entirely outside of institutional channels. The toggle between Help and Harm modes keeps the two use cases distinct, preventing the app from feeling overwhelming while addressing both sides of the safety problem in one product.
+  </p>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <img
+      src="/images/haven/incident-date-rape.png"
+      alt="Haven incident report — date rape drug"
+      class="rounded-xl w-full"
+    />
+    <img
+      src="/images/haven/incident-physical-fight.png"
+      alt="Haven incident report — physical fight"
+      class="rounded-xl w-full"
+    />
+    <img
+      src="/images/haven/submit-report.png"
+      alt="Haven submit report form"
+      class="rounded-xl w-full"
+    />
+  </div>
+</div>
 
 ## Outcome & Reflection
 
