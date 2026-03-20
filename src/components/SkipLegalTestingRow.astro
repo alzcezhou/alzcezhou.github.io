@@ -1,0 +1,26 @@
+---
+/**
+ * Horizontal layout for SkipLegal testing cards (stacks on small screens).
+ */
+---
+
+<div class="skiplegal-testing-row">
+  <slot />
+</div>
+
+<style>
+  .skiplegal-testing-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-block: 1.25rem 1.75rem;
+    align-items: stretch;
+  }
+
+  @media (min-width: 900px) {
+    .skiplegal-testing-row {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+  }
+</style>

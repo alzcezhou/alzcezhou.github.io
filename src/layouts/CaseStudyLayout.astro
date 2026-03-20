@@ -6,7 +6,13 @@ interface Props {
   year: string;
   role: string;
   category?: string;
+  /** Header pills (black labels) */
+  tags?: string[];
+  /** Header timeline line, e.g. "3 months" */
+  timeline?: string;
+  team?: string[];
   responsibilities?: string[];
+  tools?: string[];
   results?: string[];
   cover?: string;
   coverAlt?: string;
@@ -27,7 +33,11 @@ const {
   year,
   role,
   category,
+  tags = [],
+  timeline,
+  team = [],
   responsibilities = [],
+  tools = [],
   results = [],
   cover,
   coverAlt,
@@ -60,34 +70,50 @@ const {
               {title}
             </h1>
           )}
-          <div class="flex flex-col gap-0 mt-0">
-            <p class="font-accent text-[32px] text-on-light py-0 my-0">
-              {year}
-            </p>
-            <p class="font-accent text-[32px] text-on-light py-0 my-0">
-              Role: <span class="underline">{role}</span>
-            </p>
+          <div class="case-study-date-tags flex flex-col gap-[32px]">
+            <div
+              class="case-study-date-role flex flex-col gap-0"
+              aria-label="Project year and role"
+            >
+              <p class="font-accent text-[32px] text-on-light py-0 my-0">
+                {year}
+              </p>
+              <p class="font-accent text-[32px] text-on-light py-0 my-0">
+                Role: <span class="underline">{role}</span>
+              </p>
+            </div>
+
+            {tags.length > 0 && (
+              <ul class="flex flex-wrap gap-2 list-none p-0 m-0" role="list" aria-label="Project tags">
+                {tags.map((t) => (
+                  <li key={t}>
+                    <span class="inline-block rounded-full bg-dark text-white font-accent text-lg md:text-xl px-4 py-1.5 tracking-wide">
+                      {t}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
-          {responsibilities.length > 0 && (
-            <div class="pt-2">
-              <h2 class="font-body text-base font-semibold text-on-light mb-2">Responsibilities</h2>
-              <ul class="space-y-1.5 font-body text-base text-on-light">
-                {responsibilities.map((r) => (
-                  <li key={r}>{r}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {results.length > 0 && (
-            <div class="pt-2">
-              <h2 class="font-body text-base font-semibold text-on-light mb-2">Results</h2>
-              <ul class="space-y-1.5 font-body text-base text-on-light">
-                {results.map((r) => (
-                  <li key={r}>{r}</li>
-                ))}
-              </ul>
+          {(timeline || results.length > 0) && (
+            <div class="case-study-timeline-results pt-2 space-y-5">
+              {timeline && (
+                <div>
+                  <h2 class="font-heading text-[24px] font-semibold text-on-light mb-1 leading-snug">Timeline</h2>
+                  <p class="font-heading text-[24px] font-normal text-on-light leading-snug py-0 my-0">{timeline}</p>
+                </div>
+              )}
+              {results.length > 0 && (
+                <div>
+                  <h2 class="font-heading text-[24px] font-semibold text-on-light mb-2 leading-snug">Results</h2>
+                  <ul class="space-y-1.5 font-heading text-[24px] font-normal text-on-light leading-snug list-none p-0 m-0">
+                    {results.map((r) => (
+                      <li key={r}>{r}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -117,12 +143,71 @@ const {
         )}
       </div>
     </header>
+    </div>
 
+    {(team.length > 0 || responsibilities.length > 0 || tools.length > 0) && (
+      <section
+        class="case-study-meta-row w-full bg-dark text-on-dark border-t border-white/10"
+        aria-label="Project team, responsibilities, and tools"
+      >
+        <div
+          class:list={[
+            "mx-auto w-full px-6 md:px-16 lg:px-24 py-12",
+            contentMaxWidth == null && "max-w-4xl",
+          ]}
+          style={contentMaxWidth != null ? `max-width: ${contentMaxWidth}px` : undefined}
+        >
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14 items-start w-full">
+          <div class="min-w-0">
+            <h2 class="font-heading text-xl md:text-2xl font-bold text-on-dark mb-3">Team</h2>
+            {team.length > 0 ? (
+              <ul class="list-none p-0 m-0 space-y-1 font-body text-base text-on-dark leading-relaxed">
+                {team.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            ) : (
+              <p class="font-body text-base text-on-dark/50 m-0">—</p>
+            )}
+          </div>
+          <div class="min-w-0">
+            <h2 class="font-heading text-xl md:text-2xl font-bold text-on-dark mb-3">Responsibilities</h2>
+            {responsibilities.length > 0 ? (
+              <ul class="list-none p-0 m-0 space-y-1 font-body text-base text-on-dark leading-relaxed">
+                {responsibilities.map((r) => (
+                  <li key={r}>{r}</li>
+                ))}
+              </ul>
+            ) : (
+              <p class="font-body text-base text-on-dark/50 m-0">—</p>
+            )}
+          </div>
+          <div class="min-w-0">
+            <h2 class="font-heading text-xl md:text-2xl font-bold text-on-dark mb-3">Tools</h2>
+            {tools.length > 0 ? (
+              <ul class="list-none p-0 m-0 space-y-1 font-body text-base text-on-dark leading-relaxed">
+                {tools.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            ) : (
+              <p class="font-body text-base text-on-dark/50 m-0">—</p>
+            )}
+          </div>
+        </div>
+        </div>
+      </section>
+    )}
+
+    <div
+      class:list={[contentMaxWidth != null && "mx-auto"]}
+      style={contentMaxWidth != null ? `max-width: ${contentMaxWidth}px` : undefined}
+    >
     <section
       class:list={[
         "px-6 md:px-16 lg:px-24 py-16 mx-auto",
         contentMaxWidth == null && "max-w-4xl",
-        "[&_h2]:font-heading [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:underline [&_h2]:text-on-light [&_h2]:mt-16 [&_h2]:mb-16",
+        "[&_h2]:font-heading [&_h2]:!text-[48px] [&_h2]:leading-tight [&_h2]:underline [&_h2]:text-on-light [&_h2]:mt-16 [&_h2]:mb-[64px]",
         "[&_h3]:font-heading [&_h3]:text-2xl [&_h3]:text-on-light [&_h3]:mt-10 [&_h3]:mb-16",
         "[&_p]:font-body [&_p]:text-on-light [&_p]:leading-relaxed [&_p]:mb-6 [&_p]:text-base",
         "[&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:space-y-2 [&_ul]:text-on-light",

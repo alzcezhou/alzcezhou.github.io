@@ -5,6 +5,9 @@ import FullWidthDarkBanner from "../../components/FullWidthDarkBanner.astro";
 import HavenPitchPill from "../../components/HavenPitchPill.astro";
 import HavenSlideshow from "../../components/HavenSlideshow.astro";
 import SkipLegalResearchInsights from "../../components/SkipLegalResearchInsights.astro";
+import SkipLegalTestingCard from "../../components/SkipLegalTestingCard.astro";
+import SkipLegalTestingRow from "../../components/SkipLegalTestingRow.astro";
+import SkipLegalCanvaEmbed from "../../components/SkipLegalCanvaEmbed.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("work");
@@ -29,7 +32,11 @@ const { Content } = await render(entry);
   year={entry.data.year}
   role={entry.data.role}
   category={entry.data.category}
+  tags={entry.data.tags}
+  timeline={entry.data.timeline}
+  team={entry.data.team}
   responsibilities={entry.data.responsibilities}
+  tools={entry.data.tools}
   results={entry.data.results}
   cover={entry.id === "haven" ? "/images/haven/header.png" : entry.data.cover}
   coverAlt={entry.data.coverAlt}
@@ -39,5 +46,18 @@ const { Content } = await render(entry);
   coverAlignBottom={entry.id === "eifu-marketing-site"}
   otherProjects={otherProjects}
 >
-  <Content components={entry.id === "haven" ? { FullWidthDarkBanner, HavenPitchPill, HavenSlideshow } : entry.id === "skiplegal" ? { SkipLegalResearchInsights } : undefined} />
+  <Content
+    components={entry.id === "haven"
+      ? { FullWidthDarkBanner, HavenPitchPill, HavenSlideshow }
+      : entry.id === "skiplegal"
+        ? {
+            SkipLegalResearchInsights,
+            SkipLegalTestingCard,
+            SkipLegalTestingRow,
+            SkipLegalCanvaEmbed,
+          }
+        : entry.id === "eifu-marketing-site"
+          ? { SkipLegalTestingCard, SkipLegalTestingRow }
+          : undefined}
+  />
 </CaseStudyLayout>

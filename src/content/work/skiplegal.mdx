@@ -2,27 +2,52 @@
 title: "SkipLegal"
 subtitle: "AI-powered immigration document assistance"
 year: "Spring 2025"
-role: "UX Designer"
+role: "UX Designer & Project Manager"
 category: "Capstone Project & Contract Role | Product Design"
+tags:
+  - "AI Tools"
+  - "Capstone"
+  - "0 to 1"
+timeline: "3 months"
 description: "Leveraging AI to bridge the gap between U.S. Government, lawyers, and prospective immigrants."
 order: 3
 cover: "/images/work/skiplegal-cover.png"
 coverAlt: "SkipLegal laptop interface showing AI-assisted form filling"
+team:
+  - "2 UX Designers"
+  - "2 UX Researchers"
 responsibilities:
   - "User Research"
   - "Figma Prototyping"
   - "UI Design"
   - "Market Analysis and Strategy"
   - "Quantitative & Qualitative Usability Testing"
+tools:
+  - "Figma"
+  - "Qualtrics"
 results:
   - "Figma Prototype of AI assistance on filling out immigration documents"
 ---
 
 ## Discovery
 
-Immigration to the U.S. is a complicated bureaucratic process, where small mistakes can cost months of time and thousands in dollars. Any prospective immigrant is juggling several critical documents, navigating a chain of complicated forms, and balancing the endless combination of potential outcomes.
-
-AI can be used as a tool to keep documents organized, track tasks, minimize error, and manage the entire process.
+<div class="grid grid-cols-1 md:grid-cols-[minmax(0,320px)_1fr] gap-8 lg:gap-10 my-8 items-start">
+  <div class="w-full max-w-[320px] md:max-w-none mx-auto md:mx-0">
+    <img
+      src="/images/skiplegal/immigration%20flowchart.png"
+      alt="Immigration process flowchart wireframe"
+      class="rounded-xl w-full h-auto object-contain"
+    />
+  </div>
+  <div class="space-y-4 font-body text-on-light leading-relaxed min-w-0">
+    <p class="mb-0">
+      Immigration to the U.S. is a complicated bureaucratic process, where small mistakes can cost months of time and thousands in dollars. Any prospective immigrant is juggling several critical documents, navigating a chain of complicated forms, and balancing the endless combination of potential outcomes.
+    </p>
+    <p class="mb-0">
+      AI can be used as a tool to keep documents organized, track tasks, minimize error, and manage the entire process.
+    </p>
+  </div>
+</div>
 
 SkipLegal's founder came to our team requesting a proof of concept with a focus on 3 key factors:
 - Identify the needs of a diverse immigrant userbase
@@ -37,47 +62,73 @@ To define how AI should be integrated into the immigration workflow, we conducte
 
 {/* TODO: Add image: Research findings and survey data visualization */}
 
+## Problem
+
+How might we design an AI-powered service that is trustworthy and helps bridge the gap between the U.S. government, aspiring immigrants, and lawyers?
+
 ## Wireframes
 
-### Questionnaire
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6 items-start">
+  <div class="md:col-span-2">
+    <img
+      src="/images/skiplegal/questionnaire%20wireframe.png"
+      alt="SkipLegal questionnaire wireframes — one question at a time"
+      class="rounded-xl w-full"
+    />
+  </div>
+  <div>
+    <h3 class="font-heading text-2xl font-bold text-on-light mb-4">Questionnaire</h3>
+    <p class="font-body text-on-light leading-relaxed mb-0">
+      I deliberately chose to present questions one at a time to counter the complexity of immigration terminology. Isolating each question reduced cognitive load at a critical moment in the onboarding process, where the user decides if they trust the product enough to continue.
+    </p>
+  </div>
+</div>
 
-I deliberately chose to present questions one at a time to counter the complexity of immigration terminology. Isolating each question reduced cognitive load at a critical moment in the onboarding process, where the user decides if they trust the product enough to continue.
-
-{/* TODO: Add image: Questionnaire wireframes showing one-at-a-time flow */}
-
-### Form Assistance
-
-The bento box layout keeps four distinct functions on hand: document & form management, task list, form viewing, and AI assistance. It is always easy for a user to see where they are in the process, reducing anxiety about feeling lost.
-
-{/* TODO: Add image: Form assistance bento box layout wireframes */}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6 items-start">
+  <div class="md:col-span-2">
+    <img
+      src="/images/skiplegal/formassistance%20wireframe.png"
+      alt="SkipLegal form assistance wireframe — bento layout with panels"
+      class="rounded-xl w-full"
+    />
+  </div>
+  <div>
+    <h3 class="font-heading text-2xl font-bold text-on-light mb-4">Form assistance</h3>
+    <p class="font-body text-on-light leading-relaxed mb-0">
+      The bento box layout keeps four distinct functions on hand: document & form management, task list, form viewing, and AI assistance. It is always easy for a user to see where they are in the process, reducing anxiety about feeling lost.
+    </p>
+  </div>
+</div>
 
 ## Usability Testing
 
 Testing the wireframes identified three failure points.
 
-### Insight 1: Unknown Terminology
-
-Immigration terminology produced hesitation at a critical point where the product needed to build trust and confidence.
-
-**Action:** We delivered more value to users by incorporating definitions through hover interactions. This eliminates the need to jump between tabs to look up definitions, reducing mental load and keeping the focus within SkipLegal.
+<SkipLegalTestingRow>
+  <SkipLegalTestingCard
+    title="Unknown Terminology"
+    insight="Immigration terminology produced hesitation at a critical point where the product needed to build trust and confidence."
+    action="We delivered more value to users by incorporating definitions through hover interactions. This eliminates the need to jump between tabs to look up definitions, reducing mental load and keeping the focus within SkipLegal."
+  />
+  <SkipLegalTestingCard
+    title="Information Overload"
+    insight="The bento layout overwhelmed users after completing the questionnaire. Too much information was introduced at once."
+    action="A tutorial introducing each panel and its function orients users and primes their mental model of SkipLegal. This also continues the one-by-one flow used by the onboarding questionnaire."
+  />
+  <SkipLegalTestingCard
+    title="Trust in AI"
+    insight="Participants were doubtful of SkipGenius' ability to fill out forms accurately, and did not feel in control of their information."
+    action='Giving users the option to choose between "autofill" and "manual" mode helped them feel more agency over the process. Manual mode used SkipGenius minimally and darkened the form viewport to focus on only one question at a time. Autofill included a clear modal explaining what SkipGenius will do and how to enhance its results.'
+  />
+</SkipLegalTestingRow>
 
 {/* TODO: Add image: Before/after of terminology hover interaction */}
-
-### Insight 2: Information Overload
-
-The bento layout overwhelmed users after completing the questionnaire. Too much information was introduced at once.
-
-**Action:** A tutorial introducing each panel and its function orients users and primes their mental model of SkipLegal. This also continues the one-by-one flow used by the onboarding questionnaire.
-
 {/* TODO: Add image: Tutorial overlay walkthrough screens */}
-
-### Insight 3: Trust in AI
-
-Participants were doubtful of SkipGenius' ability to fill out forms accurately, and did not feel in control of their information.
-
-**Action:** Giving users the option to choose between "autofill" and "manual" mode helped them feel more agency over the process. Manual mode used SkipGenius minimally and darkened the form viewport to focus on only one question at a time. Autofill included a clear modal explaining what SkipGenius will do and how to enhance its results.
-
 {/* TODO: Add image: Autofill vs manual mode comparison */}
+
+## Final Prototype & Presentation
+
+<SkipLegalCanvaEmbed />
 
 ## Outcome & Reflection
 

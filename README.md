@@ -12,7 +12,7 @@ This is Alice's personal portfolio site. It shows your work, your about page, an
 Your projects live here (as simple text files):
   src/content/work/haven.md
   src/content/work/skiplegal.md
-  src/content/work/eifu-marketing-site.md
+  src/content/work/eifu-marketing-site.mdx
 
 The pages you see:
   src/pages/index.astro        ← Home page (hero + project cards)

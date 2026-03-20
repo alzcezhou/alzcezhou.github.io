@@ -1,0 +1,78 @@
+---
+/**
+ * Usability testing insight + action callout (SkipLegal case study).
+ */
+interface Props {
+  title: string;
+  insight: string;
+  action: string;
+}
+
+const { title, insight, action } = Astro.props;
+---
+
+<div class="skiplegal-testing-card">
+  <p class="skiplegal-testing-card__title">{title}</p>
+  <div class="skiplegal-testing-card__divider" role="presentation"></div>
+  <div class="skiplegal-testing-card__block">
+    <p class="skiplegal-testing-card__label">Insight</p>
+    <p class="skiplegal-testing-card__body">{insight}</p>
+  </div>
+  <div class="skiplegal-testing-card__divider" role="presentation"></div>
+  <div class="skiplegal-testing-card__block">
+    <p class="skiplegal-testing-card__label">Action</p>
+    <p class="skiplegal-testing-card__body">{action}</p>
+  </div>
+</div>
+
+<style>
+  .skiplegal-testing-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-width: 0;
+    background-color: #000000;
+    color: #fff;
+    border-radius: 0.875rem;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    font-family: var(--font-heading);
+  }
+
+  .skiplegal-testing-card__title {
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  .skiplegal-testing-card__block + .skiplegal-testing-card__block {
+    margin-top: 0;
+  }
+
+  .skiplegal-testing-card__label {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
+    color: #fff;
+  }
+
+  .skiplegal-testing-card__body {
+    margin: 0;
+    font-size: clamp(0.9375rem, 2vw, 1.0625rem);
+    line-height: 1.65;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .skiplegal-testing-card__divider {
+    height: 0;
+    margin-block: 1.25rem;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+  }
+</style>

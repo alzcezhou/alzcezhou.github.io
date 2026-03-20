@@ -34,6 +34,11 @@
   pointer-events: auto;
 }
 
+/* Logo hidden: pin Menu / Close control to the right */
+.staggered-menu-header--toggle-end {
+  justify-content: flex-end;
+}
+
 .sm-logo {
   display: flex;
   align-items: center;

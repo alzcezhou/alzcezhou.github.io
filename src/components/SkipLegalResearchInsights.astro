@@ -1,20 +1,27 @@
 ---
+/**
+ * Inline SVG via ?raw so dev never hits public/ for these icons (avoids stale Vite
+ * requests to wrong paths). Source of truth: src/assets/skiplegal/*.svg
+ */
+import iconDocumentSvg from "../assets/skiplegal/icon-document.svg?raw";
+import iconJudgeSvg from "../assets/skiplegal/icon-judge.svg?raw";
+import iconSecuritySvg from "../assets/skiplegal/icon-security.svg?raw";
 ---
-<div class="skiplegal-research-insights space-y-4 my-8">
+<div class="skiplegal-research-insights space-y-3 my-6">
   <div class="skiplegal-insight">
-    <img src="/images/skiplegal/icon-document.svg" alt="" class="skiplegal-insight__icon" width="136" height="136" />
+    <div class="skiplegal-insight__icon" aria-hidden="true" set:html={iconDocumentSvg} />
     <p class="skiplegal-insight__text">
       <strong>Immigration paperwork is overwhelming and repetitive</strong>, even with professional assistance.
     </p>
   </div>
   <div class="skiplegal-insight">
-    <img src="/images/skiplegal/icon-judge.svg" alt="" class="skiplegal-insight__icon" width="136" height="136" />
+    <div class="skiplegal-insight__icon" aria-hidden="true" set:html={iconJudgeSvg} />
     <p class="skiplegal-insight__text">
       <strong>Trust in AI is conditional.</strong> Users want transparency and proof that the AI is correct.
     </p>
   </div>
   <div class="skiplegal-insight">
-    <img src="/images/skiplegal/icon-security.svg" alt="" class="skiplegal-insight__icon" width="136" height="136" />
+    <div class="skiplegal-insight__icon" aria-hidden="true" set:html={iconSecuritySvg} />
     <p class="skiplegal-insight__text">
       <strong>Users expect visible security features</strong> to protect their data.
     </p>
@@ -24,25 +31,34 @@
 <style>
   .skiplegal-insight {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 64px;
+    gap: clamp(0.75rem, 2.5vw, 2rem);
     background-color: var(--color-bg-dark);
     color: #fff;
-    padding-block: 16px;
-    padding-inline: 16px;
-    border-radius: 0.75rem;
+    padding-block: 10px;
+    padding-inline: 12px;
+    border-radius: 0.5rem;
   }
   .skiplegal-insight__icon {
     flex-shrink: 0;
-    width: 136px;
-    height: 136px;
+    width: clamp(3rem, 12vw, 5.5rem);
+    max-width: min(5.5rem, 100%);
+    display: block;
+    line-height: 0;
+  }
+  .skiplegal-insight__icon :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
   }
   .skiplegal-insight__text {
     margin: 0;
     flex: 1;
+    min-width: 0;
     font-family: var(--font-body);
-    font-size: 24px;
-    line-height: 1.6;
+    font-size: clamp(1rem, 2.2vw, 1.125rem);
+    line-height: 1.55;
     color: #fff !important;
   }
   .skiplegal-insight__text strong {

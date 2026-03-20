@@ -2,6 +2,43 @@ import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import './StaggeredMenu.css';
 
+/** Parse rgb/rgba from computed background-color; returns null if transparent/unknown */
+function parseCssColor(css) {
+  if (!css || css === 'transparent') return null;
+  const m = css.match(/rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)/);
+  if (!m) return null;
+  const a = m[4] !== undefined ? Number(m[4]) : 1;
+  return {
+    r: Math.round(Number(m[1])),
+    g: Math.round(Number(m[2])),
+    b: Math.round(Number(m[3])),
+    a
+  };
+}
+
+/** Approximate perceived brightness 0–1 (sRGB, quick) */
+function colorBrightness({ r, g, b }) {
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+}
+
+function getEffectiveBackgroundColor(startEl) {
+  let node = startEl;
+  const maxHops = 32;
+  let hops = 0;
+  while (node && node.nodeType === 1 && hops < maxHops) {
+    const style = getComputedStyle(node);
+    const bg = style.backgroundColor;
+    const parsed = parseCssColor(bg);
+    if (parsed && parsed.a >= 0.18) {
+      return parsed;
+    }
+    node = node.parentElement;
+    hops += 1;
+  }
+  const bodyParsed = parseCssColor(getComputedStyle(document.body).backgroundColor);
+  return bodyParsed || { r: 200, g: 192, b: 185, a: 1 };
+}
+
 export const StaggeredMenu = ({
   position = 'right',
   colors = ['#B19EEF', '#5227FF'],
@@ -13,14 +50,22 @@ export const StaggeredMenu = ({
   className,
   logoUrl = '/favicon.svg',
   menuButtonColor = '#fff',
+  /** Toggle color when the button sits over dark UI (full-viewport sections, footer, etc.) */
+  menuButtonOnDarkBg = '#ffffff',
   openMenuButtonColor = '#fff',
   accentColor = '#5227FF',
   changeMenuColorOnOpen = true,
   isFixed = false,
+  /**
+   * Sample the page behind the toggle and pick menuButtonColor vs menuButtonOnDarkBg.
+   * Defaults to on when the menu is fixed (typical portfolio header).
+   */
+  adaptToggleColorToBackground,
   closeOnClickAway = true,
   onMenuOpen,
   onMenuClose
 }) => {
+  const adaptContrast = adaptToggleColorToBackground ?? isFixed;
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
   const panelRef = useRef(null);
@@ -39,8 +84,11 @@ export const StaggeredMenu = ({
   const textCycleAnimRef = useRef(null);
   const colorTweenRef = useRef(null);
   const toggleBtnRef = useRef(null);
+  const wrapperRef = useRef(null);
   const busyRef = useRef(false);
   const itemEntranceTweenRef = useRef(null);
+  const lastAdaptiveColorRef = useRef(null);
+  const contrastRafRef = useRef(0);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -64,10 +112,83 @@ export const StaggeredMenu = ({
       gsap.set(plusV, { transformOrigin: '50% 50%', rotate: 90 });
       gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
       gsap.set(textInner, { yPercent: 0 });
-      if (toggleBtnRef.current) gsap.set(toggleBtnRef.current, { color: menuButtonColor });
+      if (toggleBtnRef.current && !adaptContrast) {
+        gsap.set(toggleBtnRef.current, { color: menuButtonColor });
+      }
     });
     return () => ctx.revert();
-  }, [menuButtonColor, position]);
+  }, [menuButtonColor, position, adaptContrast]);
+
+  const computeToggleColorFromBackground = useCallback(() => {
+    const btn = toggleBtnRef.current;
+    const wrapper = wrapperRef.current;
+    if (!btn || !wrapper) return menuButtonColor;
+
+    const rect = btn.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    const prevVis = btn.style.visibility;
+    btn.style.visibility = 'hidden';
+    const stack = document.elementsFromPoint(cx, cy);
+    btn.style.visibility = prevVis;
+
+    let targetEl = null;
+    for (let i = 0; i < stack.length; i += 1) {
+      const el = stack[i];
+      if (!(el instanceof Element)) continue;
+      if (wrapper.contains(el)) continue;
+      targetEl = el;
+      break;
+    }
+
+    if (!targetEl) {
+      targetEl = document.elementFromPoint(cx, cy) || document.body;
+      if (wrapper.contains(targetEl)) targetEl = document.body;
+    }
+
+    const rgba = getEffectiveBackgroundColor(targetEl);
+    const lum = colorBrightness(rgba);
+    const threshold = 0.42;
+    return lum < threshold ? menuButtonOnDarkBg : menuButtonColor;
+  }, [menuButtonColor, menuButtonOnDarkBg]);
+
+  const applyAdaptiveToggleColor = useCallback(
+    (immediate = false) => {
+      if (!adaptContrast || !isFixed || openRef.current) return;
+      const btn = toggleBtnRef.current;
+      if (!btn) return;
+      const next = computeToggleColorFromBackground();
+      if (lastAdaptiveColorRef.current === next) return;
+      lastAdaptiveColorRef.current = next;
+      colorTweenRef.current?.kill();
+      if (immediate) {
+        gsap.set(btn, { color: next });
+      } else {
+        gsap.to(btn, { color: next, duration: 0.2, ease: 'power2.out', overwrite: 'auto' });
+      }
+    },
+    [adaptContrast, isFixed, computeToggleColorFromBackground]
+  );
+
+  React.useEffect(() => {
+    if (!adaptContrast || !isFixed) return undefined;
+
+    const schedule = () => {
+      cancelAnimationFrame(contrastRafRef.current);
+      contrastRafRef.current = requestAnimationFrame(() => applyAdaptiveToggleColor(false));
+    };
+
+    schedule();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+
+    return () => {
+      cancelAnimationFrame(contrastRafRef.current);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+  }, [adaptContrast, isFixed, applyAdaptiveToggleColor]);
 
   const buildOpenTimeline = useCallback(() => {
     const panel = panelRef.current;
@@ -246,7 +367,14 @@ export const StaggeredMenu = ({
       if (!btn) return;
       colorTweenRef.current?.kill();
       if (changeMenuColorOnOpen) {
-        const targetColor = opening ? openMenuButtonColor : menuButtonColor;
+        let targetColor;
+        if (opening) {
+          targetColor = openMenuButtonColor;
+          lastAdaptiveColorRef.current = null;
+        } else {
+          targetColor = adaptContrast ? computeToggleColorFromBackground() : menuButtonColor;
+          lastAdaptiveColorRef.current = targetColor;
+        }
         colorTweenRef.current = gsap.to(btn, {
           color: targetColor,
           delay: 0.18,
@@ -254,22 +382,41 @@ export const StaggeredMenu = ({
           ease: 'power2.out'
         });
       } else {
-        gsap.set(btn, { color: menuButtonColor });
+        const c = adaptContrast ? computeToggleColorFromBackground() : menuButtonColor;
+        lastAdaptiveColorRef.current = c;
+        gsap.set(btn, { color: c });
       }
     },
-    [openMenuButtonColor, menuButtonColor, changeMenuColorOnOpen]
+    [
+      openMenuButtonColor,
+      menuButtonColor,
+      changeMenuColorOnOpen,
+      adaptContrast,
+      computeToggleColorFromBackground
+    ]
   );
 
   React.useEffect(() => {
-    if (toggleBtnRef.current) {
-      if (changeMenuColorOnOpen) {
-        const targetColor = openRef.current ? openMenuButtonColor : menuButtonColor;
-        gsap.set(toggleBtnRef.current, { color: targetColor });
-      } else {
-        gsap.set(toggleBtnRef.current, { color: menuButtonColor });
-      }
+    if (!toggleBtnRef.current) return;
+    if (openRef.current) return;
+    if (adaptContrast && isFixed) {
+      lastAdaptiveColorRef.current = null;
+      applyAdaptiveToggleColor(true);
+      return;
     }
-  }, [changeMenuColorOnOpen, menuButtonColor, openMenuButtonColor]);
+    if (changeMenuColorOnOpen) {
+      gsap.set(toggleBtnRef.current, { color: menuButtonColor });
+    } else {
+      gsap.set(toggleBtnRef.current, { color: menuButtonColor });
+    }
+  }, [
+    changeMenuColorOnOpen,
+    menuButtonColor,
+    openMenuButtonColor,
+    adaptContrast,
+    isFixed,
+    applyAdaptiveToggleColor
+  ]);
 
   const animateText = useCallback(opening => {
     const inner = textInnerRef.current;
@@ -349,6 +496,7 @@ export const StaggeredMenu = ({
 
   return (
     <div
+      ref={wrapperRef}
       className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')}
       style={accentColor ? { ['--sm-accent']: accentColor } : undefined}
       data-position={position}
@@ -365,7 +513,12 @@ export const StaggeredMenu = ({
           return arr.map((c, i) => <div key={i} className="sm-prelayer" style={{ background: c }} />);
         })()}
       </div>
-      <header className="staggered-menu-header" aria-label="Main navigation header">
+      <header
+        className={
+          'staggered-menu-header' + (!showLogo ? ' staggered-menu-header--toggle-end' : '')
+        }
+        aria-label="Main navigation header"
+      >
         {showLogo && (
           <div className="sm-logo" aria-label="Logo">
             <img
