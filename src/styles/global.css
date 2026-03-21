@@ -265,6 +265,13 @@ body {
     border: 1px solid rgba(0, 0, 0, 0.50);
     background: var(--color-bg-dark) !important;
   }
+
+  /* eIFU wireframes: 16px body under a 24px column (case study [&_p] would otherwise force 24px) */
+  .eifu-simplifying-copy,
+  .eifu-simplifying-copy p {
+    font-size: 16px !important;
+  }
+
 }
 
 /* ─── Image placeholders (before real images are added) ─── */

@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
 import FullWidthDarkBanner from "../../components/FullWidthDarkBanner.astro";
 import HavenPitchPill from "../../components/HavenPitchPill.astro";
+import HavenHarmToggle from "../../components/HavenHarmToggle.astro";
 import HavenSlideshow from "../../components/HavenSlideshow.astro";
 import SkipLegalResearchInsights from "../../components/SkipLegalResearchInsights.astro";
 import SkipLegalTestingCard from "../../components/SkipLegalTestingCard.astro";
@@ -44,11 +45,12 @@ const { Content } = await render(entry);
   contentMaxWidth={1128}
   headingExpandsRight={entry.id === "eifu-marketing-site"}
   coverAlignBottom={entry.id === "eifu-marketing-site"}
+  coverRounded={entry.id !== "eifu-marketing-site"}
   otherProjects={otherProjects}
 >
   <Content
     components={entry.id === "haven"
-      ? { FullWidthDarkBanner, HavenPitchPill, HavenSlideshow }
+      ? { FullWidthDarkBanner, HavenHarmToggle, HavenPitchPill, HavenSlideshow }
       : entry.id === "skiplegal"
         ? {
             SkipLegalResearchInsights,

@@ -1,9 +1,9 @@
 ---
 ---
 <div class="haven-pitch-pill my-6">
-  <p class="haven-pitch-pill__text font-body leading-relaxed text-center mb-0" style="color: #fff !important;">
+  <div class="haven-pitch-pill__text font-body leading-relaxed text-center mb-0" style="color: #fff !important;">
     <slot />
-  </p>
+  </div>
 </div>
 
 <script>
@@ -26,25 +26,20 @@
 
 <style>
   .haven-pitch-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     background-color: var(--color-bg-dark);
     color: #fff;
     border-radius: 9999px;
     box-sizing: border-box;
-    padding: 1.25rem 1.5rem;
+    padding: 32px;
     max-width: 64rem;
     margin-inline: auto;
     opacity: 0;
     transition: opacity 1.2s ease-out;
-  }
-  @media (min-width: 640px) {
-    .haven-pitch-pill {
-      padding: 1.5rem 2.5rem;
-    }
-  }
-  @media (min-width: 1024px) {
-    .haven-pitch-pill {
-      padding: 2rem 4rem;
-    }
   }
   .haven-pitch-pill--visible {
     opacity: 1;
@@ -58,10 +53,16 @@
   .haven-pitch-pill :global(*) {
     font-size: 32px !important;
     line-height: 1.5;
+    text-align: center;
   }
   .haven-pitch-pill__text {
     color: #fff !important;
     margin: 0 !important;
     padding: 0 !important;
+    width: 100%;
+    text-align: center;
+  }
+  .haven-pitch-pill :global(p) {
+    margin-bottom: 0 !important;
   }
 </style>

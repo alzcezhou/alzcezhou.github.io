@@ -24,6 +24,8 @@ interface Props {
   headingExpandsRight?: boolean;
   /** When true, cover image in header aligns to the bottom of its div */
   coverAlignBottom?: boolean;
+  /** When false, hero cover image has square corners (default true: rounded-2xl) */
+  coverRounded?: boolean;
   /** Other work projects to link to (e.g. [{ slug, title }, { slug, title }]) */
   otherProjects?: { slug: string; title: string }[];
 }
@@ -45,6 +47,7 @@ const {
   contentMaxWidth,
   headingExpandsRight,
   coverAlignBottom,
+  coverRounded = true,
   otherProjects = [],
 } = Astro.props;
 ---
@@ -124,7 +127,11 @@ const {
               <img
                 src={cover}
                 alt={coverAlt ?? title}
-                class:list={["rounded-2xl w-full h-full min-h-[40vh] lg:min-h-0 object-contain", coverAlignBottom ? "object-bottom" : "object-center"]}
+                class:list={[
+                  coverRounded ? "rounded-2xl" : "rounded-none",
+                  "w-full h-full min-h-[40vh] lg:min-h-0 object-contain",
+                  coverAlignBottom ? "object-bottom" : "object-center",
+                ]}
                 loading="eager"
                 decoding="async"
               />
@@ -133,13 +140,21 @@ const {
             <img
               src={cover}
               alt={coverAlt ?? title}
-              class="rounded-2xl aspect-[16/10] w-full object-cover"
+              class:list={[
+                coverRounded ? "rounded-2xl" : "rounded-none",
+                "aspect-[16/10] w-full object-cover",
+              ]}
               loading="eager"
               decoding="async"
             />
           )
         ) : (
-          <div class="img-placeholder rounded-2xl aspect-[16/10] w-full"></div>
+          <div
+            class:list={[
+              coverRounded ? "rounded-2xl" : "rounded-none",
+              "img-placeholder aspect-[16/10] w-full",
+            ]}
+          ></div>
         )}
       </div>
     </header>
@@ -226,7 +241,7 @@ const {
         {otherProjects[0] ? (
           <a
             href={`/work/${otherProjects[0].slug}`}
-            class="font-accent text-xl text-on-light hover:opacity-80 transition-opacity inline-flex items-center gap-2"
+            class="font-accent text-[24px] text-on-light hover:opacity-80 transition-opacity inline-flex items-center gap-2"
           >
             <span aria-hidden="true">&larr;</span>
             {otherProjects[0].title}
@@ -245,7 +260,7 @@ const {
         {otherProjects[1] ? (
           <a
             href={`/work/${otherProjects[1].slug}`}
-            class="font-accent text-xl text-on-light hover:opacity-80 transition-opacity inline-flex items-center gap-2"
+            class="font-accent text-[24px] text-on-light hover:opacity-80 transition-opacity inline-flex items-center gap-2"
           >
             {otherProjects[1].title}
             <span aria-hidden="true">&rarr;</span>
