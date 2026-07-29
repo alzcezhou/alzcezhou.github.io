@@ -1,21 +1,18 @@
 <footer id="site-footer" class="footer-with-video font-accent bg-dark text-on-dark text-[32px]" style="--footer-gif-left: 70px;">
   <div class="footer-media-wrap flex items-center justify-start pr-6 md:pr-16 lg:pr-24" style="padding-left: calc(var(--footer-gif-left) + 2px);">
     <div class="footer-media-inner relative w-full max-w-3xl transition-[margin] duration-150" id="footer-media-inner">
-      <img
-        id="footer-static"
-        class="footer-static block w-full rounded-lg object-contain object-left scale-[0.99] origin-left"
-        src="/videos/gif%20still.png"
-        alt=""
+      <video
+        id="footer-video"
+        class="footer-video block w-full rounded-lg object-contain object-left scale-[0.99] origin-left pointer-events-none"
+        poster="/videos/gif%20still.png"
+        muted
+        playsinline
+        preload="metadata"
         aria-hidden="true"
-      />
-      <img
-        id="footer-gif"
-        class="footer-gif absolute inset-0 w-full h-full rounded-lg object-contain object-left pointer-events-none"
-        src="/videos/footer%20gif.gif"
-        alt=""
-        aria-hidden="true"
-        style="visibility: hidden;"
-      />
+      >
+        <source src="/videos/footer-video.webm" type="video/webm" />
+        <source src="/videos/footer-video.mp4" type="video/mp4" />
+      </video>
     </div>
   </div>
   <div class="border-t border-taupe-700/30 px-6 md:px-16 lg:px-24 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
@@ -35,24 +32,20 @@
 <script is:inline>
   function initFooterHover() {
     const footer = document.getElementById("site-footer");
-    const staticImg = document.getElementById("footer-static");
-    const gif = document.getElementById("footer-gif");
-    if (!footer || !staticImg || !gif) return;
-
-    const gifSrc = "/videos/footer%20gif.gif";
+    const video = document.getElementById("footer-video");
+    if (!footer || !video) return;
 
     const inner = document.getElementById("footer-media-inner");
 
     footer.addEventListener("mouseenter", () => {
-      staticImg.style.visibility = "hidden";
-      gif.style.visibility = "";
-      gif.src = gifSrc + "?t=" + Date.now();
+      video.currentTime = 0;
+      video.play();
       if (inner) inner.style.marginLeft = "-2px";
     });
 
     footer.addEventListener("mouseleave", () => {
-      gif.style.visibility = "hidden";
-      staticImg.style.visibility = "";
+      video.pause();
+      video.currentTime = 0;
       if (inner) inner.style.marginLeft = "";
     });
   }
