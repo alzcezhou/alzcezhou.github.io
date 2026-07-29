@@ -10,15 +10,19 @@ const projects = (await getCollection("work")).sort(
 
 const toolsRibbon = "/images/home%20page/my%20tools%20ribbon";
 const dailyTools = [
-  { src: `${toolsRibbon}/2023-06-logo.png`, alt: "ChatGPT" },
-  { src: `${toolsRibbon}/Calligra_Krita_icon.svg`, alt: "Krita" },
-  { src: `${toolsRibbon}/Cursor-Ai-Logo-PNG-SVG-Vector.png`, alt: "Cursor" },
   {
     src: `${toolsRibbon}/figma-logo-icon-figma-app-editable-transparent-background-premium-social-media-design-for-digital-download-free-png.webp`,
     alt: "Figma",
   },
+  { src: `${toolsRibbon}/Calligra_Krita_icon.svg`, alt: "Krita" },
   { src: `${toolsRibbon}/miro-icon.png`, alt: "Miro" },
   { src: `${toolsRibbon}/Notion-Logo.png`, alt: "Notion" },
+  { src: `${toolsRibbon}/LF_Secondary_Logomark_Full color.svg`, alt: "LottieFiles" },
+  { src: `${toolsRibbon}/2023-06-logo.png`, alt: "ChatGPT" },
+  { src: `${toolsRibbon}/claude-ai-icon.svg`, alt: "Claude" },
+  { src: `${toolsRibbon}/claude-code-icon.svg`, alt: "Claude Code" },
+  { src: `${toolsRibbon}/cursor-ai-code-icon.svg`, alt: "Cursor" },
+  { src: `${toolsRibbon}/lovable-ai-icon.svg`, alt: "Lovable" },
 ] as const;
 ---
 
@@ -68,17 +72,18 @@ const dailyTools = [
       My Daily Tools
     </h2>
     <div
-      class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 auto-rows-fr mb-14 md:mb-20"
+      class="grid grid-cols-2 sm:grid-cols-5 gap-4 md:gap-6 auto-rows-fr mb-14 md:mb-20"
       aria-label="Daily tools"
     >
       {dailyTools.map((tool) => (
         <div
-          class="rounded-[16px] border border-black/10 bg-taupe-100/60 flex items-center justify-center aspect-[4/3] p-6 md:p-8"
+          class="group rounded-[16px] border border-black/10 bg-taupe-100/60 flex items-center justify-center aspect-square p-5 md:p-6 transition-colors duration-200 hover:bg-taupe-100 hover:border-black/20"
         >
           <img
             src={tool.src}
             alt={tool.alt}
-            class="max-h-14 md:max-h-[4.5rem] w-auto max-w-[85%] object-contain"
+            title={tool.alt}
+            class="max-h-10 md:max-h-12 w-auto max-w-[80%] object-contain grayscale opacity-80 transition-all duration-200 group-hover:grayscale-0 group-hover:opacity-100"
             loading="lazy"
             decoding="async"
           />
