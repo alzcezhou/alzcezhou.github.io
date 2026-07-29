@@ -37,15 +37,47 @@
 
     const inner = document.getElementById("footer-media-inner");
 
+    let reverseRafId = null;
+    let lastReverseTs = null;
+
+    function stopReverse() {
+      if (reverseRafId !== null) {
+        cancelAnimationFrame(reverseRafId);
+        reverseRafId = null;
+      }
+      lastReverseTs = null;
+    }
+
+    function stepReverse(ts) {
+      if (lastReverseTs === null) lastReverseTs = ts;
+      const dt = (ts - lastReverseTs) / 1000;
+      lastReverseTs = ts;
+
+      const next = video.currentTime - dt;
+      if (next <= 0) {
+        video.currentTime = 0;
+        stopReverse();
+        return;
+      }
+
+      video.currentTime = next;
+      reverseRafId = requestAnimationFrame(stepReverse);
+    }
+
+    function playReverse() {
+      video.pause();
+      stopReverse();
+      reverseRafId = requestAnimationFrame(stepReverse);
+    }
+
     footer.addEventListener("mouseenter", () => {
-      video.currentTime = 0;
+      stopReverse();
       video.play();
       if (inner) inner.style.marginLeft = "-2px";
     });
 
     footer.addEventListener("mouseleave", () => {
-      video.pause();
-      video.currentTime = 0;
+      playReverse();
       if (inner) inner.style.marginLeft = "";
     });
   }
