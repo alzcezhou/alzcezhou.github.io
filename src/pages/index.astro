@@ -7,6 +7,19 @@ import ProjectCard from "../components/ProjectCard.astro";
 const projects = (await getCollection("work")).sort(
   (a, b) => a.data.order - b.data.order,
 );
+
+const toolsRibbon = "/images/home%20page/my%20tools%20ribbon";
+const dailyTools = [
+  { src: `${toolsRibbon}/2023-06-logo.png`, alt: "ChatGPT" },
+  { src: `${toolsRibbon}/Calligra_Krita_icon.svg`, alt: "Krita" },
+  { src: `${toolsRibbon}/Cursor-Ai-Logo-PNG-SVG-Vector.png`, alt: "Cursor" },
+  {
+    src: `${toolsRibbon}/figma-logo-icon-figma-app-editable-transparent-background-premium-social-media-design-for-digital-download-free-png.webp`,
+    alt: "Figma",
+  },
+  { src: `${toolsRibbon}/miro-icon.png`, alt: "Miro" },
+  { src: `${toolsRibbon}/Notion-Logo.png`, alt: "Notion" },
+] as const;
 ---
 
 <BaseLayout title="Alice Zhou — Portfolio">
@@ -49,8 +62,36 @@ const projects = (await getCollection("work")).sort(
     </div>
   </div>
 
-  <!-- Projects -->
-  <section id="work" class="max-w-[1206px] mx-auto px-6 md:px-12 py-16 md:py-24">
+  <!-- Daily tools + work -->
+  <section class="max-w-[1206px] mx-auto px-6 md:px-12 py-16 md:py-24">
+    <h2 class="font-heading text-3xl md:text-4xl text-charcoal-700 mb-6 md:mb-8">
+      My Daily Tools
+    </h2>
+    <div
+      class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 auto-rows-fr mb-14 md:mb-20"
+      aria-label="Daily tools"
+    >
+      {dailyTools.map((tool) => (
+        <div
+          class="rounded-[16px] border border-black/10 bg-taupe-100/60 flex items-center justify-center aspect-[4/3] p-6 md:p-8"
+        >
+          <img
+            src={tool.src}
+            alt={tool.alt}
+            class="max-h-14 md:max-h-[4.5rem] w-auto max-w-[85%] object-contain"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      ))}
+    </div>
+
+    <h2
+      id="work"
+      class="font-heading text-3xl md:text-4xl text-charcoal-700 mb-6 md:mb-8 scroll-mt-28"
+    >
+      Work
+    </h2>
     <div class="flex flex-col gap-8 md:gap-10">
       {projects.map((project) => (
         <ProjectCard
