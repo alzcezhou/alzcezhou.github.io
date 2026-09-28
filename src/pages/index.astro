@@ -26,8 +26,8 @@ const dailyTools = [
 <BaseLayout title="Alice Zhou — Portfolio">
 
   <!-- Hero + Tagline: first viewport has hero filling space, band aligned to bottom; then scrolls normally -->
-  <div class="min-h-screen flex flex-col">
-    <section class="min-h-0 flex-1 flex items-center justify-center relative overflow-hidden pt-16">
+  <div class="min-h-svh flex flex-col">
+    <section class="min-h-0 flex-1 flex items-center justify-center relative overflow-hidden sm:pt-16">
       <div class="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
         <!-- MP4 first: it has the page bg (#C8C0B9) baked in, so it looks identical on the flat hero
              and avoids Safari playing the WebM without its alpha channel (black box). -->
@@ -45,7 +45,7 @@ const dailyTools = [
         </video>
       </div>
       <TextureOverlay size={6} radius={5.3} opacity={0.25} />
-      <h1 class="font-display font-normal leading-normal text-[#000] relative z-10 text-center whitespace-nowrap -translate-y-[5%]" style="font-size: clamp(2.5rem, 12vw, 16rem);">
+      <h1 class="font-display font-normal leading-normal text-[#000] relative z-10 text-center whitespace-nowrap -translate-y-[5%] text-[clamp(2.5rem,18vw,16rem)] sm:text-[clamp(2.5rem,12vw,16rem)]">
         Alice Zhou
       </h1>
     </section>
@@ -60,8 +60,8 @@ const dailyTools = [
       })();
     </script>
 
-    <div class="bg-dark py-2 flex-shrink-0">
-      <p class="font-accent font-normal leading-normal text-[#FFF] text-center" style="font-size: clamp(0.5rem, 1.69vw, 2.25rem);">
+    <div class="bg-dark py-2 px-4 flex-shrink-0">
+      <p class="font-accent font-normal leading-normal text-[#FFF] text-center" style="font-size: clamp(1.25rem, 1.69vw, 2.25rem);">
         product designer &amp; front end developer at enlabel global services
       </p>
     </div>
