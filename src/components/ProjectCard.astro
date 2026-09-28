@@ -26,7 +26,7 @@ const { title, description, category, href, cover, coverAlt } = Astro.props;
         {category}
       </p>
     </div>
-    <div class="aspect-[4/3] md:aspect-auto w-full order-1 md:order-2 rounded-r-[16px] md:rounded-r-[16px] flex items-center justify-center relative overflow-visible">
+    <div class="w-full order-1 md:order-2 rounded-r-[16px] md:rounded-r-[16px] flex items-center justify-center relative overflow-visible">
       <!-- Blurred circle behind image, visible on hover -->
       <div
         class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[581px] h-[581px] rounded-full opacity-0 group-hover:opacity-50 transition-opacity duration-300 pointer-events-none"
@@ -37,12 +37,12 @@ const { title, description, category, href, cover, coverAlt } = Astro.props;
         <img
           src={cover}
           alt={coverAlt}
-          class="relative z-10 w-full h-full object-cover"
+          class="relative z-10 w-full h-auto object-contain md:h-full md:object-cover"
           loading="lazy"
           decoding="async"
         />
       ) : (
-        <span class="relative z-10 img-placeholder w-full h-full flex items-center justify-center text-[#FFFFFF]/60 text-xs font-body px-4 text-center group-hover:text-on-dark/80 transition-colors duration-300" aria-hidden="true">{coverAlt}</span>
+        <span class="relative z-10 img-placeholder w-full aspect-[4/3] md:aspect-auto h-auto md:h-full flex items-center justify-center text-[#FFFFFF]/60 text-xs font-body px-4 text-center group-hover:text-on-dark/80 transition-colors duration-300" aria-hidden="true">{coverAlt}</span>
       )}
     </div>
   </article>
