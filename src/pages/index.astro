@@ -10,19 +10,16 @@ const projects = (await getCollection("work")).sort(
 
 const toolsRibbon = "/images/home%20page/my%20tools%20ribbon";
 const dailyTools = [
-  {
-    src: `${toolsRibbon}/figma-logo-icon-figma-app-editable-transparent-background-premium-social-media-design-for-digital-download-free-png.webp`,
-    alt: "Figma",
-  },
-  { src: `${toolsRibbon}/Calligra_Krita_icon.svg`, alt: "Krita" },
+  { src: `${toolsRibbon}/figma-icon.png`, alt: "Figma" },
+  { src: `${toolsRibbon}/krita-icon.png`, alt: "Krita" },
   { src: `${toolsRibbon}/miro-icon.png`, alt: "Miro" },
-  { src: `${toolsRibbon}/Notion-Logo.png`, alt: "Notion" },
-  { src: `${toolsRibbon}/LF_Secondary_Logomark_Full color.svg`, alt: "LottieFiles" },
-  { src: `${toolsRibbon}/2023-06-logo.png`, alt: "ChatGPT" },
-  { src: `${toolsRibbon}/claude-ai-icon.svg`, alt: "Claude" },
-  { src: `${toolsRibbon}/claude-code-icon.svg`, alt: "Claude Code" },
-  { src: `${toolsRibbon}/cursor-ai-code-icon.svg`, alt: "Cursor" },
-  { src: `${toolsRibbon}/lovable-ai-icon.svg`, alt: "Lovable" },
+  { src: `${toolsRibbon}/notion-icon.png`, alt: "Notion" },
+  { src: `${toolsRibbon}/obsidian-icon.png`, alt: "Obsidian" },
+  { src: `${toolsRibbon}/lottie-icon.png`, alt: "LottieFiles" },
+  { src: `${toolsRibbon}/gsap-icon.png`, alt: "GSAP" },
+  { src: `${toolsRibbon}/claude-ai-icon.png`, alt: "Claude" },
+  { src: `${toolsRibbon}/claude-code-icon.png`, alt: "Claude Code" },
+  { src: `${toolsRibbon}/lovable-ai-icon.png`, alt: "Lovable" },
 ] as const;
 ---
 
@@ -32,16 +29,20 @@ const dailyTools = [
   <div class="min-h-screen flex flex-col">
     <section class="min-h-0 flex-1 flex items-center justify-center relative overflow-hidden pt-16">
       <div class="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+        <!-- MP4 first: it has the page bg (#C8C0B9) baked in, so it looks identical on the flat hero
+             and avoids Safari playing the WebM without its alpha channel (black box). -->
         <video
           id="hero-spinner"
-          src="/animations/final%20spinner.webm?v=3"
           autoplay
           loop
           muted
           playsinline
           class="w-[800px] max-w-[90vw] max-h-[80vh] object-contain opacity-35"
           aria-hidden="true"
-        />
+        >
+          <source src="/animations/final-spinner.mp4?v=4" type="video/mp4" />
+          <source src="/animations/final%20spinner.webm?v=3" type="video/webm" />
+        </video>
       </div>
       <TextureOverlay size={6} radius={5.3} opacity={0.25} />
       <h1 class="font-display font-normal leading-normal text-[#000] relative z-10 text-center whitespace-nowrap -translate-y-[5%]" style="font-size: clamp(2.5rem, 12vw, 16rem);">
@@ -69,27 +70,58 @@ const dailyTools = [
   <!-- Daily tools + work -->
   <section class="max-w-[1206px] mx-auto px-6 md:px-12 py-16 md:py-24">
     <h2 class="font-heading text-3xl md:text-4xl text-charcoal-700 mb-6 md:mb-8">
-      My Daily Tools
+      My Toolbox
     </h2>
     <div
-      class="grid grid-cols-2 sm:grid-cols-5 gap-4 md:gap-6 auto-rows-fr mb-14 md:mb-20"
+      class="tools-grid grid grid-cols-2 sm:grid-cols-5 gap-4 md:gap-6 auto-rows-fr mb-14 md:mb-20"
       aria-label="Daily tools"
     >
       {dailyTools.map((tool) => (
         <div
+          data-tool={tool.alt}
           class="group rounded-[16px] border border-black/10 bg-taupe-100/60 flex items-center justify-center aspect-square p-5 md:p-6 transition-colors duration-200 hover:bg-taupe-100 hover:border-black/20"
         >
           <img
             src={tool.src}
             alt={tool.alt}
-            title={tool.alt}
-            class="max-h-10 md:max-h-12 w-auto max-w-[80%] object-contain grayscale opacity-80 transition-all duration-200 group-hover:grayscale-0 group-hover:opacity-100"
+            width="512"
+            height="512"
+            class="size-32 max-w-full max-h-full object-contain grayscale opacity-80 transition-all duration-200 group-hover:grayscale-0 group-hover:opacity-100"
             loading="lazy"
             decoding="async"
           />
         </div>
       ))}
     </div>
+
+    <!-- Pill cursor that follows the pointer over the tools grid -->
+    <div
+      id="tool-cursor"
+      class="fixed left-0 top-0 z-[100] pointer-events-none rounded-full bg-black text-white font-accent text-[16px] leading-none px-3 py-1.5 whitespace-nowrap opacity-0 transition-opacity duration-150"
+      aria-hidden="true"
+    ></div>
+    <script>
+      const grid = document.querySelector<HTMLElement>(".tools-grid");
+      const pill = document.getElementById("tool-cursor");
+      const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+      if (grid && pill) {
+        grid.addEventListener("pointermove", (e) => {
+          if (!finePointer.matches) return;
+          const tile = (e.target as HTMLElement).closest<HTMLElement>("[data-tool]");
+          if (!tile) {
+            pill.classList.add("opacity-0");
+            return;
+          }
+          pill.textContent = tile.dataset.tool ?? "";
+          pill.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(12px, 12px)`;
+          pill.classList.remove("opacity-0");
+        });
+
+        grid.addEventListener("pointerleave", () => pill.classList.add("opacity-0"));
+        window.addEventListener("scroll", () => pill.classList.add("opacity-0"), { passive: true });
+      }
+    </script>
 
     <h2
       id="work"
@@ -112,3 +144,12 @@ const dailyTools = [
   </section>
 
 </BaseLayout>
+
+<style>
+  /* Hide the system cursor over tool tiles so only the pill shows (mouse/trackpad only) */
+  @media (hover: hover) and (pointer: fine) {
+    .tools-grid [data-tool] {
+      cursor: none;
+    }
+  }
+</style>
