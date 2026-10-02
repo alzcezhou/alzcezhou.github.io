@@ -1,0 +1,84 @@
+---
+/** Edge cases & states table: IF THE USER… / THE UI… / BECAUSE…. Cells accept inline HTML (e.g. <em>). Stacks into cards when the table itself is narrow. */
+interface Props {
+  rows: { when: string; ui: string; because: string }[];
+  headers?: [string, string, string];
+}
+
+const { rows, headers = ["IF THE USER…", "THE UI…", "BECAUSE…"] } = Astro.props;
+---
+
+<div class="cs-states-wrap">
+  <div class="cs-states bg-card rounded-[14px] overflow-hidden text-[15px] leading-[1.45]" role="table">
+    <div class="cs-states-row cs-states-head bg-dark text-on-dark font-accent text-[18px] leading-none" role="row">
+      {headers.map((h) => <span role="columnheader">{h}</span>)}
+    </div>
+    {rows.map(({ when, ui, because }) => (
+      <div class="cs-states-row cs-states-body" role="row">
+        <span role="cell" data-label={headers[0]} class="font-semibold" set:html={when} />
+        <span role="cell" data-label={headers[1]} set:html={ui} />
+        <span role="cell" data-label={headers[2]} class="text-muted" set:html={because} />
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  /* Container query: layout follows the table's width, not the viewport (the sticky TOC narrows it on tablets) */
+  .cs-states-wrap {
+    container-type: inline-size;
+  }
+  .cs-states-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+  .cs-states-row > span {
+    padding: 14px 20px;
+  }
+  .cs-states-row > span + span {
+    border-left: 1px solid rgba(15, 15, 15, 0.1);
+  }
+  .cs-states-head > span {
+    display: flex;
+    align-items: center;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .cs-states-head > span + span {
+    border-left-color: rgba(230, 230, 230, 0.2);
+  }
+  .cs-states-body {
+    border-top: 1px solid rgba(15, 15, 15, 0.1);
+  }
+  .cs-states-head + .cs-states-body {
+    border-top: 0;
+  }
+
+  /* Narrow table: each row becomes a card with inline column labels */
+  @container (max-width: 599px) {
+    .cs-states-head {
+      display: none;
+    }
+    .cs-states-row {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 12px 0;
+    }
+    .cs-states-body:nth-child(2) {
+      border-top: 0;
+    }
+    .cs-states-row > span {
+      padding: 4px 20px;
+    }
+    .cs-states-row > span + span {
+      border-left: 0;
+    }
+    .cs-states-body > span::before {
+      content: attr(data-label);
+      display: block;
+      font-family: var(--font-accent);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--color-accent);
+    }
+  }
+</style>

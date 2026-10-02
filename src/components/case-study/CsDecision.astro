@@ -1,0 +1,29 @@
+---
+/** Problem → Decision → Outcome card, optionally topped by screenshots. Fields accept inline HTML (e.g. <strong>). */
+interface Props {
+  title: string;
+  problem: string;
+  decision: string;
+  outcome: string;
+  /** Shown side by side above the title (e.g. two phone screens) */
+  images?: { src: string; alt: string }[];
+}
+
+const { title, problem, decision, outcome, images = [] } = Astro.props;
+---
+
+<div class="bg-card rounded-[14px] p-6 flex flex-col gap-3">
+  {images.length > 0 && (
+    <div class="grid gap-2.5" style={`grid-template-columns:repeat(${images.length},minmax(0,1fr))`}>
+      {images.map(({ src, alt }) => (
+        <img src={src} alt={alt} class="block w-full rounded-[10px]" loading="lazy" decoding="async" />
+      ))}
+    </div>
+  )}
+  <h3 class="m-0 font-heading font-medium text-[24px] leading-tight">{title}</h3>
+  <p class="m-0 text-[15px] leading-[1.6]">
+    <span class="text-muted">Problem →</span> <Fragment set:html={problem} /><br />
+    <span class="text-accent">Decision →</span> <Fragment set:html={decision} /><br />
+    <span class="text-muted">Outcome →</span> <Fragment set:html={outcome} />
+  </p>
+</div>

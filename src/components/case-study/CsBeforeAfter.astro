@@ -1,0 +1,63 @@
+---
+/** Before → after pair of image wells with captions */
+interface Shot {
+  /** Single image filling the well; or pass `images` for several screens side by side */
+  src?: string;
+  alt?: string;
+  images?: { src: string; alt: string }[];
+  title: string;
+  text: string;
+  /** Single-image fit. Defaults: before = cover, after = contain */
+  fit?: "cover" | "contain";
+}
+
+interface Props {
+  before: Shot;
+  after: Shot;
+  /** Image well aspect ratio, e.g. "530/561" */
+  aspect?: string;
+}
+
+const { before, after, aspect = "555/400" } = Astro.props;
+const shots = [
+  { ...before, badge: "BEFORE", fit: before.fit ?? "cover", badgeClass: "bg-card text-on-light" },
+  { ...after, badge: "AFTER", fit: after.fit ?? "contain", badgeClass: "bg-dark text-card" },
+];
+---
+
+<div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-6 items-start">
+  {shots.map(({ src, alt = "", images, title, text, fit, badge, badgeClass }) => (
+    <figure class="m-0 flex flex-col gap-3.5">
+      <div class="relative bg-light rounded-[14px] overflow-hidden" style={`aspect-ratio:${aspect}`}>
+        {images?.length ? (
+          <div class="absolute inset-0 p-5 flex items-center justify-center gap-3">
+            {images.map((img) => (
+              <img
+                src={img.src}
+                alt={img.alt}
+                class="block h-full w-auto max-w-[48%] object-contain rounded-xl"
+                loading="lazy"
+                decoding="async"
+              />
+            ))}
+          </div>
+        ) : (
+          <img
+            src={src}
+            alt={alt}
+            class:list={["block w-full h-full", fit === "cover" ? "object-cover" : "object-contain"]}
+            loading="lazy"
+            decoding="async"
+          />
+        )}
+        <span class:list={["absolute left-3 top-3 font-accent text-[18px] px-2.5 py-0.5 rounded-full", badgeClass]}>
+          {badge}
+        </span>
+      </div>
+      <figcaption class="flex flex-col gap-1">
+        <h3 class="m-0 font-heading font-medium text-[24px] leading-tight">{title}</h3>
+        <p class="m-0 text-[15px] leading-[1.55] text-body-2">{text}</p>
+      </figcaption>
+    </figure>
+  ))}
+</div>

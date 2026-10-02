@@ -1,0 +1,26 @@
+---
+/** Dark impact strip: headline stat + bolded one-liners */
+interface Props {
+  label: string;
+  stat: string;
+  statText: string;
+  points: { title: string; text: string }[];
+}
+
+const { label, stat, statText, points } = Astro.props;
+---
+
+<div class="bg-dark text-on-dark rounded-[14px] px-7 py-6 grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-6 items-center">
+  <div class="flex flex-col gap-1.5">
+    <span class="font-accent text-[18px] text-light">{label}</span>
+    <span class="flex items-baseline gap-2.5">
+      <span class="font-heading text-[48px] leading-none text-accent-light">{stat}</span>
+      <span class="text-[15px]">{statText}</span>
+    </span>
+  </div>
+  <ul class="list-none m-0 p-0 flex flex-col gap-2 text-[15px] leading-[1.45]">
+    {points.map(({ title, text }) => (
+      <li><strong class="text-white">{title}</strong> — {text}</li>
+    ))}
+  </ul>
+</div>

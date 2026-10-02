@@ -1,0 +1,15 @@
+---
+/** Numbered case study section: accent VT323 label, then content. `id` feeds the sticky TOC. */
+interface Props {
+  id: string;
+  label: string;
+  class?: string;
+}
+
+const { id, label, class: className } = Astro.props;
+---
+
+<section id={id} class:list={["flex flex-col gap-5 scroll-mt-8", className]}>
+  <span class="font-accent text-[22px] text-accent uppercase">{label}</span>
+  <slot />
+</section>

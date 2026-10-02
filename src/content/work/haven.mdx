@@ -3,10 +3,34 @@ title: "Haven"
 year: "2024"
 role: "Product Designer"
 category: "Hackathon Project | Product Design"
+variant: "template"
+eyebrow: "CASE 03 / HAVEN · TUFTS PRODUCTHON · SPRING 2024"
+headline: "Anonymous incident reporting students actually trust"
 tags:
-  - "Hackathon"
+  - "1st Place"
   - "Mobile"
   - "0 to 1"
+tldr:
+  - label: "Problem"
+    value: "Students skip institutional reporting because they fear being identified"
+  - label: "My role"
+    value: "Product Designer · 3 designers, 2 engineers · 36 hours"
+  - label: "Shipped"
+    value: "Mobile MVP prototype: anonymous reports, harm-reduction map, brand"
+tldrResult:
+  stat: "1st"
+  text: "place, Tufts Spring 2024 Producthon"
+toc:
+  - { id: "context", label: "CONTEXT" }
+  - { id: "research", label: "RESEARCH" }
+  - { id: "decisions", label: "DECISIONS" }
+  - { id: "states", label: "STATES" }
+  - { id: "beforeafter", label: "COMPARE" }
+  - { id: "reflection", label: "REFLECT" }
+accent:
+  color: "#4a6b50"
+  light: "#bcd2b8"
+  ring: "rgba(74,107,80,.25)"
 timeline: "36 hours"
 description: "Crowd-sourced harm reduction and accountability."
 order: 1
@@ -29,128 +53,146 @@ results:
   - "1st Place in Product Hackathon"
 ---
 
-## Discovery
+<CsContext
+  id="context"
+  label="01 Context"
+  src="/images/haven/case-study/cover.png"
+  alt="Haven mobile screens: map and incident reporting"
+>
+  <p>Going to the police or the school often feels worse than doing nothing. What if students could warn each other — and find help — without going through institutions?</p>
+</CsContext>
 
-Our goal was to address the hesitation young adults face when reporting incidents to administrative organizations. Going to the police or institution often feels worse than doing nothing. What other options did college students have? Is there a way to provide community-based justice and/or awareness?
-
-## Our Pitch
-
-<HavenPitchPill>
-Haven is a dual-purpose mobile platform that lets college students anonymously report safety incidents and access harm reduction resources — without going through institutional channels.
-</HavenPitchPill>
-
-{/* TODO: Add image: Haven pitch deck or app concept overview */}
-
-## Research
-
-<h3 class="!no-underline font-bold">Why are college students choosing not to report to their institutions?</h3>
-
-Surveying over 100 college students, we:
-- Quantified the frequency of incidents to evaluate our market share
-- Identified the common factor in why students choose not to report
-- Measured the potential impact of our product
-
-From these findings, I developed three user personas to represent student archetypes that would benefit from our product.
-
-<HavenSlideshow />
-
-## Wireframes & Styling
-
-<div class="haven-wireframes grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-  <img src="/images/haven/haven%20wireframe%201.png" alt="Haven wireframe 1" class="rounded-xl w-full" />
-  <img src="/images/haven/haven%20wireframe%202.png" alt="Haven wireframe 2" class="rounded-xl w-full" />
-</div>
-
-<FullWidthDarkBanner>
-
-<div class="flex flex-wrap items-center gap-x-[32px] gap-y-2 mb-4">
-  <span class="font-body text-base leading-relaxed">We chose to move forward with a design that accomplishes 2 things:</span>
-  <HavenHarmToggle />
-</div>
-
-Using a simple toggle, students are able to report an incident and find help in one app. This streamlines the process of addressing the initial conflict and finding support after an incident, bridging a gap between what is usually two separate systems.
-
-</FullWidthDarkBanner>
-
-<div class="mt-8">
-  <img src="/images/haven/haven%20style%20guide%201.png" alt="Haven style guide" class="rounded-xl w-full" />
-</div>
-
-## Prototype
-
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6 items-start">
-  <img
-    src="/images/haven/onboarding-1.png"
-    alt="Haven onboarding screen — Create Account"
-    class="rounded-xl w-full"
+<CsSection id="research" label="02 Research · 100-student anonymous survey">
+  <CsStats
+    stats={[
+      { stat: "64.6%", text: "said lack of anonymity kept them from reporting" },
+      { stat: "90.6%", text: "of those would report if it were anonymous" },
+      { stat: "96.5%", text: "said multiple anonymous reports would change where they go" },
+    ]}
   />
-  <img
-    src="/images/haven/onboarding-2.png"
-    alt="Haven onboarding screen — Welcome"
-    class="rounded-xl w-full"
+  <p class="m-0 text-[15px] text-muted">Survey findings became 3 personas — and the core of our pitch.</p>
+  <CsSlideshow
+    label="Haven research: market research survey and user personas"
+    slides={[
+      { src: "/images/haven/case-study/survey.png", alt: "Full market research survey results", caption: "Full survey overview, as presented to judges." },
+      { src: "/images/haven/case-study/persona-1.png", alt: "Persona: Nikki Park", caption: "Persona · Nikki Park" },
+      { src: "/images/haven/case-study/persona-2.png", alt: "Persona: Lani Stevens", caption: "Persona · Lani Stevens" },
+      { src: "/images/haven/case-study/persona-3.png", alt: "Persona: Jake Logan", caption: "Persona · Jake Logan" },
+    ]}
   />
-  <div>
-    <h3 class="font-heading text-2xl font-bold text-on-light mb-4">Onboarding</h3>
-    <p class="font-body text-on-light leading-relaxed mb-4">
-      Anonymity is the product's core promise, so it had to be established at the very first screen. Verification through a university email confirms community membership without collecting any identifying information — building trust before asking users to engage with sensitive content.
-    </p>
-  </div>
-</div>
+</CsSection>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6 items-start">
-  <img
-    src="/images/haven/resource-finder.png"
-    alt="Haven harm reduction map view with resource cards"
-    class="rounded-xl w-full"
+<CsSection id="decisions" label="03 Key decisions">
+  <CsAnnotated
+    shots={[
+      { src: "/images/haven/case-study/resource-finder.png", alt: "Reduce Harm mode: resource map", caption: "REDUCE HARM" },
+      { src: "/images/haven/case-study/incident-1.png", alt: "Report Harm mode: incident on map", caption: "REPORT HARM" },
+    ]}
+    heading="One app, two modes, one toggle"
+    items={[
+      { title: "Reduce Harm", text: "nearby clinics and services on one map" },
+      { title: "Report Harm", text: "anonymous incidents pinned to places" },
+    ]}
+    why="Reporting and getting help usually live in separate systems. A single toggle bridges them while keeping each mode focused."
   />
-  <img
-    src="/images/haven/hospital-detail.png"
-    alt="Haven hospital detail card"
-    class="rounded-xl w-full"
-  />
-  <div>
-    <h3 class="font-heading text-2xl font-bold text-on-light mb-4">Harm Reduction</h3>
-    <p class="font-body text-on-light leading-relaxed mb-4">
-      Consolidating resources into a single, map-based view reduces the cognitive load on users in high-stress moments. Crowdsourced ratings add a layer of peer trust that institutional directories lack.
-    </p>
-    <p class="font-body text-on-light leading-relaxed mb-0">
-      At a glance, students can see what services are offered, and evaluate how safe a provider is based on crowdsourced reviews.
-    </p>
-  </div>
-</div>
-
-<div class="my-6">
-  <h3 class="font-heading text-2xl font-bold text-on-light mb-4">Incident Map</h3>
-  <p class="font-body text-on-light leading-relaxed mb-6">
-    The core insight from our research was that students don't report because they fear being identified — not because they don't want to. Removing that barrier through anonymous, crowdsourced reporting creates a form of community accountability that exists entirely outside of institutional channels. The toggle between Help and Harm modes keeps the two use cases distinct, preventing the app from feeling overwhelming while addressing both sides of the safety problem in one product.
-  </p>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <img
-      src="/images/haven/incident-date-rape.png"
-      alt="Haven incident report — date rape drug"
-      class="rounded-xl w-full"
+  <CsDecisions>
+    <CsDecision
+      title="Anonymity from the first screen"
+      images={[
+        { src: "/images/haven/case-study/onboarding-1.png", alt: "Onboarding: create account with university email" },
+        { src: "/images/haven/case-study/onboarding-2.png", alt: "Onboarding: welcome screen" },
+      ]}
+      problem="fear of being identified was the #1 barrier."
+      decision="verify with a university email; collect nothing identifying."
+      outcome="trust is set before any sensitive content is asked for."
     />
-    <img
-      src="/images/haven/incident-physical-fight.png"
-      alt="Haven incident report — physical fight"
-      class="rounded-xl w-full"
+    <CsDecision
+      title="Crowdsourced trust signals"
+      images={[
+        { src: "/images/haven/case-study/resource-finder.png", alt: "Resource map with provider cards" },
+        { src: "/images/haven/case-study/hospital-detail.png", alt: "Provider detail with crowdsourced rating" },
+      ]}
+      problem="institutional directories lack peer trust."
+      decision="map-based resources with crowdsourced ratings and services at a glance."
+      outcome="students judge a provider's safety fast, in high-stress moments."
     />
-    <img
-      src="/images/haven/submit-report.png"
-      alt="Haven submit report form"
-      class="rounded-xl w-full"
-    />
-  </div>
-</div>
+  </CsDecisions>
+  <figure class="mt-3 mb-0 mx-0 flex flex-col gap-3">
+    <div class="flex flex-wrap justify-between items-baseline gap-4">
+      <h3 class="m-0 font-heading font-medium text-[24px] leading-tight">A color system that encodes meaning</h3>
+      <span class="font-accent text-[18px] text-accent">BRAND &amp; UI KIT</span>
+    </div>
+    <img src="/images/haven/case-study/style-guide.png" alt="Haven style guide: logo, palette, type scale, icons and components" class="block w-full rounded-xl" loading="lazy" decoding="async" />
+    <figcaption class="text-[15px] leading-[1.5] text-body-2">Greens mark resources; purples and reds mark incidents — so mode is readable at a glance, even on the map.</figcaption>
+  </figure>
+</CsSection>
 
-<div class="[&_p]:!text-[24px] [&_p]:leading-normal">
+<CsSection id="states" label="04 Edge cases & states">
+  <CsStates
+    rows={[
+      { when: "signs up", ui: "verifies via university email only", because: "membership without identity" },
+      { when: "needs help right now", ui: "opens Reduce Harm: resources on one map", because: "less load under stress" },
+      { when: "wants to warn others", ui: "files an anonymous report pinned to a place", because: "community accountability" },
+      { when: "checks a venue", ui: "sees nearby reports by incident type", because: "96.5% said reports shape plans" },
+      { when: "files a false report", ui: "<em>open question</em> — moderation not designed in 36 hrs", because: "named as the next problem" },
+    ]}
+  />
+</CsSection>
 
-## Outcome & Reflection
+<CsSection id="beforeafter" label="05 Before → after">
+  <span class="font-accent text-[18px] text-muted">RESOURCE FINDER</span>
+  <CsBeforeAfter
+    aspect="530/561"
+    before={{
+      src: "/images/haven/case-study/wire-1.png",
+      alt: "Resource finder wireframe",
+      fit: "contain",
+      title: "Wireframe",
+      text: "Bare map pins and a text popup; no ratings, no hierarchy.",
+    }}
+    after={{
+      images: [
+        { src: "/images/haven/case-study/resource-finder.png", alt: "Final resource map" },
+        { src: "/images/haven/case-study/hospital-detail.png", alt: "Final provider detail card" },
+      ],
+      title: "Final MVP",
+      text: "Resource cards with services, crowdsourced ratings and a branded Help/Harm toggle.",
+    }}
+  />
+  <span class="font-accent text-[18px] text-muted mt-2">INCIDENT REPORTING</span>
+  <CsBeforeAfter
+    aspect="530/561"
+    before={{
+      src: "/images/haven/case-study/wire-2.png",
+      alt: "Incident mapping and report wireframe",
+      fit: "contain",
+      title: "Wireframe",
+      text: "Single pin and a long gray form; no incident types on the map.",
+    }}
+    after={{
+      images: [
+        { src: "/images/haven/case-study/incident-2.png", alt: "Final incident detail on map" },
+        { src: "/images/haven/case-study/submit-report.png", alt: "Final submit report form" },
+      ],
+      title: "Final MVP",
+      text: "Color-coded incident pins with details, and a short anonymous report form with emergency resources.",
+    }}
+  />
+  <CsImpact
+    label="IMPACT · JUDGES' PANEL"
+    stat="1st"
+    statText="of all Producthon teams"
+    points={[
+      { title: "Research", text: "survey data carried the pitch" },
+      { title: "Design", text: "two use cases in one calm app" },
+      { title: "Viability", text: "MVP prototype in 36 hours" },
+    ]}
+  />
+</CsSection>
 
-Haven took 1st place at the Tufts Spring 2024 Producthon, validated by a panel of judges across research quality, design execution, and product viability. Competing within a 36-hour window made the win meaningful — but it also exposed the limitations of what we built.
-
-With more time, I would have pressure-tested the anonymity model more rigorously and pushed individual flows further. Crowdsourced incident reporting carries real risks around false reports and misuse, and while we acknowledged this in our pitch, the design doesn't yet have a clear answer for it.
-
-What I took away most as a designer was the value of leading with data. The survey results didn't just inform the design — they were the pitch. Grounding every decision in what users actually told us made the product defensible under scrutiny, and that's a habit I've carried into every project since.
-
-</div>
+<CsSection id="reflection" label="06 Reflection">
+  <CsReflection
+    quote="“The survey results didn't just inform the design — they were the pitch.”"
+    next="Next: pressure-test the anonymity model and design for false reports and misuse."
+  />
+</CsSection>

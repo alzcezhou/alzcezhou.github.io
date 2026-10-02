@@ -1,49 +1,76 @@
 ---
 interface Props {
-  title: string;
-  description: string;
-  category: string;
   href: string;
-  cover?: string; // path in public/, e.g. "/images/work/haven-cover.jpg"
+  eyebrow: string;
+  title: string;
+  tags: string[];
+  resultNumber: string;
+  resultLabel: string;
+  cover?: string; // path in public/, e.g. "/images/work/haven-cover.png"
   coverAlt: string;
 }
 
-const { title, description, category, href, cover, coverAlt } = Astro.props;
+const { href, eyebrow, title, tags, resultNumber, resultLabel, cover, coverAlt } = Astro.props;
 ---
 
-<a href={href} class="group block self-stretch">
-  <article class="project-card flex flex-col md:flex-row md:justify-between md:items-center py-[46px] px-[48px] rounded-[16px] border border-transparent overflow-hidden group-hover:-translate-y-1 w-full">
-    <div class="flex flex-col justify-between items-start flex-shrink-0 self-stretch w-full md:w-[452px] order-2 md:order-1">
-      <div>
-        <h3 class="font-heading text-3xl md:text-[2.5rem] text-[#FFFFFF] mb-3 leading-tight group-hover:text-on-dark transition-colors duration-300">
-          {title}
-        </h3>
-        <p class="font-body text-[24px] font-normal leading-normal text-bone max-w-sm group-hover:text-on-dark transition-colors duration-300">
-          {description}
-        </p>
-      </div>
-      <p class="font-accent text-[24px] font-normal leading-normal text-bone mt-8 group-hover:text-on-dark transition-colors duration-300">
-        {category}
-      </p>
+<a href={href} class="project-card">
+  <div class="flex flex-col gap-[18px]">
+    <span class="font-accent text-[20px] tracking-[.04em]">{eyebrow}</span>
+    <h3 class="m-0 font-heading font-medium text-[clamp(28px,3vw,40px)] leading-[1.08] tracking-[-.01em] text-balance">
+      {title}
+    </h3>
+    <div class="flex flex-wrap gap-2">
+      {tags.map((tag) => (
+        <span class="font-accent text-[18px] px-3 py-[3px] rounded-full bg-dark text-white">{tag}</span>
+      ))}
     </div>
-    <div class="w-full order-1 md:order-2 rounded-r-[16px] md:rounded-r-[16px] flex items-center justify-center relative overflow-visible">
-      <!-- Blurred circle behind image, visible on hover -->
-      <div
-        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[581px] h-[581px] rounded-full opacity-0 group-hover:opacity-50 transition-opacity duration-300 pointer-events-none"
-        style="background: rgba(103, 103, 103, 0.50); filter: blur(40.85px);"
-        aria-hidden="true"
+    <div class="flex items-baseline gap-3 flex-wrap pt-[14px] border-t border-dashed border-[rgba(15,15,15,.3)]">
+      <span class="font-heading text-[36px] leading-none text-dark">{resultNumber}</span>
+      <span class="font-body text-[15px] leading-[1.4]">{resultLabel}</span>
+    </div>
+    <span class="font-accent text-[20px]">READ CASE STUDY →</span>
+  </div>
+  <div class="flex items-center justify-center">
+    {cover ? (
+      <img
+        src={cover}
+        alt={coverAlt}
+        class="block w-full max-h-[380px] object-contain"
+        loading="lazy"
+        decoding="async"
       />
-      {cover ? (
-        <img
-          src={cover}
-          alt={coverAlt}
-          class="relative z-10 w-full h-auto object-contain md:h-full md:object-cover"
-          loading="lazy"
-          decoding="async"
-        />
-      ) : (
-        <span class="relative z-10 img-placeholder w-full aspect-[4/3] md:aspect-auto h-auto md:h-full flex items-center justify-center text-[#FFFFFF]/60 text-xs font-body px-4 text-center group-hover:text-on-dark/80 transition-colors duration-300" aria-hidden="true">{coverAlt}</span>
-      )}
-    </div>
-  </article>
+    ) : (
+      <span class="img-placeholder w-full aspect-[4/3] px-4 text-center" aria-hidden="true">{coverAlt}</span>
+    )}
+  </div>
 </a>
+
+<style>
+  .project-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+    gap: 32px;
+    align-items: center;
+    background: var(--color-bg-light);
+    border-radius: 16px;
+    padding: clamp(24px, 4vw, 48px);
+    color: var(--color-dark);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px -20px rgba(15, 15, 15, 0.45);
+  }
+
+  .project-card:focus-visible {
+    outline: 2px solid var(--color-dark);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card:hover {
+      transform: none;
+    }
+  }
+</style>

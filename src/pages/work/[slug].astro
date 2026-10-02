@@ -1,25 +1,57 @@
 ---
 import { getCollection, render } from "astro:content";
 import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
-import FullWidthDarkBanner from "../../components/FullWidthDarkBanner.astro";
-import HavenPitchPill from "../../components/HavenPitchPill.astro";
-import HavenHarmToggle from "../../components/HavenHarmToggle.astro";
-import HavenSlideshow from "../../components/HavenSlideshow.astro";
-import SkipLegalResearchInsights from "../../components/SkipLegalResearchInsights.astro";
+import CaseStudyTemplateLayout from "../../layouts/CaseStudyTemplateLayout.astro";
 import SkipLegalTestingCard from "../../components/SkipLegalTestingCard.astro";
 import SkipLegalTestingRow from "../../components/SkipLegalTestingRow.astro";
 import SkipLegalCanvaEmbed from "../../components/SkipLegalCanvaEmbed.astro";
+import CsSection from "../../components/case-study/CsSection.astro";
+import CsContext from "../../components/case-study/CsContext.astro";
+import CsInsights from "../../components/case-study/CsInsights.astro";
+import CsInsight from "../../components/case-study/CsInsight.astro";
+import CsAnnotated from "../../components/case-study/CsAnnotated.astro";
+import CsDecisions from "../../components/case-study/CsDecisions.astro";
+import CsDecision from "../../components/case-study/CsDecision.astro";
+import CsStates from "../../components/case-study/CsStates.astro";
+import CsBeforeAfter from "../../components/case-study/CsBeforeAfter.astro";
+import CsImpact from "../../components/case-study/CsImpact.astro";
+import CsReflection from "../../components/case-study/CsReflection.astro";
+import CsStats from "../../components/case-study/CsStats.astro";
+import CsSlideshow from "../../components/case-study/CsSlideshow.astro";
+
+const templateComponents = {
+  CsSection,
+  CsContext,
+  CsStats,
+  CsSlideshow,
+  CsInsights,
+  CsInsight,
+  CsAnnotated,
+  CsDecisions,
+  CsDecision,
+  CsStates,
+  CsBeforeAfter,
+  CsImpact,
+  CsReflection,
+  SkipLegalCanvaEmbed,
+};
 
 export async function getStaticPaths() {
   const entries = await getCollection("work");
-  const sorted = [...entries].sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+  // Prev / next nav order (wraps around)
+  const NAV_ORDER = ["eifu-marketing-site", "skiplegal", "haven"];
+  const rank = (id: string) => {
+    const i = NAV_ORDER.indexOf(id);
+    return i === -1 ? NAV_ORDER.length : i;
+  };
+  const sorted = [...entries].sort((a, b) => rank(a.id) - rank(b.id) || a.data.order - b.data.order);
+  const link = (e: (typeof sorted)[number]) => ({ slug: e.id, title: e.data.title });
   return sorted.map((entry, index) => {
-    const otherProjects = sorted
-      .filter((_, i) => i !== index)
-      .map((e) => ({ slug: e.id, title: e.data.title }));
+    const prev = sorted[(index - 1 + sorted.length) % sorted.length];
+    const next = sorted[(index + 1) % sorted.length];
     return {
       params: { slug: entry.id },
-      props: { entry, otherProjects },
+      props: { entry, otherProjects: [link(prev), link(next)] },
     };
   });
 }
@@ -28,6 +60,22 @@ const { entry, otherProjects = [] } = Astro.props;
 const { Content } = await render(entry);
 ---
 
+{entry.data.variant === "template" ? (
+<CaseStudyTemplateLayout
+  title={entry.data.title}
+  eyebrow={entry.data.eyebrow}
+  headline={entry.data.headline}
+  tags={entry.data.tags}
+  tldr={entry.data.tldr}
+  tldrResult={entry.data.tldrResult}
+  toc={entry.data.toc}
+  accent={entry.data.accent}
+  prev={otherProjects[0]}
+  next={otherProjects[1]}
+>
+  <Content components={templateComponents} />
+</CaseStudyTemplateLayout>
+) : (
 <CaseStudyLayout
   title={entry.data.title}
   year={entry.data.year}
@@ -39,7 +87,7 @@ const { Content } = await render(entry);
   responsibilities={entry.data.responsibilities}
   tools={entry.data.tools}
   results={entry.data.results}
-  cover={entry.id === "haven" ? "/images/haven/header.png" : entry.data.cover}
+  cover={entry.data.cover}
   coverAlt={entry.data.coverAlt}
   coverFillHeight={true}
   contentMaxWidth={1128}
@@ -49,17 +97,9 @@ const { Content } = await render(entry);
   otherProjects={otherProjects}
 >
   <Content
-    components={entry.id === "haven"
-      ? { FullWidthDarkBanner, HavenHarmToggle, HavenPitchPill, HavenSlideshow }
-      : entry.id === "skiplegal"
-        ? {
-            SkipLegalResearchInsights,
-            SkipLegalTestingCard,
-            SkipLegalTestingRow,
-            SkipLegalCanvaEmbed,
-          }
-        : entry.id === "eifu-marketing-site"
-          ? { SkipLegalTestingCard, SkipLegalTestingRow }
-          : undefined}
+    components={entry.id === "eifu-marketing-site"
+      ? { SkipLegalTestingCard, SkipLegalTestingRow }
+      : undefined}
   />
 </CaseStudyLayout>
+)}

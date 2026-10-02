@@ -1,0 +1,71 @@
+---
+/**
+ * Annotated image with numbered pins plus a legend and an optional dark "WHY" callout.
+ * Pin x / y are percentages of the image box.
+ * Pass `shots` instead of `src` to show captioned screens side by side (legend items then have no pins).
+ */
+interface Props {
+  src?: string;
+  alt?: string;
+  shots?: { src: string; alt: string; caption?: string }[];
+  heading?: string;
+  items: { title: string; text: string; x?: number; y?: number }[];
+  why?: string;
+}
+
+const { src, alt = "", shots = [], heading, items, why } = Astro.props;
+---
+
+<div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-8 items-start">
+  {src ? (
+    <div class="relative">
+      <img src={src} alt={alt} class="block w-full rounded-[10px]" loading="lazy" decoding="async" />
+      {items.map(({ x, y }, i) => x != null && y != null && (
+        <span class="cs-pin" style={`left:${x}%;top:${y}%`} aria-hidden="true">{i + 1}</span>
+      ))}
+    </div>
+  ) : (
+    <div class="grid gap-3 items-start" style={`grid-template-columns:repeat(${shots.length},minmax(0,1fr))`}>
+      {shots.map(({ src, alt, caption }) => (
+        <figure class="m-0 flex flex-col gap-2">
+          <img src={src} alt={alt} class="block w-full rounded-[10px]" loading="lazy" decoding="async" />
+          {caption && <figcaption class="font-accent text-[18px] text-center">{caption}</figcaption>}
+        </figure>
+      ))}
+    </div>
+  )}
+  <div class="flex flex-col gap-[18px]">
+    {heading && <h3 class="m-0 font-heading font-medium text-[28px] leading-[1.15]">{heading}</h3>}
+    <ol class="list-none m-0 p-0 flex flex-col gap-[18px]">
+      {items.map(({ title, text }, i) => (
+        <li class="grid grid-cols-[28px_minmax(0,1fr)] gap-2.5 text-[15px] leading-[1.45]">
+          <span class="font-bold text-accent">{i + 1}</span>
+          <span><strong>{title}</strong> — {text}</span>
+        </li>
+      ))}
+    </ol>
+    {why && (
+      <div class="bg-dark text-on-dark rounded-xl px-[18px] py-4 text-[14px] leading-[1.5]">
+        <span class="block font-accent text-[18px] text-accent-light">WHY</span>
+        {why}
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .cs-pin {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 4px var(--color-accent-ring);
+  }
+</style>

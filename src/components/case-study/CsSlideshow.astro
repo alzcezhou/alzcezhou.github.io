@@ -1,0 +1,162 @@
+---
+/**
+ * Clickable image slideshow: prev / next arrows, thumbnail row of the other slides, counter + per-slide caption.
+ * Click the image to advance; arrow keys work when focused; swipe on touch.
+ */
+interface Props {
+  slides: { src: string; alt: string; caption?: string }[];
+  label?: string;
+}
+
+const { slides, label = "Image slideshow" } = Astro.props;
+---
+
+<div class="cs-slideshow flex flex-col gap-3" role="region" aria-roledescription="carousel" aria-label={label} tabindex="0">
+  <div class="relative aspect-[16/10]">
+    {slides.map(({ src, alt, caption }, i) => (
+      <button
+        type="button"
+        class:list={["cs-slide absolute inset-0 w-full h-full p-0 border-0 bg-transparent cursor-pointer", i === 0 && "is-active"]}
+        data-index={i}
+        data-caption={caption ?? alt}
+        aria-hidden={i !== 0 ? "true" : "false"}
+        tabindex="-1"
+        aria-label={`Next slide (${i + 1} of ${slides.length}: ${alt})`}
+      >
+        <img src={src} alt={alt} class="block w-full h-full object-contain" loading={i === 0 ? "eager" : "lazy"} decoding="async" />
+      </button>
+    ))}
+    {slides.length > 1 && (
+      <>
+        <button type="button" class="cs-slide-arrow left-3" data-dir="-1" aria-label="Previous slide">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+        <button type="button" class="cs-slide-arrow right-3" data-dir="1" aria-label="Next slide">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+      </>
+    )}
+  </div>
+  <p class="cs-slide-caption m-0 text-[13px] text-muted" aria-live="polite">
+    <span class="cs-slide-count font-bold text-body-2 tabular-nums">1 / {slides.length}</span>
+    <span class="cs-slide-text">{slides[0]?.caption ?? slides[0]?.alt}</span>
+  </p>
+  {slides.length > 1 && (
+    <div class="flex gap-3" role="tablist" aria-label="Choose slide">
+      {slides.map(({ src, alt }, i) => (
+        <button
+          type="button"
+          class:list={["cs-slide-thumb flex-1 min-w-0 p-0 border-0 bg-transparent cursor-pointer", i === 0 && "is-active"]}
+          data-index={i}
+          role="tab"
+          aria-selected={i === 0 ? "true" : "false"}
+          aria-label={`Slide ${i + 1}: ${alt}`}
+        >
+          <img src={src} alt="" class="block w-full aspect-[16/10] object-contain" loading="lazy" decoding="async" />
+        </button>
+      ))}
+    </div>
+  )}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".cs-slideshow").forEach((root) => {
+    const slides = [...root.querySelectorAll<HTMLElement>(".cs-slide")];
+    const thumbs = [...root.querySelectorAll<HTMLElement>(".cs-slide-thumb")];
+    const count = root.querySelector(".cs-slide-count");
+    const text = root.querySelector(".cs-slide-text");
+    const total = slides.length;
+    if (total < 2) return;
+    let current = 0;
+
+    const goTo = (index: number) => {
+      current = (index + total) % total;
+      slides.forEach((s, i) => {
+        s.classList.toggle("is-active", i === current);
+        s.setAttribute("aria-hidden", String(i !== current));
+      });
+      thumbs.forEach((d, i) => {
+        d.classList.toggle("is-active", i === current);
+        d.setAttribute("aria-selected", String(i === current));
+      });
+      if (count) count.textContent = `${current + 1} / ${total}`;
+      if (text) text.textContent = slides[current].dataset.caption ?? "";
+    };
+
+    slides.forEach((s) => s.addEventListener("click", () => goTo(current + 1)));
+    thumbs.forEach((d, i) => d.addEventListener("click", () => goTo(i)));
+    root.querySelectorAll<HTMLElement>(".cs-slide-arrow").forEach((a) =>
+      a.addEventListener("click", () => goTo(current + Number(a.dataset.dir)))
+    );
+    root.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") goTo(current - 1);
+      else if (e.key === "ArrowRight") goTo(current + 1);
+      else return;
+      e.preventDefault();
+    });
+
+    let startX: number | null = null;
+    root.addEventListener("touchstart", (e) => (startX = e.touches[0].clientX), { passive: true });
+    root.addEventListener("touchend", (e) => {
+      if (startX == null) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) goTo(current + (dx < 0 ? 1 : -1));
+      startX = null;
+    });
+  });
+</script>
+
+<style>
+  .cs-slideshow:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+    border-radius: 14px;
+  }
+  .cs-slide {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s;
+  }
+  .cs-slide.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .cs-slide-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 0;
+    background: var(--color-dark);
+    color: var(--color-on-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: opacity 0.2s ease;
+  }
+  .cs-slide-arrow:hover,
+  .cs-slide-arrow:focus-visible {
+    opacity: 1;
+  }
+  .cs-slide-thumb {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+  .cs-slide-thumb:hover,
+  .cs-slide-thumb:focus-visible {
+    opacity: 1;
+  }
+  .cs-slide-thumb.is-active {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cs-slide,
+    .cs-slide-thumb {
+      transition: none;
+    }
+  }
+</style>

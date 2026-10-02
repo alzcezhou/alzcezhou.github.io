@@ -4,10 +4,30 @@ subtitle: "AI-powered immigration document assistance"
 year: "Spring 2025"
 role: "UX Designer & Project Manager"
 category: "Capstone Project & Contract Role | Product Design"
+variant: "template"
+eyebrow: "CASE 02 / SKIPLEGAL · CLIENT CAPSTONE · SPRING 2025"
+headline: "Letting users decide how much AI touches their immigration forms"
 tags:
+  - "Client Project"
   - "AI Tools"
-  - "Capstone"
-  - "0 to 1"
+  - "Multi-Step Forms"
+tldr:
+  - label: "Problem"
+    value: "High-stakes immigration forms; users wouldn't trust AI they couldn't verify"
+  - label: "My role"
+    value: "UX Designer & PM · team of 4 · 3 months"
+  - label: "Shipped"
+    value: "Questionnaire + AI form workspace, Figma MVP"
+tldrResult:
+  stat: "+37%"
+  text: "trust rating, round 1 → 2"
+toc:
+  - { id: "context", label: "CONTEXT" }
+  - { id: "research", label: "RESEARCH" }
+  - { id: "decisions", label: "DECISIONS" }
+  - { id: "states", label: "STATES" }
+  - { id: "beforeafter", label: "COMPARE" }
+  - { id: "reflection", label: "REFLECT" }
 timeline: "3 months"
 description: "Leveraging AI to bridge the gap between U.S. Government, lawyers, and prospective immigrants."
 order: 3
@@ -29,115 +49,96 @@ results:
   - "Figma Prototype of AI assistance on filling out immigration documents"
 ---
 
-## Discovery
+<CsContext
+  id="context"
+  label="01 Context"
+  src="/images/skiplegal/immigration%20flowchart.png"
+  alt="Immigration process flowchart"
+>
+  <p>One typo on an immigration form can cost months and thousands of dollars. Could AI catch errors <em>without</em> users losing confidence?</p>
+</CsContext>
 
-<div class="grid grid-cols-1 md:grid-cols-[minmax(0,320px)_1fr] gap-8 lg:gap-10 my-8 items-start">
-  <div class="w-full max-w-[320px] md:max-w-none mx-auto md:mx-0">
-    <img
-      src="/images/skiplegal/immigration%20flowchart.png"
-      alt="Immigration process flowchart wireframe"
-      class="rounded-xl w-full h-auto object-contain"
-    />
-  </div>
-  <div class="space-y-4 font-body text-on-light leading-relaxed min-w-0">
-    <p class="mb-0">
-      Immigration to the U.S. is a complicated bureaucratic process, where small mistakes can cost months of time and thousands in dollars. Any prospective immigrant is juggling several critical documents, navigating a chain of complicated forms, and balancing the endless combination of potential outcomes.
-    </p>
-    <p class="mb-0">
-      AI can be used as a tool to keep documents organized, track tasks, minimize error, and manage the entire process.
-    </p>
-  </div>
-</div>
+<CsSection id="research" label="02 Research · 4 interviews · 100+ survey">
+  <CsInsights>
+    <CsInsight title="Overwhelmed">Paperwork is repetitive — even with a lawyer.</CsInsight>
+    <CsInsight title="Show your work">Trust in AI depends on being able to verify it.</CsInsight>
+    <CsInsight title="Prove it's safe">Security must be visible before sharing data.</CsInsight>
+  </CsInsights>
+</CsSection>
 
-SkipLegal's founder came to our team requesting a proof of concept with a focus on 3 key factors:
-- Identify the needs of a diverse immigrant userbase
-- Validate the need for AI-powered assistance in immigration processes
-- Deliver an MVP showing how AI can be leveraged to assist with immigration law
-
-## Research
-
-To define how AI should be integrated into the immigration workflow, we conducted qualitative interviews with 4 target users, and designed and analyzed results from a quantitative survey of over 100 respondents. Our data revealed 3 key insights:
-
-<SkipLegalResearchInsights />
-
-{/* TODO: Add image: Research findings and survey data visualization */}
-
-## Problem
-
-How might we design an AI-powered service that is trustworthy and helps bridge the gap between the U.S. government, aspiring immigrants, and lawyers?
-
-## Wireframes
-
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6 items-start">
-  <div class="md:col-span-2">
-    <img
-      src="/images/skiplegal/questionnaire%20wireframe.png?v=2"
-      alt="SkipLegal questionnaire wireframes — one question at a time"
-      class="rounded-xl w-full"
-    />
-  </div>
-  <div>
-    <h3 class="font-heading text-2xl font-bold text-on-light mb-4">Questionnaire</h3>
-    <p class="font-body text-on-light leading-relaxed mb-0">
-      I deliberately chose to present questions one at a time to counter the complexity of immigration terminology. Isolating each question reduced cognitive load at a critical moment in the onboarding process, where the user decides if they trust the product enough to continue.
-    </p>
-  </div>
-</div>
-
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6 items-start">
-  <div class="md:col-span-2">
-    <img
-      src="/images/skiplegal/form%20assistance%20wireframe.png?v=2"
-      alt="SkipLegal form assistance wireframe — bento layout with panels"
-      class="rounded-xl w-full"
-    />
-  </div>
-  <div>
-    <h3 class="font-heading text-2xl font-bold text-on-light mb-4">Form assistance</h3>
-    <p class="font-body text-on-light leading-relaxed mb-0">
-      The bento box layout keeps four distinct functions on hand: document & form management, task list, form viewing, and AI assistance. It is always easy for a user to see where they are in the process, reducing anxiety about feeling lost.
-    </p>
-  </div>
-</div>
-
-## Usability Testing
-
-Testing the wireframes identified three failure points.
-
-<SkipLegalTestingRow>
-  <SkipLegalTestingCard
-    title="Unknown Terminology"
-    insight="Immigration terminology produced hesitation at a critical point where the product needed to build trust and confidence."
-    action="We delivered more value to users by incorporating definitions through hover interactions. This eliminates the need to jump between tabs to look up definitions, reducing mental load and keeping the focus within SkipLegal."
+<CsSection id="decisions" label="03 Key decisions">
+  <CsAnnotated
+    src="/images/skiplegal/form%20assistance%20wireframe.png"
+    alt="Workspace wireframe with annotations"
+    heading="Four panels, introduced one at a time"
+    items={[
+      { x: 4, y: 4, title: "Documents", text: "uploads and forms always one click away" },
+      { x: 45, y: 13, title: "Form viewer", text: "the real government form, never hidden" },
+      { x: 28, y: 55, title: "AI assistant", text: "flags errors in plain language" },
+      { x: 2, y: 67, title: "To-Do", text: "fixes become tasks, so nothing is lost" },
+    ]}
+    why="Round 1 testers were overwhelmed by all four at once, so a tutorial now reveals them in sequence."
   />
-  <SkipLegalTestingCard
-    title="Information Overload"
-    insight="The bento layout overwhelmed users after completing the questionnaire. Too much information was introduced at once."
-    action="A tutorial introducing each panel and its function orients users and primes their mental model of SkipLegal. This also continues the one-by-one flow used by the onboarding questionnaire."
+  <CsDecisions>
+    <CsDecision
+      title="One question per screen"
+      problem="jargon at the trust-deciding moment."
+      decision="isolated questions + inline definitions."
+      outcome="users stay in flow."
+    />
+    <CsDecision
+      title="Autofill or Manual"
+      problem="testers felt out of control."
+      decision="explicit mode toggle; AI explains itself first."
+      outcome="<strong>+37% trust rating.</strong>"
+    />
+  </CsDecisions>
+</CsSection>
+
+<CsSection id="states" label="04 Edge cases & states">
+  <CsStates
+    rows={[
+      { when: "sees a legal term", ui: "defines it on hover", because: "jargon caused hesitation" },
+      { when: "is new to the workspace", ui: "reveals panels one by one", because: "full layout overwhelmed" },
+      { when: "doesn't trust the AI", ui: "offers Manual mode, one field in focus", because: "control builds trust" },
+      { when: "picks Autofill", ui: "explains what's filled before acting", because: "no surprises with PII" },
+      { when: "makes a likely error", ui: "flags it + adds a To-Do", because: "errors cost months" },
+    ]}
   />
-  <SkipLegalTestingCard
-    title="Trust in AI"
-    insight="Participants were doubtful of SkipGenius' ability to fill out forms accurately, and did not feel in control of their information."
-    action='Giving users the option to choose between "autofill" and "manual" mode helped them feel more agency over the process. Manual mode used SkipGenius minimally and darkened the form viewport to focus on only one question at a time. Autofill included a clear modal explaining what SkipGenius will do and how to enhance its results.'
+</CsSection>
+
+<CsSection id="beforeafter" label="05 Before → after">
+  <CsBeforeAfter
+    before={{
+      src: "/images/skiplegal/form%20assistance%20wireframe.png",
+      alt: "Before: round-1 wireframe",
+      title: "Round 1",
+      text: "AI always on. No way to opt out, no explanation of what it changed.",
+    }}
+    after={{
+      src: "/images/work/skiplegal-cover.png",
+      alt: "After: final workspace",
+      title: "Final MVP",
+      text: "Manual Fill toggle, document tabs and a persistent task list. Users choose — and can see — what the AI does.",
+    }}
   />
-</SkipLegalTestingRow>
+  <CsImpact
+    label="IMPACT · ROUND 2 TESTING"
+    stat="+37%"
+    statText="trust rating vs. round 1"
+    points={[
+      { title: "Control", text: "mode choice gave users agency over their data" },
+      { title: "Clarity", text: "inline definitions kept users in the flow" },
+      { title: "Orientation", text: "guided tutorial replaced first-view overload" },
+    ]}
+  />
+  <h3 class="m-0 font-heading font-medium text-[24px] leading-tight">Final presentation</h3>
+  <SkipLegalCanvaEmbed />
+</CsSection>
 
-{/* TODO: Add image: Before/after of terminology hover interaction */}
-{/* TODO: Add image: Tutorial overlay walkthrough screens */}
-{/* TODO: Add image: Autofill vs manual mode comparison */}
-
-## Final Prototype & Presentation
-
-<SkipLegalCanvaEmbed />
-
-<div class="[&_p]:!text-[24px] [&_p]:leading-normal">
-
-## Outcome & Reflection
-
-SkipLegal was completed in Spring 2025, deep into what will likely be remembered as the early inflection point of mainstream AI adoption. Designing an AI-powered product during that moment came with a specific tension: AI was simultaneously everywhere and nowhere people fully trusted yet.
-
-The interface isn't just communicating what the product does — it's making an argument for why the user should believe it. Trust isn't assumed; it has to be constructed deliberately through transparency, consistency, and control.
-
-The 37% improvement in trust ratings between testing rounds reinforced something I think will define good AI product design for years to come: users don't distrust AI because it makes mistakes — they distrust it because they can't tell when it might. Designing for that uncertainty is where human factors thinking becomes most valuable in an AI context.
-
-</div>
+<CsSection id="reflection" label="06 Reflection">
+  <CsReflection
+    quote="“Our users could already do this. They knew their histories, their dates, their documents. What wore them down was keeping all of it straight across dozens of pages. So the AI holds the details, and they make the calls.”"
+    next="Next: test the security cues users asked for, and compare completion time across modes."
+  />
+</CsSection>

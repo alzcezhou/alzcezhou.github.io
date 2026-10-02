@@ -1,0 +1,17 @@
+---
+/** "Ruled" strip of headline research stats: big accent number + short label */
+interface Props {
+  stats: { stat: string; text: string }[];
+}
+
+const { stats } = Astro.props;
+---
+
+<div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-[2px] bg-dark border-2 border-dark rounded-[14px] overflow-hidden">
+  {stats.map(({ stat, text }) => (
+    <div class="bg-card p-6 flex flex-col gap-2">
+      <span class="font-heading text-[44px] leading-none text-accent">{stat}</span>
+      <p class="m-0 text-[15px] leading-[1.5] text-body-2">{text}</p>
+    </div>
+  ))}
+</div>

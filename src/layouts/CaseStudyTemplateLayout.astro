@@ -1,0 +1,174 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import CaseStudyNav from "../components/CaseStudyNav.astro";
+
+/**
+ * Scannable case study template: hero + TL;DR card, numbered sections
+ * (rendered by the MDX via components in ../components/case-study),
+ * a sticky section TOC with scrollspy, then prev / next nav.
+ */
+interface Props {
+  title: string;
+  eyebrow?: string;
+  headline?: string;
+  tags?: string[];
+  tldr?: { label: string; value: string }[];
+  tldrResult?: { stat: string; text: string };
+  /** Section ids must match the `id`s passed to CsSection in the MDX */
+  toc?: { id: string; label: string }[];
+  /** Per-page accent override; the shared template tokens apply otherwise */
+  accent?: { color: string; light?: string; ring?: string };
+  prev?: { slug: string; title: string };
+  next?: { slug: string; title: string };
+}
+
+const {
+  title,
+  eyebrow,
+  headline = title,
+  tags = [],
+  tldr = [],
+  tldrResult,
+  toc = [],
+  accent,
+  prev,
+  next,
+} = Astro.props;
+
+const pad = (n: number) => String(n).padStart(2, "0");
+const accentStyle = accent && {
+  "--color-accent": accent.color,
+  "--color-accent-light": accent.light,
+  "--color-accent-ring": accent.ring,
+};
+---
+
+<BaseLayout title={`${title} — Alice Zhou`}>
+  <article class="cs-template bg-page font-body text-on-light" style={accentStyle}>
+    <header class="bg-light pt-[112px] px-[clamp(24px,5vw,72px)]">
+      <div class="mx-auto max-w-[1240px] grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] gap-10 items-end">
+        <div class="flex flex-col gap-5 pb-12">
+          {eyebrow && <span class="font-accent text-[24px] tracking-[.04em]">{eyebrow}</span>}
+          <h1 class="m-0 font-heading font-medium text-[clamp(40px,5.4vw,64px)] leading-[1.02] tracking-[-.015em] [text-wrap:balance]">
+            {headline}
+          </h1>
+          {tags.length > 0 && (
+            <ul class="flex flex-wrap gap-2 list-none p-0 m-0" aria-label="Project tags">
+              {tags.map((t) => (
+                <li class="font-accent text-[20px] px-[14px] py-1 rounded-full bg-dark text-white uppercase">{t}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {(tldr.length > 0 || tldrResult) && (
+          <aside class="bg-card rounded-t-[14px] px-6 pt-6 pb-7 flex flex-col text-[15px]" aria-label="TL;DR">
+            <span class="font-accent text-[22px] pb-2.5">TL;DR</span>
+            <dl class="m-0">
+              {tldr.map(({ label, value }) => (
+                <div class="tldr-row">
+                  <dt class="text-muted">{label}</dt>
+                  <dd class="m-0 leading-[1.45]">{value}</dd>
+                </div>
+              ))}
+              {tldrResult && (
+                <div class="tldr-row items-baseline">
+                  <dt class="text-muted">Result</dt>
+                  <dd class="m-0">
+                    <span class="font-heading text-[30px] text-accent">{tldrResult.stat}</span> {tldrResult.text}
+                  </dd>
+                </div>
+              )}
+            </dl>
+          </aside>
+        )}
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-[1240px] px-[clamp(24px,5vw,72px)] flex flex-nowrap items-start gap-[clamp(24px,4vw,48px)]">
+      <div class="flex-[1_1_0] min-w-0 flex flex-col gap-[88px] py-16">
+        <slot />
+      </div>
+
+      {toc.length > 0 && (
+        <nav
+          class="cs-toc hidden md:flex flex-[0_0_140px] sticky top-24 mt-16 flex-col gap-1"
+          aria-label="Case study sections"
+        >
+          <a
+            href="/#work"
+            class="font-accent text-[20px] px-2.5 py-1.5 mb-3 border-[1.5px] border-dark rounded-lg text-on-light transition-colors hover:bg-dark hover:text-card"
+          >
+            &larr; BACK
+          </a>
+          {toc.map(({ id, label }, i) => (
+            <a href={`#${id}`} data-toc-link={id} class="cs-toc-link font-accent text-[20px] px-2.5 py-1.5 rounded-lg">
+              {pad(i + 1)} {label}
+            </a>
+          ))}
+        </nav>
+      )}
+    </div>
+
+    <CaseStudyNav prev={prev} next={next} class="mx-auto max-w-[1240px] pt-6" />
+  </article>
+</BaseLayout>
+
+<style>
+  .tldr-row {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px dashed rgba(15, 15, 15, 0.3);
+  }
+
+  .cs-toc-link {
+    color: #4a443e;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .cs-toc-link:hover {
+    background: rgba(15, 15, 15, 0.08);
+  }
+  .cs-toc-link[aria-current] {
+    background: var(--color-dark);
+    color: var(--color-card);
+  }
+</style>
+
+<script>
+  // Scrollspy: active = last section whose top is within 200px of the viewport top;
+  // the last section is forced active once the page bottom is reached.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]")];
+  const sections = links
+    .map((link) => document.getElementById(link.dataset.tocLink!))
+    .filter((el): el is HTMLElement => el != null);
+
+  let queued = false;
+
+  function update() {
+    queued = false;
+    if (sections.length === 0) return;
+    let current = sections[0].id;
+    for (const section of sections) {
+      if (section.getBoundingClientRect().top < 200) current = section.id;
+    }
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+      current = sections[sections.length - 1].id;
+    }
+    for (const link of links) {
+      if (link.dataset.tocLink === current) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    }
+  }
+
+  function queueUpdate() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(update);
+  }
+
+  window.addEventListener("scroll", queueUpdate, { passive: true });
+  window.addEventListener("resize", queueUpdate);
+  update();
+</script>

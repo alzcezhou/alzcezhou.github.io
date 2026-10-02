@@ -4,9 +4,41 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import TextureOverlay from "../components/TextureOverlay.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 
-const projects = (await getCollection("work")).sort(
-  (a, b) => a.data.order - b.data.order,
-);
+const projects = await getCollection("work");
+
+// Landing card copy, in display order (independent of frontmatter `order`, which drives case study prev/next)
+const cardCopy = [
+  {
+    id: "eifu-marketing-site",
+    eyebrow: "CASE 01 / EIFU · ENLABEL · 2025",
+    title: "One component system for a family of B2B marketing sites",
+    tags: ["SHIPPED COMPONENTS", "RESPONSIVE WEB", "B2B"],
+    resultNumber: "Live",
+    resultLabel: "as React components across enLabel sites",
+  },
+  {
+    id: "skiplegal",
+    eyebrow: "CASE 02 / SKIPLEGAL · CLIENT CAPSTONE · 2025",
+    title: "Letting users decide how much AI touches their immigration forms",
+    tags: ["CLIENT PROJECT", "AI TOOLS", "MULTI-STEP FORMS"],
+    resultNumber: "+37%",
+    resultLabel: "trust rating, test round 1 → 2",
+  },
+  {
+    id: "haven",
+    eyebrow: "CASE 03 / HAVEN · TUFTS PRODUCTHON · 2024",
+    title: "Anonymous incident reporting students actually trust",
+    tags: ["1ST PLACE", "MOBILE", "0 TO 1"],
+    resultNumber: "1st",
+    resultLabel: "place, Tufts Spring 2024 Producthon",
+  },
+];
+
+const cards = cardCopy.map(({ id, ...copy }) => {
+  const project = projects.find((p) => p.id === id);
+  if (!project) throw new Error(`Landing card references missing work entry "${id}"`);
+  return { ...copy, project };
+});
 
 const toolsRibbon = "/images/home%20page/my%20tools%20ribbon";
 const dailyTools = [
@@ -27,8 +59,10 @@ const dailyTools = [
 
   <!-- Hero + Tagline: first viewport has hero filling space, band aligned to bottom; then scrolls normally -->
   <div class="min-h-svh flex flex-col">
-    <section class="min-h-0 flex-1 flex items-center justify-center relative overflow-hidden sm:pt-16">
-      <div class="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+    <!-- Flex column: spinner + name fill the space above, CTA row sits at the bottom so they never overlap -->
+    <section class="min-h-[88vh] flex-1 flex flex-col gap-6 relative overflow-hidden bg-bg-light pt-24 px-6 pb-7">
+      <TextureOverlay size={6} radius={5.3} opacity={0.25} />
+      <div class="relative flex-1 min-h-0 flex items-center justify-center">
         <!-- MP4 first: it has the page bg (#C8C0B9) baked in, so it looks identical on the flat hero
              and avoids Safari playing the WebM without its alpha channel (black box). -->
         <video
@@ -37,17 +71,25 @@ const dailyTools = [
           loop
           muted
           playsinline
-          class="w-[800px] max-w-[90vw] max-h-[80vh] object-contain opacity-35"
+          class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] max-w-[90vw] max-h-full object-contain opacity-35 pointer-events-none"
           aria-hidden="true"
         >
           <source src="/animations/final-spinner.mp4?v=4" type="video/mp4" />
           <source src="/animations/final%20spinner.webm?v=3" type="video/webm" />
         </video>
+        <h1 class="font-display font-normal leading-normal text-[#000] relative z-10 text-center whitespace-nowrap text-[clamp(2.5rem,18vw,16rem)] sm:text-[clamp(2.5rem,12vw,16rem)]">
+          Alice Zhou
+        </h1>
       </div>
-      <TextureOverlay size={6} radius={5.3} opacity={0.25} />
-      <h1 class="font-display font-normal leading-normal text-[#000] relative z-10 text-center whitespace-nowrap -translate-y-[5%] text-[clamp(2.5rem,18vw,16rem)] sm:text-[clamp(2.5rem,12vw,16rem)]">
-        Alice Zhou
-      </h1>
+      <div class="relative z-10 flex flex-wrap justify-center gap-3">
+        <a href="#work" class="hero-btn hero-btn--primary">VIEW WORK ↓</a>
+        <a
+          href="https://docs.google.com/document/d/1Z0cEYKNQuoL46fZoC7GOLUCIBl37SCn1xYb6DBa0iRs/edit?usp=sharing"
+          target="_blank"
+          rel="noopener"
+          class="hero-btn hero-btn--secondary"
+        >RESUME ↗</a>
+      </div>
     </section>
     <script>
       (function () {
@@ -67,13 +109,31 @@ const dailyTools = [
     </div>
   </div>
 
-  <!-- Daily tools + work -->
+  <!-- Work + daily tools -->
+  <div class="bg-page">
   <section class="max-w-[1206px] mx-auto px-6 md:px-12 py-16 md:py-24">
+    <div id="work" class="flex flex-col gap-7 mb-14 md:mb-20 scroll-mt-8">
+      <div class="flex justify-between items-baseline flex-wrap gap-4">
+        <h2 class="m-0 font-heading font-medium text-[clamp(32px,3.5vw,44px)]">Work</h2>
+        <span class="font-accent text-[22px] text-accent">
+          {String(cards.length).padStart(2, "0")} CASE STUDIES
+        </span>
+      </div>
+      {cards.map(({ project, ...card }) => (
+        <ProjectCard
+          {...card}
+          href={`/work/${project.id}`}
+          cover={project.data.cover}
+          coverAlt={project.data.coverAlt}
+        />
+      ))}
+    </div>
+
     <h2 class="font-heading text-3xl md:text-4xl text-charcoal-700 mb-6 md:mb-8">
       My Toolbox
     </h2>
     <div
-      class="tools-grid grid grid-cols-2 sm:grid-cols-5 gap-4 md:gap-6 auto-rows-fr mb-14 md:mb-20"
+      class="tools-grid grid grid-cols-2 sm:grid-cols-5 gap-4 md:gap-6 auto-rows-fr"
       aria-label="Daily tools"
     >
       {dailyTools.map((tool) => (
@@ -122,30 +182,48 @@ const dailyTools = [
         window.addEventListener("scroll", () => pill.classList.add("opacity-0"), { passive: true });
       }
     </script>
-
-    <h2
-      id="work"
-      class="font-heading text-3xl md:text-4xl text-charcoal-700 mb-6 md:mb-8 scroll-mt-28"
-    >
-      Work
-    </h2>
-    <div class="flex flex-col gap-8 md:gap-10">
-      {projects.map((project) => (
-        <ProjectCard
-          title={project.data.title}
-          description={project.data.description}
-          category={project.data.category}
-          href={`/work/${project.id}`}
-          cover={project.data.cover}
-          coverAlt={project.data.coverAlt}
-        />
-      ))}
-    </div>
   </section>
+  </div>
 
 </BaseLayout>
 
 <style>
+  /* Hero CTAs: fixed height + flex centering, since VT323's metrics sit off-center */
+  .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 22px;
+    line-height: 1;
+    font-family: var(--font-accent);
+    font-size: 24px;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-dark);
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .hero-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+  .hero-btn--primary {
+    background: var(--color-dark);
+    color: #f5f2ed;
+  }
+  .hero-btn--primary:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+  }
+  .hero-btn--secondary {
+    background: transparent;
+    color: var(--color-dark);
+  }
+  .hero-btn--secondary:hover {
+    background: var(--color-dark);
+    color: #f5f2ed;
+  }
+
   /* Hide the system cursor over tool tiles so only the pill shows (mouse/trackpad only) */
   @media (hover: hover) and (pointer: fine) {
     .tools-grid [data-tool] {
