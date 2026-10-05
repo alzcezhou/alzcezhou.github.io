@@ -1,23 +1,23 @@
 ---
 title: "SkipLegal"
-subtitle: "AI-powered immigration document assistance"
+subtitle: "Secure document upload and AI autofill for immigration forms"
 year: "Spring 2025"
 role: "UX Designer & Project Manager"
 category: "Capstone Project & Contract Role | Product Design"
 variant: "template"
 eyebrow: "CASE 02 / SKIPLEGAL · CLIENT CAPSTONE · SPRING 2025"
-headline: "Letting users decide how much AI touches their immigration forms"
+headline: "Designing an AI immigration workspace people trust with their most sensitive documents"
 tags:
   - "Client Project"
   - "AI Tools"
   - "Multi-Step Forms"
 tldr:
   - label: "Problem"
-    value: "High-stakes immigration forms; users wouldn't trust AI they couldn't verify"
+    value: "High-stakes immigration forms; users wouldn't upload sensitive documents to AI they couldn't verify"
   - label: "My role"
     value: "UX Designer & PM · team of 4 · 3 months"
   - label: "Shipped"
-    value: "Questionnaire + AI form workspace, Figma MVP"
+    value: "Eligibility quiz + secure upload & AI autofill workspace, hi-fi Figma prototype"
 tldrResult:
   stat: "+37%"
   text: "trust rating, round 1 → 2"
@@ -29,7 +29,7 @@ toc:
   - { id: "beforeafter", label: "COMPARE" }
   - { id: "reflection", label: "REFLECT" }
 timeline: "3 months"
-description: "Leveraging AI to bridge the gap between U.S. Government, lawyers, and prospective immigrants."
+description: "A secure, AI-assisted workflow that helps immigrants upload documents and complete family-based green card forms."
 order: 3
 cover: "/images/work/skiplegal-cover.png"
 coverAlt: "SkipLegal laptop interface showing AI-assisted form filling"
@@ -40,13 +40,14 @@ responsibilities:
   - "User Research"
   - "Figma Prototyping"
   - "UI Design"
+  - "Personas & Journey Mapping"
   - "Market Analysis and Strategy"
   - "Quantitative & Qualitative Usability Testing"
 tools:
   - "Figma"
   - "Qualtrics"
 results:
-  - "Figma Prototype of AI assistance on filling out immigration documents"
+  - "High-fidelity Figma prototype: landing page, eligibility quiz, and AI autofill workspace with chatbot support"
 ---
 
 <CsContext
@@ -55,14 +56,16 @@ results:
   src="/images/skiplegal/immigration%20flowchart.png"
   alt="Immigration process flowchart"
 >
-  <p>One typo on an immigration form can cost months and thousands of dollars. Could AI catch errors <em>without</em> users losing confidence?</p>
+  <p>SkipLegal is a startup using AI to guide people through U.S. visa, green card, and citizenship applications.</p>
+  <p>For our capstone, we designed its core workflow from scratch: securely uploading sensitive immigration documents, with AI that autofills forms in real time and a chatbot for support.</p>
+  <p>The catch: one typo can cost months and thousands of dollars. Would users trust AI with that?</p>
 </CsContext>
 
-<CsSection id="research" label="02 Research · 4 interviews · 100+ survey">
+<CsSection id="research" label="02 Research · 4 interviews · 112 surveys · 15 testers">
   <CsInsights>
-    <CsInsight title="Overwhelmed">Paperwork is repetitive — even with a lawyer.</CsInsight>
+    <CsInsight title="Overwhelmed">The process is unclear and repetitive, even with a lawyer.</CsInsight>
     <CsInsight title="Show your work">Trust in AI depends on being able to verify it.</CsInsight>
-    <CsInsight title="Prove it's safe">Security must be visible before sharing data.</CsInsight>
+    <CsInsight title="Prove it's safe">Without a clear privacy explanation, users won't upload.</CsInsight>
   </CsInsights>
 </CsSection>
 
@@ -72,24 +75,24 @@ results:
     alt="Workspace wireframe with annotations"
     heading="Four panels, introduced one at a time"
     items={[
-      { x: 4, y: 4, title: "Documents", text: "uploads and forms always one click away" },
-      { x: 45, y: 13, title: "Form viewer", text: "the real government form, never hidden" },
-      { x: 28, y: 55, title: "AI assistant", text: "flags errors in plain language" },
+      { x: 4, y: 4, title: "Documents", text: "secure uploads, forms one click away" },
+      { x: 45, y: 13, title: "Form viewer", text: "the real government form, autofilled live" },
+      { x: 28, y: 55, title: "AI assistant", text: "explains each question in plain language" },
       { x: 2, y: 67, title: "To-Do", text: "fixes become tasks, so nothing is lost" },
     ]}
-    why="Round 1 testers were overwhelmed by all four at once, so a tutorial now reveals them in sequence."
+    why="Round 1 testers didn't know where to click first with all four on screen, so a tutorial now reveals them in sequence."
   />
   <CsDecisions>
     <CsDecision
-      title="One question per screen"
-      problem="jargon at the trust-deciding moment."
-      decision="isolated questions + inline definitions."
-      outcome="users stay in flow."
+      title="Eligibility quiz first"
+      problem="terms like “petitioner” made testers hesitate."
+      decision="one question per screen + inline definitions; answers tailor the workspace."
+      outcome="smoother onboarding in round 2."
     />
     <CsDecision
       title="Autofill or Manual"
-      problem="testers felt out of control."
-      decision="explicit mode toggle; AI explains itself first."
+      problem="testers couldn't tell if the AI fills the form or just answers questions."
+      decision="explicit mode toggle; AI explains what it fills first."
       outcome="<strong>+37% trust rating.</strong>"
     />
   </CsDecisions>
@@ -100,6 +103,7 @@ results:
     rows={[
       { when: "sees a legal term", ui: "defines it on hover", because: "jargon caused hesitation" },
       { when: "is new to the workspace", ui: "reveals panels one by one", because: "full layout overwhelmed" },
+      { when: "is about to upload", ui: "explains how data is protected", because: "privacy was the top hesitation" },
       { when: "doesn't trust the AI", ui: "offers Manual mode, one field in focus", because: "control builds trust" },
       { when: "picks Autofill", ui: "explains what's filled before acting", because: "no surprises with PII" },
       { when: "makes a likely error", ui: "flags it + adds a To-Do", because: "errors cost months" },
@@ -113,13 +117,13 @@ results:
       src: "/images/skiplegal/form%20assistance%20wireframe.png",
       alt: "Before: round-1 wireframe",
       title: "Round 1",
-      text: "AI always on. No way to opt out, no explanation of what it changed.",
+      text: "Upload, form, to-do and chatbot all competed at once. Testers didn't know where to start, or whether the AI was filling the form.",
     }}
     after={{
       src: "/images/work/skiplegal-cover.png",
       alt: "After: final workspace",
-      title: "Final MVP",
-      text: "Manual Fill toggle, document tabs and a persistent task list. Users choose — and can see — what the AI does.",
+      title: "Final prototype",
+      text: "Landing page → eligibility quiz → workspace. Upload documents, watch the AI autofill the form, and ask the chatbot about any question.",
     }}
   />
   <CsImpact
@@ -128,8 +132,9 @@ results:
     statText="trust rating vs. round 1"
     points={[
       { title: "Control", text: "mode choice gave users agency over their data" },
-      { title: "Clarity", text: "inline definitions kept users in the flow" },
+      { title: "Clarity", text: "the eligibility quiz became easier to get through" },
       { title: "Orientation", text: "guided tutorial replaced first-view overload" },
+      { title: "Still open", text: "some testers remained unsure of the chatbot's role" },
     ]}
   />
   <h3 class="m-0 font-heading font-medium text-[24px] leading-tight">Final presentation</h3>
@@ -138,7 +143,8 @@ results:
 
 <CsSection id="reflection" label="06 Reflection">
   <CsReflection
-    quote="“Our users could already do this. They knew their histories, their dates, their documents. What wore them down was keeping all of it straight across dozens of pages. So the AI holds the details, and they make the calls.”"
-    next="Next: test the security cues users asked for, and compare completion time across modes."
+    quote="“Users of all backgrounds are capable of doing this. They know their histories, their dates, and documents. SkipLegal is just an AI tool to keep all of this information in order across dozens of forms, keeping the user in charge.”"
   />
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2 max-w-[640px]"><strong>Challenges:</strong> as a startup, SkipLegal's product and user requirements kept changing, so we re-scoped as its direction evolved. Shifting immigration policy made an already confusing process a moving target.</p>
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2 max-w-[640px]"><strong>Next:</strong> have immigration lawyers test the flow to find gaps (and potentially endorse it), and build trust with testimonials and clearer security messaging.</p>
 </CsSection>

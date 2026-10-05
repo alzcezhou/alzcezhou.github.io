@@ -35,8 +35,8 @@ const work = defineCollection({
     headline: z.string().optional(),
     /** Template only: TL;DR card rows */
     tldr: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
-    /** Template only: highlighted TL;DR "Result" row, e.g. { stat: "+37%", text: "trust rating" } */
-    tldrResult: z.object({ stat: z.string(), text: z.string() }).optional(),
+    /** Template only: highlighted TL;DR row, e.g. { stat: "+37%", text: "trust rating" }; label defaults to "Result" */
+    tldrResult: z.object({ label: z.string().optional(), stat: z.string(), text: z.string() }).optional(),
     /** Template only: sticky TOC entries; ids must match the section ids in the MDX */
     toc: z.array(z.object({ id: z.string(), label: z.string() })).optional(),
     /** Template only: per-page accent override, e.g. { color: "#4a6b50", light: "#bcd2b8", ring: "rgba(74,107,80,.25)" } */

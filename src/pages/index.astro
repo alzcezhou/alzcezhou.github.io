@@ -7,14 +7,15 @@ import ProjectCard from "../components/ProjectCard.astro";
 const projects = await getCollection("work");
 
 // Landing card copy, in display order (independent of frontmatter `order`, which drives case study prev/next)
+// eifu-marketing-site is hidden from the landing page (its case study page still builds)
 const cardCopy = [
   {
-    id: "eifu-marketing-site",
-    eyebrow: "CASE 01 / EIFU · ENLABEL · 2025",
-    title: "One component system for a family of B2B marketing sites",
-    tags: ["SHIPPED COMPONENTS", "RESPONSIVE WEB", "B2B"],
-    resultNumber: "Live",
-    resultLabel: "as React components across enLabel sites",
+    id: "ai-chat-interface",
+    eyebrow: "CASE 01 / AI ASSISTANT · ENLABEL · 2025",
+    title: "One AI assistant for every product in a labeling ecosystem",
+    tags: ["HANDED OFF TO DEV", "AI TOOLS", "COMPONENT SYSTEM"],
+    resultNumber: "Handed off",
+    resultLabel: "in development, not yet launched",
   },
   {
     id: "skiplegal",

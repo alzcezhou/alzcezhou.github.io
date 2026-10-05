@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "skills": {
+    "image-enhancer": {
+      "source": "davila7/claude-code-templates",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "cli-tool/components/skills/media/image-enhancer/SKILL.md",
+      "computedHash": "e673c02c3e970b3ea0bd4ca449ae12f955d8476bb4196842d1b1489cca6be219"
+    }
+  }
+}

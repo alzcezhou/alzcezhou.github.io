@@ -12,6 +12,9 @@ export default defineConfig({
    */
   // base: "/your-repo-name",
   output: "static",
+  redirects: {
+    "/work/ai-assistant": "/work/ai-chat-interface",
+  },
   integrations: [mdx(), react()],
   vite: {
     plugins: [tailwindcss()],

@@ -13,7 +13,7 @@ interface Props {
   headline?: string;
   tags?: string[];
   tldr?: { label: string; value: string }[];
-  tldrResult?: { stat: string; text: string };
+  tldrResult?: { label?: string; stat: string; text: string };
   /** Section ids must match the `id`s passed to CsSection in the MDX */
   toc?: { id: string; label: string }[];
   /** Per-page accent override; the shared template tokens apply otherwise */
@@ -73,7 +73,7 @@ const accentStyle = accent && {
               ))}
               {tldrResult && (
                 <div class="tldr-row items-baseline">
-                  <dt class="text-muted">Result</dt>
+                  <dt class="text-muted">{tldrResult.label ?? "Result"}</dt>
                   <dd class="m-0">
                     <span class="font-heading text-[30px] text-accent">{tldrResult.stat}</span> {tldrResult.text}
                   </dd>

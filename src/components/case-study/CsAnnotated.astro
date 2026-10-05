@@ -3,6 +3,7 @@
  * Annotated image with numbered pins plus a legend and an optional dark "WHY" callout.
  * Pin x / y are percentages of the image box.
  * Pass `shots` instead of `src` to show captioned screens side by side (legend items then have no pins).
+ * `well` frames a narrow single screenshot in a hero-color well.
  */
 interface Props {
   src?: string;
@@ -11,13 +12,20 @@ interface Props {
   heading?: string;
   items: { title: string; text: string; x?: number; y?: number }[];
   why?: string;
+  well?: boolean;
+  /** Between legend title and text */
+  separator?: string;
 }
 
-const { src, alt = "", shots = [], heading, items, why } = Astro.props;
+const { src, alt = "", shots = [], heading, items, why, well = false, separator = " — " } = Astro.props;
 ---
 
 <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-8 items-start">
-  {src ? (
+  {src && well ? (
+    <div class="bg-light rounded-[14px] p-6 flex justify-center">
+      <img src={src} alt={alt} class="block w-full max-w-[340px] rounded-[10px]" loading="lazy" decoding="async" />
+    </div>
+  ) : src ? (
     <div class="relative">
       <img src={src} alt={alt} class="block w-full rounded-[10px]" loading="lazy" decoding="async" />
       {items.map(({ x, y }, i) => x != null && y != null && (
@@ -40,7 +48,7 @@ const { src, alt = "", shots = [], heading, items, why } = Astro.props;
       {items.map(({ title, text }, i) => (
         <li class="grid grid-cols-[28px_minmax(0,1fr)] gap-2.5 text-[15px] leading-[1.45]">
           <span class="font-bold text-accent">{i + 1}</span>
-          <span><strong>{title}</strong> — {text}</span>
+          <span><strong>{title}</strong>{separator}{text}</span>
         </li>
       ))}
     </ol>

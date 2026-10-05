@@ -1,0 +1,143 @@
+---
+title: "enLabel AI Assistant"
+subtitle: "A generic AI chat window for a labeling software ecosystem"
+year: "2025"
+role: "UX Designer"
+category: "Product Design | AI Tools"
+variant: "template"
+eyebrow: "CASE 01 / AI ASSISTANT · ENLABEL · 2025"
+headline: "One AI assistant for every product in a labeling ecosystem"
+tags:
+  - "Handed off to dev"
+  - "AI Tools"
+  - "Component System"
+tldr:
+  - label: "Problem"
+    value: "Each enLabel product needed AI help, and separate chat UIs would fragment the ecosystem"
+  - label: "My role"
+    value: "UX Designer · flows, states, component kit, dev handoff"
+  - label: "Delivered"
+    value: "A generic chat window, end-to-end states and a reusable component kit, applied first in e-Draw"
+tldrResult:
+  label: "Status"
+  stat: "Handed off"
+  text: "in development, not yet launched"
+toc:
+  - { id: "context", label: "CONTEXT" }
+  - { id: "principles", label: "PRINCIPLES" }
+  - { id: "decisions", label: "DECISIONS" }
+  - { id: "states", label: "STATES" }
+  - { id: "flow", label: "FLOW" }
+  - { id: "kit", label: "KIT" }
+  - { id: "reflection", label: "REFLECT" }
+description: "One AI chat window designed to work across enLabel's packaging and labeling products, applied first in e-Draw."
+order: 4
+cover: "/images/ai-assistant/landing.png"
+coverAlt: "AI assistant window, empty state with quick prompts and prompt builder"
+responsibilities:
+  - "User flows"
+  - "States and edge cases"
+  - "Component kit"
+  - "Developer handoff"
+tools:
+  - "Figma"
+results:
+  - "Generic AI chat window and component kit, handed off to developers"
+---
+
+<CsContext
+  id="context"
+  label="01 Context"
+  src="/images/ai-assistant/prompt-built.png"
+  alt="Prompt builder selections composed as editable pills in the composer"
+  well
+>
+  <p>enLabel makes packaging and labeling software, from label creation in e-Draw to regulated documents in eIFU. Every product wanted an AI assistant. I designed <em>one</em> chat window that works inside any of them, drawing on the data it's opened with.</p>
+  <p class="text-[16px] leading-[1.55] text-body-2">First in-context application: e-Draw, enLabel's label creation software.</p>
+</CsContext>
+
+<CsSection id="principles" label="02 Principles · One shell, many products">
+  <CsInsights>
+    <CsInsight title="Context is visible">The top bar names the data source the AI is working from, so users know what it can see in each product.</CsInsight>
+    <CsInsight title="Structure beats a blank box">Quick prompts and a prompt builder turn domain choices into a complete request.</CsInsight>
+    <CsInsight title="Never a black box">Progress steps, a stop button and token cost show what the AI is doing and what it spends.</CsInsight>
+  </CsInsights>
+</CsSection>
+
+<CsSection id="decisions" label="03 Key decisions">
+  <CsAnnotated
+    src="/images/ai-assistant/landing.png"
+    alt="AI assistant window, empty state with quick prompts and prompt builder"
+    well
+    separator=": "
+    heading="A prompt builder that writes the hard part"
+    items={[
+      { title: "Quick prompts", text: "one-tap starts for common jobs (product label, packaging, IFU, compliance check)" },
+      { title: "Build Your Prompt", text: "document type, category and standard dropdowns" },
+      { title: "Editable pills", text: "choices land in the composer as a sentence (\"Shipping Label for Organic Food following FDA 2026\") the user can still change or extend" },
+    ]}
+    why="In regulated labeling, a missing standard or category means a wrong label. Structured inputs make sure the critical details are in every prompt, without taking away free text."
+  />
+  <CsDecisions>
+    <CsDecision
+      title="The AI asks instead of guessing"
+      problem="vague prompts produce confident but wrong output."
+      decision="follow-up question cards with numbered answers, an &quot;Other&quot; field and paging (1 of X)."
+      outcome="missing details get resolved before generation, in a few clicks."
+    />
+    <CsDecision
+      title="Generation you can see and stop"
+      problem="long AI tasks feel like a black box."
+      decision="step chips (Read guidelines → Check compliance → Generate layout), an always-on Stop and token cost before and after."
+      outcome="users know what's happening, what it costs and how to bail out."
+    />
+  </CsDecisions>
+</CsSection>
+
+<CsSection id="states" label="04 States & edge cases">
+  <CsStates
+    headers={["STATE", "DESIGN RESPONSE", "BECAUSE…"]}
+    rows={[
+      { when: "First open, nothing typed", ui: "Quick prompts + prompt builder", because: "no blank-page problem" },
+      { when: "Voice input", ui: "Live waveform, confirm/cancel, transcript preview before send", because: "users approve what was heard" },
+      { when: "Mic permission blocked", ui: "Warning icon with \"review microphone permissions\" tooltip", because: "clear fix, not a silent failure" },
+      { when: "Different needs per task", ui: "Model picker in the composer", because: "trade speed for depth" },
+      { when: "Missing details", ui: "Follow-up question card, keyboard-selectable", because: "asks before it guesses" },
+      { when: "Generation fails", ui: "Plain-language cause, Retry / Edit Prompt, recovery tip", because: "recover without starting over" },
+    ]}
+  />
+</CsSection>
+
+<CsSection id="flow" label="05 The flow">
+  <CsFlow
+    label="Chat flow steps"
+    steps={[
+      { label: "Start", title: "Start from structure", text: "Quick prompts for common jobs, or the prompt builder for precise ones. The top bar shows which data source the AI is working from.", src: "/images/ai-assistant/landing.png" },
+      { label: "Build", title: "Compose, then refine", text: "Builder choices become editable pills in the composer. Attachments and free text add detail, and the token cost shows before sending.", src: "/images/ai-assistant/prompt-built.png" },
+      { label: "Clarify", title: "Answer what’s missing", text: "If the request is ambiguous, the AI asks follow-up questions with numbered options, an \"Other\" field and keyboard support.", src: "/images/ai-assistant/followup.png" },
+      { label: "Generate", title: "Watch it work", text: "Step chips track progress from reading guidelines to generating the layout. The output streams in, and Stop is always available.", src: "/images/ai-assistant/streaming.png" },
+      { label: "Recover", title: "Fail gracefully", text: "Errors say what went wrong in plain language, with Retry, Edit Prompt and a tip for what to try next.", src: "/images/ai-assistant/error.png" },
+    ]}
+  />
+</CsSection>
+
+<CsSection id="kit" label="06 Component kit · Built for reuse">
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2 max-w-[680px]">Every piece is product-agnostic. Each product swaps in its own data source, quick prompts and builder fields, and the shell stays the same.</p>
+  <CsKit
+    tiles={[
+      { src: "/images/ai-assistant/c-topbar.png", alt: "Top bar with context label", caption: "Top bar · Context" },
+      { src: "/images/ai-assistant/c-status.png", alt: "Status chips: done, in progress, queued", caption: "Status chip · 3 states", maxWidth: 220 },
+      { src: "/images/ai-assistant/c-builder-pill.png", alt: "Prompt builder pill, default and remove-hover", caption: "Prompt pill · Default / Remove", maxWidth: 180 },
+      { src: "/images/ai-assistant/c-quick-pill.png", alt: "Quick prompt pill", caption: "Quick prompt pill", maxWidth: 220 },
+      { src: "/images/ai-assistant/c-model.png", alt: "Model dropdown options", caption: "Model picker", maxWidth: 220 },
+      { src: "/images/ai-assistant/c-textbox.png", alt: "Composer states: empty, recording, mic error, transcript, typed, built prompt, model menu", caption: "Composer · 9 states", tall: true },
+    ]}
+  />
+</CsSection>
+
+<CsSection id="reflection" label="07 Status & reflection">
+  <CsReflection
+    quote="Designing a shell for many products meant deciding what stays fixed and what each product gets to change."
+    next="Handed off to developers; launch pending. Next: test with e-Draw users once it's live, then bring the same shell to eIFU and the rest of the ecosystem."
+  />
+</CsSection>

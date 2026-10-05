@@ -1,0 +1,126 @@
+---
+/**
+ * Dark interactive flow: step tabs + title / description on the left, that step's screenshot on the right.
+ * Every step is rendered; inactive ones are stacked and hidden, so the module keeps the height of its tallest step.
+ * Arrow / Home / End keys move between tabs.
+ */
+interface Props {
+  steps: { label: string; title: string; text: string; src: string; alt?: string }[];
+  label?: string;
+}
+
+const { steps, label = "Flow steps" } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, "0");
+const uid = `cs-flow-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class="cs-flow bg-dark rounded-[14px] p-6 grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-7 items-stretch">
+  <div class="flex flex-col justify-between gap-6">
+    <div role="tablist" aria-label={label} class="flex flex-wrap gap-1.5">
+      {steps.map(({ label }, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`${uid}-tab-${i}`}
+          aria-controls={`${uid}-panel-${i}`}
+          aria-selected={i === 0 ? "true" : "false"}
+          tabindex={i === 0 ? "0" : "-1"}
+          data-index={i}
+          class="cs-flow-tab font-accent text-[20px] px-[14px] py-1 rounded-full border-[1.5px] border-card cursor-pointer uppercase"
+        >
+          {pad(i + 1)} {label}
+        </button>
+      ))}
+    </div>
+    <div class="cs-flow-stack">
+      {steps.map(({ title, text }, i) => (
+        <div
+          role="tabpanel"
+          id={`${uid}-panel-${i}`}
+          aria-labelledby={`${uid}-tab-${i}`}
+          data-index={i}
+          class:list={["cs-flow-item flex flex-col justify-end gap-3", i === 0 && "is-active"]}
+        >
+          <h3 class="m-0 font-heading font-medium text-[28px] leading-[1.15] text-card">{title}</h3>
+          <p class="m-0 text-[16px] leading-[1.55] text-[#d8d2cb] max-w-[420px]">{text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+  <div class="cs-flow-stack">
+    {steps.map(({ title, src, alt }, i) => (
+      <div data-index={i} class:list={["cs-flow-item flex justify-center items-start", i === 0 && "is-active"]}>
+        <img src={src} alt={alt ?? title} class="block w-full max-w-[340px] rounded-[10px]" loading="lazy" decoding="async" />
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".cs-flow").forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>(".cs-flow-tab")];
+    const items = [...root.querySelectorAll<HTMLElement>(".cs-flow-item")];
+
+    const select = (index: number, focus = false) => {
+      tabs.forEach((t, i) => {
+        const on = i === index;
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      items.forEach((el) => el.classList.toggle("is-active", Number(el.dataset.index) === index));
+    };
+
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => select(i));
+      t.addEventListener("keydown", (e) => {
+        const last = tabs.length - 1;
+        const next =
+          e.key === "ArrowRight" || e.key === "ArrowDown" ? (i === last ? 0 : i + 1)
+          : e.key === "ArrowLeft" || e.key === "ArrowUp" ? (i === 0 ? last : i - 1)
+          : e.key === "Home" ? 0
+          : e.key === "End" ? last
+          : null;
+        if (next == null) return;
+        e.preventDefault();
+        select(next, true);
+      });
+    });
+  });
+</script>
+
+<style>
+  .cs-flow-tab {
+    background: transparent;
+    color: var(--color-card);
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .cs-flow-tab[aria-selected="true"] {
+    background: var(--color-card);
+    color: var(--color-dark);
+  }
+  .cs-flow-tab:focus-visible {
+    outline: 2px solid var(--color-accent-light);
+    outline-offset: 2px;
+  }
+  /* Steps share one grid cell, so swapping never changes the module's height */
+  .cs-flow-stack {
+    display: grid;
+  }
+  .cs-flow-item {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, visibility 0.15s;
+  }
+  .cs-flow-item.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cs-flow-tab,
+    .cs-flow-item {
+      transition: none;
+    }
+  }
+</style>
