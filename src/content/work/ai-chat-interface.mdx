@@ -32,7 +32,7 @@ toc:
   - { id: "reflection", label: "REFLECT" }
 description: "One AI chat window designed to work across enLabel's packaging and labeling products, applied first in e-Draw."
 order: 4
-cover: "/images/ai-assistant/landing.png"
+cover: "/images/ai-assistant/landing.webp"
 coverAlt: "AI assistant window, empty state with quick prompts and prompt builder"
 responsibilities:
   - "User flows"
@@ -48,7 +48,7 @@ results:
 <CsContext
   id="context"
   label="01 Context"
-  src="/images/ai-assistant/prompt-built.png"
+  src="/images/ai-assistant/prompt-built.webp"
   alt="Prompt builder selections composed as editable pills in the composer"
   well
 >
@@ -66,7 +66,7 @@ results:
 
 <CsSection id="decisions" label="03 Key decisions">
   <CsAnnotated
-    src="/images/ai-assistant/landing.png"
+    src="/images/ai-assistant/landing.webp"
     alt="AI assistant window, empty state with quick prompts and prompt builder"
     well
     separator=": "
@@ -112,11 +112,11 @@ results:
   <CsFlow
     label="Chat flow steps"
     steps={[
-      { label: "Start", title: "Start from structure", text: "Quick prompts for common jobs, or the prompt builder for precise ones. The top bar shows which data source the AI is working from.", src: "/images/ai-assistant/landing.png" },
-      { label: "Build", title: "Compose, then refine", text: "Builder choices become editable pills in the composer. Attachments and free text add detail, and the token cost shows before sending.", src: "/images/ai-assistant/prompt-built.png" },
-      { label: "Clarify", title: "Answer what’s missing", text: "If the request is ambiguous, the AI asks follow-up questions with numbered options, an \"Other\" field and keyboard support.", src: "/images/ai-assistant/followup.png" },
-      { label: "Generate", title: "Watch it work", text: "Step chips track progress from reading guidelines to generating the layout. The output streams in, and Stop is always available.", src: "/images/ai-assistant/streaming.png" },
-      { label: "Recover", title: "Fail gracefully", text: "Errors say what went wrong in plain language, with Retry, Edit Prompt and a tip for what to try next.", src: "/images/ai-assistant/error.png" },
+      { label: "Start", title: "Start from structure", text: "Quick prompts for common jobs, or the prompt builder for precise ones. The top bar shows which data source the AI is working from.", src: "/images/ai-assistant/landing.webp" },
+      { label: "Build", title: "Compose, then refine", text: "Builder choices become editable pills in the composer. Attachments and free text add detail, and the token cost shows before sending.", src: "/images/ai-assistant/prompt-built.webp" },
+      { label: "Clarify", title: "Answer what’s missing", text: "If the request is ambiguous, the AI asks follow-up questions with numbered options, an \"Other\" field and keyboard support.", src: "/images/ai-assistant/followup.webp" },
+      { label: "Generate", title: "Watch it work", text: "Step chips track progress from reading guidelines to generating the layout. The output streams in, and Stop is always available.", src: "/images/ai-assistant/streaming.webp" },
+      { label: "Recover", title: "Fail gracefully", text: "Errors say what went wrong in plain language, with Retry, Edit Prompt and a tip for what to try next.", src: "/images/ai-assistant/error.webp" },
     ]}
   />
 </CsSection>
@@ -125,12 +125,12 @@ results:
   <p class="m-0 text-[17px] leading-[1.6] text-body-2 max-w-[680px]">Every piece is product-agnostic. Each product swaps in its own data source, quick prompts and builder fields, and the shell stays the same.</p>
   <CsKit
     tiles={[
-      { src: "/images/ai-assistant/c-topbar.png", alt: "Top bar with context label", caption: "Top bar · Context" },
-      { src: "/images/ai-assistant/c-status.png", alt: "Status chips: done, in progress, queued", caption: "Status chip · 3 states", maxWidth: 220 },
-      { src: "/images/ai-assistant/c-builder-pill.png", alt: "Prompt builder pill, default and remove-hover", caption: "Prompt pill · Default / Remove", maxWidth: 180 },
-      { src: "/images/ai-assistant/c-quick-pill.png", alt: "Quick prompt pill", caption: "Quick prompt pill", maxWidth: 220 },
-      { src: "/images/ai-assistant/c-model.png", alt: "Model dropdown options", caption: "Model picker", maxWidth: 220 },
-      { src: "/images/ai-assistant/c-textbox.png", alt: "Composer states: empty, recording, mic error, transcript, typed, built prompt, model menu", caption: "Composer · 9 states", tall: true },
+      { src: "/images/ai-assistant/c-topbar.webp", alt: "Top bar with context label", caption: "Top bar · Context" },
+      { src: "/images/ai-assistant/c-status.webp", alt: "Status chips: done, in progress, queued", caption: "Status chip · 3 states", maxWidth: 220 },
+      { src: "/images/ai-assistant/c-builder-pill.webp", alt: "Prompt builder pill, default and remove-hover", caption: "Prompt pill · Default / Remove", maxWidth: 180 },
+      { src: "/images/ai-assistant/c-quick-pill.webp", alt: "Quick prompt pill", caption: "Quick prompt pill", maxWidth: 220 },
+      { src: "/images/ai-assistant/c-model.webp", alt: "Model dropdown options", caption: "Model picker", maxWidth: 220 },
+      { src: "/images/ai-assistant/c-textbox.webp", alt: "Composer states: empty, recording, mic error, transcript, typed, built prompt, model menu", caption: "Composer · 9 states", tall: true },
     ]}
   />
 </CsSection>
