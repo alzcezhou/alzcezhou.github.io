@@ -63,7 +63,7 @@ results:
 </CsContext>
 
 <CsSection id="round-1" label="02 Round 1 · A generator on the marketing site">
-  <p class="m-0 text-[17px] leading-[1.6] text-body-2">In February–March 2026, I was assigned a one-shot project to add onto the e-Draw marketing site, because our CEO wanted us to start considering integrating AI into our products. A visitor describes a label on the site, then opens the result in the editor. I worked through three placements in Figma, prototyped the front end with Claude and handed it to a developer to connect to our LLM.</p>
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2">In February–March 2026, I was assigned a one-shot project to add onto the e-Draw marketing site, as enLabel began exploring AI in its products. A visitor describes a label on the site, then opens the result in the editor. I worked through three placements in Figma, prototyped the front end with Claude and handed it to a developer to connect to our LLM.</p>
   <p class="m-0 text-[17px] leading-[1.6] text-body-2">I didn't start from zero. Going in, I drew on background knowledge from my past AI work and some light research:</p>
   <CsInsights>
     <CsInsight title="Prior testing">My <a class="underline" href="/work/skiplegal">SkipLegal</a> capstone (4 interviews, 112 surveys, 15 testers) found that trust in AI depends on being able to verify it. Those users weren't labeling professionals, so I carried this over as a hypothesis.</CsInsight>
@@ -87,12 +87,12 @@ results:
     ]}
     why="I mapped two flows: generate first, or verify an email first. I kept revising generate-first, so visitors see a real result before they're asked for anything."
   />
-  <p class="m-0 text-[17px] leading-[1.6] text-body-2"><strong>The order was also consumer psychology.</strong> The site's job was to get visitors into e-Draw and signed up, so I tried to draw on ideas like the sunk-cost fallacy. By the time sign-up comes up, someone has already written a prompt, waited through generation and picked a label. Walking away would mean losing that effort, and signing up is how they keep it. An email gate at the start would have asked for commitment before they had anything to lose.</p>
-  <p class="m-0 text-[17px] leading-[1.6] text-body-2"><strong>Then it stopped.</strong> The developer left partway through the build. We're a small business, so priorities shifted and the generator never launched, which means the sign-up bet was never tested.</p>
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2"><strong>The order also served the business goal.</strong> The site needed visitors to try e-Draw and sign up, so I showed value before asking for anything: people see a real label first, and sign up only if they want to keep it.</p>
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2"><strong>Then it stopped.</strong> Priorities shifted during the build and the generator never launched, which means the sign-up order was never tested.</p>
 </CsSection>
 
 <CsSection id="brief" label="03 Round 2 · The brief gets bigger">
-  <p class="m-0 text-[17px] leading-[1.6] text-body-2">This summer I returned to the project, and the scope grew: one reusable chat component that could be integrated into all three products. Each product asks something different of AI, so the part they share had to be the interaction shell, with behavior set per product.</p>
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2">In summer 2026, I returned to the project, and the scope grew: one reusable chat component that could be integrated into all three products. Each product asks something different of AI, so the part they share had to be the interaction shell, with behavior set per product.</p>
   <CsStates
     headers={["PRODUCT", "AI CAN", "AI CAN'T"]}
     rows={[
@@ -155,7 +155,7 @@ results:
     ]}
     why="Comparable tools scope prompts to the selection. In a study of simple edits, direct manipulation was 50% faster than typed prompting, which still suited global tasks (Masson 2024, n=12). So chat carries intent and the canvas stays in view."
   />
-  <p class="m-0 text-[17px] leading-[1.6] text-body-2"><strong>Then the canvas came out.</strong> From here, I was told to design without the e-Draw canvas context. That led me to a generic template: a standalone chat window with no canvas around it, which I filled with dummy data relating to e-Draw, like a shipping label for organic food following FDA 2026.</p>
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2"><strong>Then the canvas came out.</strong> The brief then changed to a product-agnostic component, so I designed without the e-Draw canvas. That led me to a generic template: a standalone chat window with no canvas around it, which I filled with dummy data relating to e-Draw, like a shipping label for organic food following FDA 2026.</p>
   <CsInsights>
     <CsInsight title="Context is visible">The top bar names the data source the AI is working from, so users know what it can see in each product.</CsInsight>
     <CsInsight title="Structure beats a blank box">Quick prompts and a prompt builder turn domain choices into a complete request.</CsInsight>
