@@ -115,6 +115,8 @@ export const StaggeredMenu = ({
       if (toggleBtnRef.current && !adaptContrast) {
         gsap.set(toggleBtnRef.current, { color: menuButtonColor });
       }
+      // Panel is now offscreen, so the CSS can stop hiding it (see StaggeredMenu.css)
+      wrapperRef.current?.setAttribute('data-ready', '');
     });
     return () => ctx.revert();
   }, [menuButtonColor, position, adaptContrast]);

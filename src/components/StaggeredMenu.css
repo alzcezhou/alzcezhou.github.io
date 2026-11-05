@@ -16,6 +16,13 @@
   overflow: hidden;
 }
 
+/* GSAP moves the panel offscreen on hydration. Until then it would sit open over the page,
+   and stay there if the script fails to load. */
+.staggered-menu-wrapper:not([data-ready]) .staggered-menu-panel,
+.staggered-menu-wrapper:not([data-ready]) .sm-prelayers {
+  visibility: hidden;
+}
+
 .staggered-menu-header {
   position: absolute;
   top: 0;
