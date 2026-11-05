@@ -1,14 +1,16 @@
 ---
-/** Pull quote plus a short next-steps line */
+/** Pull quote plus a short next-steps line. `wide` lets both fill the content column; `upright` drops the italics. */
 interface Props {
   quote: string;
   next?: string;
+  wide?: boolean;
+  upright?: boolean;
 }
 
-const { quote, next } = Astro.props;
+const { quote, next, wide = false, upright = false } = Astro.props;
 ---
 
-<blockquote class="m-0 font-heading italic text-[clamp(26px,3vw,34px)] leading-[1.25] max-w-[820px] [text-wrap:balance]">
+<blockquote class:list={["m-0 font-heading text-[clamp(26px,3vw,34px)] leading-[1.25] [text-wrap:balance]", !upright && "italic", !wide && "max-w-[820px]"]}>
   {quote}
 </blockquote>
-{next && <p class="m-0 text-[17px] leading-[1.6] text-body-2 max-w-[640px]">{next}</p>}
+{next && <p class:list={["m-0 text-[17px] leading-[1.6] text-body-2", !wide && "max-w-[640px]"]}>{next}</p>}

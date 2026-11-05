@@ -7,18 +7,18 @@ interface Props {
 const { tiles } = Astro.props;
 ---
 
-<div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-4 items-start">
+<div class="grid max-w-[680px] grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] gap-3 items-start">
   {tiles.map(({ src, alt, caption, maxWidth, tall }) => (
-    <figure class:list={["m-0 bg-card rounded-[14px] p-5 flex flex-col gap-3", tall && "row-span-2"]}>
+    <figure class:list={["m-0 bg-card rounded-[14px] p-4 flex flex-col gap-2", tall && "row-span-2"]}>
       <img
         src={src}
         alt={alt}
-        class:list={["block w-full", tall && "max-h-[520px] object-contain object-top"]}
+        class:list={["block w-full", tall && "max-h-[340px] object-contain object-top"]}
         style={maxWidth ? `max-width:${maxWidth}px` : undefined}
         loading="lazy"
         decoding="async"
       />
-      <figcaption class="font-accent text-[18px] uppercase">{caption}</figcaption>
+      <figcaption class="font-accent text-[16px] uppercase">{caption}</figcaption>
     </figure>
   ))}
 </div>

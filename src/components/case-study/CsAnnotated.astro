@@ -4,6 +4,7 @@
  * Pin x / y are percentages of the image box.
  * Pass `shots` instead of `src` to show captioned screens side by side (legend items then have no pins).
  * `well` frames a narrow single screenshot in a hero-color well.
+ * With neither `src` nor `shots`, only the legend renders, for pairing with a media block placed above it.
  */
 interface Props {
   src?: string;
@@ -32,7 +33,7 @@ const { src, alt = "", shots = [], heading, items, why, well = false, separator 
         <span class="cs-pin" style={`left:${x}%;top:${y}%`} aria-hidden="true">{i + 1}</span>
       ))}
     </div>
-  ) : (
+  ) : shots.length > 0 && (
     <div class="grid gap-3 items-start" style={`grid-template-columns:repeat(${shots.length},minmax(0,1fr))`}>
       {shots.map(({ src, alt, caption }) => (
         <figure class="m-0 flex flex-col gap-2">

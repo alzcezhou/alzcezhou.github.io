@@ -1,0 +1,80 @@
+---
+/**
+ * Interactive HTML demo in a sandboxed iframe, sized to its content.
+ * Uses srcdoc so the demo lives in the page itself: on a protected case study, it is encrypted with the page.
+ * The demo posts { type: "cs-demo-height", height } whenever its height changes.
+ */
+import labelGenerator from "../../demos/label-generator.html?raw";
+
+const DEMOS = { "label-generator": labelGenerator };
+
+interface Props {
+  demo: keyof typeof DEMOS;
+  title: string;
+  caption?: string;
+  /** CSS aspect ratio reserved until the demo reports its height */
+  aspect?: string;
+}
+
+const { demo, title, caption, aspect = "2/1" } = Astro.props;
+---
+
+<figure class="cs-demo m-0 flex flex-col gap-3">
+  <iframe
+    srcdoc={DEMOS[demo]}
+    title={title}
+    sandbox="allow-scripts allow-forms"
+    class="block w-full border-0"
+    style={`aspect-ratio:${aspect}`}
+  ></iframe>
+  <figcaption class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+    {caption && <p class="m-0 flex-1 basis-[280px] text-[13px] leading-[1.5] text-muted">{caption}</p>}
+    <button type="button" class="cs-demo-restart font-accent text-[18px] px-3 py-0.5 rounded-full border-[1.5px] border-dark cursor-pointer uppercase">
+      Restart demo
+    </button>
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".cs-demo").forEach((root) => {
+    const frame = root.querySelector("iframe");
+    if (!frame) return;
+
+    window.addEventListener("message", (e) => {
+      if (e.source !== frame.contentWindow || e.data?.type !== "cs-demo-height") return;
+      if (typeof e.data.height !== "number" || e.data.height <= 0) return;
+      frame.style.aspectRatio = "auto";
+      frame.style.height = `${e.data.height}px`;
+    });
+
+    // The demo's first report can fire before this listener exists, so ask once it does
+    const measure = () => frame.contentWindow?.postMessage("cs-demo-measure", "*");
+    frame.addEventListener("load", measure);
+    measure();
+
+    root.querySelector(".cs-demo-restart")?.addEventListener("click", () => {
+      frame.srcdoc = frame.srcdoc;
+    });
+  });
+</script>
+
+<style>
+  .cs-demo-restart {
+    background: transparent;
+    color: var(--color-dark);
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .cs-demo-restart:hover {
+    background: var(--color-dark);
+    color: var(--color-card);
+  }
+  .cs-demo-restart:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cs-demo-restart {
+      transition: none;
+    }
+  }
+</style>

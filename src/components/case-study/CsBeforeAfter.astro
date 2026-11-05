@@ -9,6 +9,10 @@ interface Shot {
   text: string;
   /** Single-image fit. Defaults: before = cover, after = contain */
   fit?: "cover" | "contain";
+  /** CSS padding around a single image, for tightly cropped art that would otherwise run under the badge */
+  inset?: string;
+  /** CSS corner radius for a single image. Shrinks the img to the image's own width, so the radius lands on its visible corners instead of the letterboxed box. Assumes the image is narrower than the well */
+  radius?: string;
 }
 
 interface Props {
@@ -26,7 +30,7 @@ const shots = [
 ---
 
 <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-6 items-start">
-  {shots.map(({ src, alt = "", images, title, text, fit, badge, badgeClass }) => (
+  {shots.map(({ src, alt = "", images, title, text, fit, inset, radius, badge, badgeClass }) => (
     <figure class="m-0 flex flex-col gap-3.5">
       <div class="relative bg-light rounded-[14px] overflow-hidden" style={`aspect-ratio:${aspect}`}>
         {images?.length ? (
@@ -45,7 +49,8 @@ const shots = [
           <img
             src={src}
             alt={alt}
-            class:list={["block w-full h-full", fit === "cover" ? "object-cover" : "object-contain"]}
+            class:list={["block h-full", radius ? "w-auto mx-auto" : "w-full", fit === "cover" ? "object-cover" : "object-contain"]}
+            style={[inset && `padding:${inset}`, radius && `border-radius:${radius}`].filter(Boolean).join(";") || undefined}
             loading="lazy"
             decoding="async"
           />

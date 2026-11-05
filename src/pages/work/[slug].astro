@@ -18,6 +18,7 @@ import CsImpact from "../../components/case-study/CsImpact.astro";
 import CsReflection from "../../components/case-study/CsReflection.astro";
 import CsStats from "../../components/case-study/CsStats.astro";
 import CsSlideshow from "../../components/case-study/CsSlideshow.astro";
+import CsDemo from "../../components/case-study/CsDemo.astro";
 import CsFlow from "../../components/case-study/CsFlow.astro";
 import CsKit from "../../components/case-study/CsKit.astro";
 
@@ -26,6 +27,7 @@ const templateComponents = {
   CsContext,
   CsStats,
   CsSlideshow,
+  CsDemo,
   CsInsights,
   CsInsight,
   CsAnnotated,
@@ -72,6 +74,7 @@ const { Content } = await render(entry);
   tldrResult={entry.data.tldrResult}
   toc={entry.data.toc}
   accent={entry.data.accent}
+  prettyText={entry.id === "ai-chat-interface"}
   prev={otherProjects[0]}
   next={otherProjects[1]}
 >

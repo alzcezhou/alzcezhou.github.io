@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>e-Draw AI Label Designer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap">
+<!--
+  LabelGen section only. Figma node 389:4224 "ai label chunk":
+    Default (389:4225) = landing frame, engage (389:4239) = prompt frame.
+  Loading and results frames: Figma generator set 47:438.
+  Strapi-owned content is hard-coded placeholder content, tagged with data-strapi.
+  Label generation is mocked with a timer, as in LabelGen.jsx.
+-->
+<style>
+:root {
+  --gray-0: #fefefe;
+  --gray-50: #f3f4f6;
+  --gray-100: #e0e0e0;
+  --gray-200: #d3d3d3;
+  --gray-600: #7c7c7c;
+  --gray-800: #343434;
+  --brand: #cb2b29;
+  --accent: #96031e;
+  --sans: Arial, Helvetica, sans-serif;
+  --display: Inter, Arial, Helvetica, sans-serif;
+  --slide: .45s ease;
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { color-scheme: light; }
+body { margin: 0; background: transparent; font-family: var(--sans); }
+img { display: block; }
+button { font: inherit; cursor: pointer; }
+h2, p, ul { margin: 0; }
+
+/* Sizes below are Figma px at the 1216px design width. cqw scales them when narrower. */
+.labelgen { container-type: inline-size; width: 100%; max-width: 1216px; margin-inline: auto; }
+.chunk {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 48px;
+  width: 100%; overflow: hidden; text-align: center;
+  padding: 64px clamp(16px, 11.5cqw, 140px) 72px;
+  border-radius: 32px;
+  background: linear-gradient(to bottom, #cb2b29 19.372%, rgba(129, 10, 32, .9) 74.804%, rgba(67, 4, 16, .9));
+}
+.chunk:focus-visible, .chunk :focus-visible { outline: 3px solid var(--gray-0); outline-offset: 2px; }
+.chunk .panel :focus-visible { outline-color: var(--gray-800); }
+
+.chunk[data-frame="landing"] { padding-bottom: 25.905cqw; }
+.chunk[data-frame="prompt"] { padding-top: 40px; }
+.chunk[data-frame="loading"], .chunk[data-frame="end"] { padding-inline: clamp(16px, 7.9cqw, 96px); }
+@container (min-width: 1216px) {
+  .chunk[data-frame="landing"] { height: 600px; padding-bottom: 0; }
+}
+
+.chunk__header { display: flex; flex-direction: column; gap: 19px; width: 100%; color: var(--gray-0); position: relative; z-index: 2; }
+.chunk__title { font-size: clamp(26px, 3.947cqw, 48px); font-weight: 700; line-height: normal; text-shadow: 0 4px 8px rgba(0, 0, 0, .25); }
+.chunk__sub { font-size: clamp(16px, 1.974cqw, 24px); line-height: normal; text-wrap: balance; }
+.frame { display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; position: relative; z-index: 2; }
+
+/* Default state */
+.try-now {
+  padding: 16px; border: 0; border-radius: 1000px;
+  background: #fff; color: var(--accent);
+  font: 700 clamp(20px, 2.632cqw, 32px)/normal var(--display);
+  transition: background .2s ease, transform .2s cubic-bezier(.34, 1.56, .64, 1), box-shadow .2s ease;
+}
+.try-now:hover { background: var(--gray-50); }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .try-now:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 10px 20px rgba(67, 4, 16, .35); }
+  .try-now:active { transform: translateY(0) scale(.98); box-shadow: 0 2px 6px rgba(67, 4, 16, .3); }
+}
+
+/* Band runs from y=160 to y=600 of the 1216 x 600 frame. Percentages are of that 1216 x 440 band. */
+.images {
+  position: absolute; left: 0; right: 0; bottom: 0; aspect-ratio: 1216 / 440; z-index: 1;
+  transition: transform var(--slide), visibility 0s linear 0s;
+}
+/* engage variant keeps these parked off the left edge */
+.chunk:not([data-frame="landing"]) .images { transform: translateX(-110%) scale(1.175); visibility: hidden; transition: transform var(--slide), visibility 0s linear .45s; }
+.images > * { position: absolute; max-width: none; }
+.img-tape { left: 19.44%; top: 6.873%; width: 23.67%; height: 49.223%; object-fit: cover; transform: rotate(-13.32deg); }
+.img-package-design { left: 62.368%; top: 29.011%; width: 28.751%; height: 51.275%; object-fit: cover; border-radius: 1.316cqw; }
+.img-label { left: 13.103%; top: 42.58%; width: 25.205%; height: 46.826%; object-fit: cover; border: 1px solid #000; border-radius: 1.316cqw; transform: rotate(-4.96deg); }
+.img-cosmetic { left: 34.012%; top: 30.945%; width: 29.603%; height: 61.31%; object-fit: cover; }
+.img-pouch { left: 47.265%; top: 41.75%; width: 26.917%; height: 55.884%; object-fit: cover; transform: rotate(-.55deg); }
+
+/* engage state: generator (12:10480 and siblings) */
+.panel { background: #fff; border-radius: 16px; filter: drop-shadow(0 4px 2px rgba(0, 0, 0, .25)); }
+.generator { display: flex; flex-direction: column; align-items: center; gap: 24px; width: 100%; max-width: 548px; padding: 16px; text-align: left; }
+@keyframes generator-in { from { transform: translateX(70cqw); } to { transform: none; } }
+.chunk[data-entered] .generator { animation: generator-in var(--slide); }
+.generator:focus { outline: none; }
+.generator textarea {
+  display: block; width: 100%; height: 170px; padding: 14px; resize: none; /* 14 + 2 border = Figma's 16 inset */
+  border: 2px solid var(--gray-200); border-radius: 8px; background: #fff;
+  color: var(--gray-800); font: 16px/normal var(--sans);
+}
+.generator textarea:focus-visible { border-color: var(--brand); outline: 1px solid var(--brand); outline-offset: 0; }
+.generator textarea::placeholder { color: var(--gray-600); opacity: 1; }
+.generate {
+  width: 100%; padding: 16px 8px; border: 0; border-radius: 8px;
+  background: radial-gradient(ellipse 73.2% 1224% at center, #cb2b29 48.144%, rgba(152, 32, 31, .95) 74.072%, rgba(101, 21, 20, .9));
+  color: #fff; font-size: clamp(16px, 4.6cqw, 20px); font-weight: 700; line-height: normal;
+}
+.generate:hover { background: radial-gradient(circle at center, #cb2b29 5%, rgba(101, 21, 20, .9) 56%); }
+.generate:active { transform: scale(.98); }
+.chips-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 32px; width: 100%; }
+.chips-row__label { flex: none; color: var(--gray-800); font-size: 16px; font-weight: 700; line-height: normal; }
+.chips { flex: 1 1 280px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; min-width: 0; padding: 0; list-style: none; }
+.chip {
+  padding: 8px 12px; border: 0; border-radius: 1000px;
+  background: var(--gray-50); color: var(--gray-600); font-size: 16px; line-height: normal; white-space: nowrap;
+  transition: background .2s ease, color .2s ease;
+}
+.chip:hover, .chip[aria-pressed="true"] { background: var(--gray-100); color: var(--accent); }
+
+/* Loading: generator variants 2 to 5 */
+.loading {
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+  width: 100%; max-width: 548px; padding: 64px 16px;
+  transition: max-width .45s ease;
+}
+.loading[data-step="3"], .loading[data-step="4"] { max-width: 926px; }
+.loading__text { color: #000; font-size: 20px; font-weight: 700; }
+.loading__text:focus { outline: none; }
+.bar { width: 100%; height: 8px; border-radius: 4px; background: rgba(203, 43, 41, .5); overflow: hidden; }
+.bar__fill { display: block; width: .18%; height: 100%; border-radius: 4px; background: var(--brand); transition: width .5s ease; }
+.loading[data-step="2"] .bar__fill { width: 13.5%; }
+.loading[data-step="3"] .bar__fill { width: 89%; }
+.loading[data-step="4"] .bar__fill { width: 100%; }
+.blocks { display: flex; justify-content: center; gap: 16px; width: 100%; padding-inline: 16px; }
+.loading[data-step="3"] .blocks, .loading[data-step="4"] .blocks { justify-content: space-between; }
+.blocks span { flex: 0 1 232px; min-width: 0; aspect-ratio: 232 / 159; border-radius: 8px; background: var(--gray-200); }
+.loading[data-step="1"] .blocks { display: none; }
+.loading[data-step="2"] .blocks span:not(:first-child) { display: none; }
+
+/* Results: generator variant 6 */
+.results { display: flex; flex-direction: column; align-items: center; gap: 32px; width: 100%; max-width: 1022px; padding: clamp(24px, 4cqw, 48px) 16px; }
+.results__top { display: flex; align-items: center; justify-content: center; gap: clamp(24px, 5cqw, 64px); width: 100%; padding-inline: clamp(0px, 3cqw, 48px); }
+.results__top > img { flex: none; width: 140px; height: 140px; object-fit: contain; }
+.results__copy { flex: 0 1 690px; display: flex; flex-direction: column; gap: 16px; min-width: 0; text-align: left; color: #000; font-size: clamp(16px, 1.645cqw, 20px); line-height: normal; }
+.results__heading { align-self: center; padding-bottom: 12px; border-bottom: 4px solid var(--brand); font-size: 20px; font-weight: 700; text-align: center; text-wrap: balance; }
+.results__heading:focus { outline: none; }
+.results__offers { margin-top: 8px; font-weight: 700; }
+.results__copy ul { padding-left: 30px; }
+.labels { display: grid; grid-template-columns: repeat(3, minmax(0, 298px)); justify-content: center; gap: 32px; width: 100%; }
+.label-card {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: 100%; padding: 48px 20px; overflow: hidden;
+  border: 0; border-radius: 16px; background: var(--gray-100);
+}
+.label-card img { width: 100%; aspect-ratio: 258 / 171.494; object-fit: cover; border-radius: 8px; }
+.label-card__scrim { position: absolute; inset: 0; background: rgba(16, 16, 16, .35); opacity: 0; transition: opacity .15s ease; }
+.label-card__action {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: max-content; max-width: 92%; padding: 10px; border-radius: 8px;
+  background: var(--gray-0); color: var(--brand);
+  font: 700 clamp(14px, 1.48cqw, 18px)/normal var(--display);
+  opacity: 0; transition: opacity .15s ease;
+}
+.label-card:hover .label-card__scrim, .label-card:focus-visible .label-card__scrim,
+.label-card:hover .label-card__action, .label-card:focus-visible .label-card__action { opacity: 1; }
+
+@container (max-width: 700px) {
+  .chunk { gap: 24px; padding-top: 32px; }
+  .chunk[data-frame="landing"] { padding-bottom: 34cqw; }
+  .chunk:not([data-frame="landing"]) { padding-bottom: 32px; }
+  .results__top { flex-direction: column; }
+  .results__top > img { width: 96px; height: 96px; }
+  .results__copy { flex: none; width: 100%; }
+  .labels { display: flex; overflow-x: auto; justify-content: flex-start; gap: 16px; padding: 4px 4px 8px; }
+  .label-card { flex: 0 0 min(240px, 70cqw); }
+  .blocks { padding-inline: 0; gap: 8px; }
+  .loading { padding-block: 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- LabelGen. Rendered only when Strapi displayLabelGenerator is true. -->
+<div class="labelgen">
+  <section class="chunk" id="chunk" data-frame="landing" aria-labelledby="chunk-title" data-strapi="displayLabelGenerator">
+
+    <header class="chunk__header" id="chunk-header">
+      <h2 class="chunk__title" id="chunk-title" data-strapi="Header.H1">Design Professional Labels with AI Tools</h2>
+      <p class="chunk__sub" data-strapi="Header.H2">Get started with a prompt and adapt the designs as needed with e-Draw. It’s easy!</p>
+    </header>
+
+    <!-- Paint order matches Figma. Live site: LandingFrame.Image is one image, so this collage would be exported as one. -->
+    <div class="images" data-strapi="LandingFrame.Image" aria-hidden="true">
+      <img class="img-tape" src="/images/ai-assistant/r1-demo-duct-tape.webp" alt="">
+      <img class="img-package-design" src="/images/ai-assistant/r1-demo-package-design.webp" alt="">
+      <img class="img-label" src="/images/ai-assistant/r1-demo-medical-label.webp" alt="">
+      <img class="img-cosmetic" src="/images/ai-assistant/r1-demo-cosmetic-box-tube.webp" alt="">
+      <img class="img-pouch" src="/images/ai-assistant/r1-demo-pouch.webp" alt="">
+    </div>
+
+    <div class="frame" id="frame-landing">
+      <button type="button" class="try-now" id="try-now" data-strapi="LandingFrame.CTA">Try Now</button>
+    </div>
+
+    <div class="frame" id="frame-prompt" hidden>
+      <form class="panel generator" id="prompt-form" tabindex="-1">
+        <textarea id="prompt" aria-label="Describe your label" placeholder="Describe your label..." data-strapi="InitialPrompt.DefaultText"></textarea>
+        <button type="submit" class="generate" data-strapi="InitialPrompt.CTALabel">Generate Label with Free AI Prompt</button>
+        <div class="chips-row">
+          <p class="chips-row__label" data-strapi="InitialPrompt.PromptLabel">Or Try:</p>
+          <ul class="chips" data-strapi="InitialPrompt.Prompts">
+            <li><button type="button" class="chip" aria-pressed="false" data-prompt="A 4 x 6 in shipping label with the sender and recipient address, a tracking barcode, and a fragile handling symbol.">Shipping Label</button></li>
+            <li><button type="button" class="chip" aria-pressed="false" data-prompt="A medical device label for an adhesive glue with a UDI barcode, storage conditions, a CE mark, and ISO 15223 symbols.">Medical Device</button></li>
+            <li><button type="button" class="chip" aria-pressed="false" data-prompt="A compact shipping label for a small parcel with a return address, a QR code, and a keep-dry handling symbol.">Shipping Label</button></li>
+          </ul>
+        </div>
+      </form>
+    </div>
+
+    <div class="frame" id="frame-loading" hidden>
+      <div class="panel loading" id="loading" data-step="1" role="status">
+        <p class="loading__text" id="loading-text" tabindex="-1" data-strapi="InitialPrompt.LoadingMessage">Generating Label...</p>
+        <span class="bar" aria-hidden="true"><span class="bar__fill"></span></span>
+        <div class="blocks" aria-hidden="true"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+
+    <div class="frame" id="frame-end" hidden>
+      <div class="panel results">
+        <div class="results__top">
+          <img src="/images/ai-assistant/r1-demo-edraw-logo.webp" alt="e-Draw">
+          <div class="results__copy">
+            <h2 class="results__heading" id="results-heading" tabindex="-1" data-strapi="EndPrompt.Heading">Continue Your Work in e-Draw</h2>
+            <p data-strapi="EndPrompt.Subheading">Thanks for trying our AI-powered Label Generator. To save or edit your label, please click your label of choice to open it in e-Draw.</p>
+            <p class="results__offers">e-Draw offers:</p>
+            <ul data-strapi="EndPrompt.Bullets">
+              <li>Robust library of symbols, templates, and styles allow design without limits</li>
+              <li>Cloud-based access and permissions make e-Draw secure, scalable, and ready for enterprise</li>
+              <li>Seamless integration into your workflow with support for multiple formats, embeds, and cross-device syncing</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Labels come from the AI service, not Strapi. Opening one in e-Draw is not wired up yet, same as LabelGen.jsx. -->
+        <div class="labels">
+          <button type="button" class="label-card" aria-label="Open label 1 in e-Draw"><img src="/images/ai-assistant/r1-demo-generated-label-sample.webp" alt=""><span class="label-card__scrim"></span><span class="label-card__action" data-strapi="EndPrompt.ButtonText">Open Label in e-Draw</span></button>
+          <button type="button" class="label-card" aria-label="Open label 2 in e-Draw"><img src="/images/ai-assistant/r1-demo-generated-label-sample.webp" alt=""><span class="label-card__scrim"></span><span class="label-card__action">Open Label in e-Draw</span></button>
+          <button type="button" class="label-card" aria-label="Open label 3 in e-Draw"><img src="/images/ai-assistant/r1-demo-generated-label-sample.webp" alt=""><span class="label-card__scrim"></span><span class="label-card__action">Open Label in e-Draw</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var chunk = $('chunk'), prompt = $('prompt'), loading = $('loading');
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+
+  function setFrame(name) {
+    chunk.dataset.frame = name;
+    ['landing', 'prompt', 'loading', 'end'].forEach(function (f) { $('frame-' + f).hidden = f !== name; });
+    $('chunk-header').hidden = name === 'loading' || name === 'end';
+  }
+
+  $('try-now').addEventListener('click', function () {
+    chunk.setAttribute('data-entered', '');
+    setFrame('prompt');
+    $('prompt-form').focus({ preventScroll: true });
+  });
+
+  prompt.addEventListener('input', function () {
+    chips.forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+  });
+
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      prompt.value = chip.dataset.prompt;
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c === chip)); });
+    });
+  });
+
+  $('prompt-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!prompt.value.trim()) { prompt.focus(); return; }
+    loading.dataset.step = '1';
+    setFrame('loading');
+    $('loading-text').focus({ preventScroll: true });
+    setTimeout(function () { loading.dataset.step = '2'; }, 400);
+    setTimeout(function () { loading.dataset.step = '3'; }, 1000);
+    setTimeout(function () { loading.dataset.step = '4'; }, 1900);
+    setTimeout(function () {
+      setFrame('end');
+      $('results-heading').focus({ preventScroll: true });
+    }, 2500);
+  });
+})();
+</script>
+<script>
+(function () {
+  var root = document.querySelector('.labelgen');
+  function report() {
+    parent.postMessage({ type: 'cs-demo-height', height: Math.ceil(root.getBoundingClientRect().height) }, '*');
+  }
+  new ResizeObserver(report).observe(root);
+  // The host's script can load after this one, so it asks again once it is listening
+  window.addEventListener('message', function (e) {
+    if (e.source === parent && e.data === 'cs-demo-measure') report();
+  });
+})();
+</script>
+</body>
+</html>

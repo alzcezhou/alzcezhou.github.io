@@ -18,6 +18,8 @@ interface Props {
   toc?: { id: string; label: string }[];
   /** Per-page accent override; the shared template tokens apply otherwise */
   accent?: { color: string; light?: string; ring?: string };
+  /** Avoid orphans: text-wrap is inherited, so this reaches all of the page's text */
+  prettyText?: boolean;
   prev?: { slug: string; title: string };
   next?: { slug: string; title: string };
 }
@@ -31,6 +33,7 @@ const {
   tldrResult,
   toc = [],
   accent,
+  prettyText = false,
   prev,
   next,
 } = Astro.props;
@@ -44,7 +47,7 @@ const accentStyle = accent && {
 ---
 
 <BaseLayout title={`${title} — Alice Zhou`}>
-  <article class="cs-template bg-page font-body text-on-light" style={accentStyle}>
+  <article class:list={["cs-template bg-page font-body text-on-light", prettyText && "[text-wrap:pretty]"]} style={accentStyle}>
     <header class="bg-light pt-[112px] px-[clamp(24px,5vw,72px)]">
       <div class="mx-auto max-w-[1240px] grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] gap-10 items-end">
         <div class="flex flex-col gap-5 pb-12">
@@ -112,6 +115,59 @@ const accentStyle = accent && {
 
     <CaseStudyNav prev={prev} next={next} class="mx-auto max-w-[1240px] pt-6" />
   </article>
+  {prettyText && (
+    <script is:inline>
+      // text-wrap: pretty only reduces orphans, and not in every browser. Binding each block's last two
+      // words rules them out. Inline so it runs before first paint. Long pairs and display text stay
+      // free to break, or they could overflow a narrow column. A <br> ends a line just as a block does.
+      (() => {
+        const MAX_PAIR = 26;
+        const MAX_FONT_PX = 32;
+        const root = document.currentScript.previousElementSibling;
+        const blockOf = (node) => {
+          let el = node.parentElement;
+          while (getComputedStyle(el).display.startsWith("inline")) el = el.parentElement;
+          return el;
+        };
+
+        const lines = [];
+        const current = new Map();
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, (node) =>
+          node.nodeType === Node.ELEMENT_NODE && node.matches("nav, button, [role=columnheader]")
+            ? NodeFilter.FILTER_REJECT
+            : NodeFilter.FILTER_ACCEPT,
+        );
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            if (node.tagName === "BR") current.delete(blockOf(node));
+            continue;
+          }
+          const block = blockOf(node);
+          if (parseFloat(getComputedStyle(block).fontSize) > MAX_FONT_PX) continue;
+          if (!current.has(block)) {
+            current.set(block, []);
+            lines.push(current.get(block));
+          }
+          current.get(block).push(node);
+        }
+
+        for (const nodes of lines) {
+          const match = nodes.map((n) => n.data).join("").trimEnd().match(/(\S+)\s+(\S+)$/);
+          if (!match || match[1].length + match[2].length + 1 > MAX_PAIR) continue;
+          // Replace the first whitespace character after the second-to-last word, wherever it landed
+          let offset = match.index + match[1].length;
+          for (const node of nodes) {
+            if (offset < node.length) {
+              node.replaceData(offset, 1, " ");
+              break;
+            }
+            offset -= node.length;
+          }
+        }
+      })();
+    </script>
+  )}
 </BaseLayout>
 
 <style>

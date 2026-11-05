@@ -1,48 +1,54 @@
 ---
 title: "enLabel AI Assistant"
-subtitle: "A generic AI chat window for a labeling software ecosystem"
-year: "2025"
+subtitle: "From a marketing-site label generator to a reusable AI chat component"
+year: "2026"
 role: "UX Designer"
 category: "Product Design | AI Tools"
 variant: "template"
-eyebrow: "CASE 01 / AI ASSISTANT · ENLABEL · 2025"
+eyebrow: "CASE 01 / AI ASSISTANT · ENLABEL · 2026"
 headline: "One AI assistant for every product in a labeling ecosystem"
 tags:
-  - "Handed off to dev"
+  - "2 design rounds"
   - "AI Tools"
   - "Component System"
 tldr:
   - label: "Problem"
-    value: "Each enLabel product needed AI help, and separate chat UIs would fragment the ecosystem"
+    value: "enLabel's AI began as a one-shot generator on a marketing site. Three regulated products then needed a real assistant, and separate chat UIs would fragment them"
   - label: "My role"
-    value: "UX Designer · flows, states, component kit, dev handoff"
+    value: "UX Designer · research, flows, states, component kit, coded prototype, developer notes"
   - label: "Delivered"
-    value: "A generic chat window, end-to-end states and a reusable component kit, applied first in e-Draw"
+    value: "Round 1: a coded marketing prototype. Round 2: a reusable chat component, its e-Draw integration and evidence-backed guidelines"
 tldrResult:
   label: "Status"
-  stat: "Handed off"
-  text: "in development, not yet launched"
+  stat: "Not shipped"
+  text: "designed and documented, user testing planned"
 toc:
   - { id: "context", label: "CONTEXT" }
-  - { id: "principles", label: "PRINCIPLES" }
+  - { id: "round-1", label: "ROUND 1" }
+  - { id: "brief", label: "NEW BRIEF" }
+  - { id: "research", label: "RESEARCH" }
+  - { id: "exploration", label: "EXPLORE" }
   - { id: "decisions", label: "DECISIONS" }
-  - { id: "states", label: "STATES" }
   - { id: "flow", label: "FLOW" }
   - { id: "kit", label: "KIT" }
-  - { id: "reflection", label: "REFLECT" }
-description: "One AI chat window designed to work across enLabel's packaging and labeling products, applied first in e-Draw."
+  - { id: "next", label: "NEXT" }
+description: "Two rounds of AI design at enLabel: a marketing-site label generator, then one research-backed chat component for three regulated products."
 order: 4
 cover: "/images/ai-assistant/landing.webp"
 coverAlt: "AI assistant window, empty state with quick prompts and prompt builder"
 responsibilities:
+  - "Desk research and guidelines"
   - "User flows"
   - "States and edge cases"
   - "Component kit"
-  - "Developer handoff"
+  - "Coded prototype"
+  - "Developer notes"
 tools:
   - "Figma"
+  - "Claude"
 results:
-  - "Generic AI chat window and component kit, handed off to developers"
+  - "Generic AI chat component and kit, with an e-Draw integration"
+  - "30 proposed guidelines and a validation plan"
 ---
 
 <CsContext
@@ -52,19 +58,132 @@ results:
   alt="Prompt builder selections composed as editable pills in the composer"
   well
 >
-  <p>enLabel makes packaging and labeling software, from label creation in e-Draw to regulated documents in eIFU. Every product wanted an AI assistant. I designed <em>one</em> chat window that works inside any of them, drawing on the data it's opened with.</p>
-  <p class="text-[16px] leading-[1.55] text-body-2">First in-context application: e-Draw, enLabel's label creation software.</p>
+  <p>enLabel makes labeling software for heavily regulated industries. I designed its AI experience twice: first as a one-shot label generator on a marketing site, then as one chat component for three products.</p>
+  <p class="text-[16px] leading-[1.55] text-body-2"><strong>e-Draw:</strong> data-driven label design, free and not yet officially launched. <strong>IPM:</strong> artwork and data management for labels. <strong>eIFU:</strong> document publication, distribution and compliance, mainly for medical devices.</p>
 </CsContext>
 
-<CsSection id="principles" label="02 Principles · One shell, many products">
+<CsSection id="round-1" label="02 Round 1 · A generator on the marketing site">
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2">In February–March 2026, I was assigned a one-shot project to add onto the e-Draw marketing site, because our CEO wanted us to start considering integrating AI into our products. A visitor describes a label on the site, then opens the result in the editor. I worked through three placements in Figma, prototyped the front end with Claude and handed it to a developer to connect to our LLM.</p>
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2">I didn't start from zero. Going in, I drew on background knowledge from my past AI work and some light research:</p>
+  <CsInsights>
+    <CsInsight title="Prior testing">My <a class="underline" href="/work/skiplegal">SkipLegal</a> capstone (4 interviews, 112 surveys, 15 testers) found that trust in AI depends on being able to verify it. Those users weren't labeling professionals, so I carried this over as a hypothesis.</CsInsight>
+    <CsInsight title="AI tools and patterns">My daily use of Claude, Claude Code and Lovable, plus <a class="underline" href="https://www.nngroup.com/articles/ai-chatbots-design-guidelines/">NN/g's chatbot guidelines</a> and <a class="underline" href="https://www.shapeof.ai/">Shape of AI</a>, grounded the prompt and generation patterns.</CsInsight>
+    <CsInsight title="Human-AI studies">Published work on overreliance, prompting, clarifying questions, citations and chat accessibility.</CsInsight>
+    <CsInsight title="Products and rules">Public docs from design tools and regulated products, plus FDA and EU AI Act requirements. No hands-on product testing.</CsInsight>
+  </CsInsights>
+  <CsDemo
+    demo="label-generator"
+    title="Interactive demo of the e-Draw AI label generator"
+    caption="Interactive demo. Generation is mocked with a timer, so every prompt returns the same sample label."
+  />
+  <CsAnnotated
+    separator=": "
+    heading="One prompt, three labels, then sign up"
+    items={[
+      { title: "Prompt", text: "describe a label, or start from a suggestion" },
+      { title: "Generate", text: "a progress bar while three options fill in" },
+      { title: "Choose", text: "pick the label to continue with" },
+      { title: "Open in e-Draw", text: "the chosen label opens in e-Draw first, and users only sign up if they want to save or keep editing the AI's output" },
+    ]}
+    why="I mapped two flows: generate first, or verify an email first. I kept revising generate-first, so visitors see a real result before they're asked for anything."
+  />
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2"><strong>The order was also consumer psychology.</strong> The site's job was to get visitors into e-Draw and signed up, so I tried to draw on ideas like the sunk-cost fallacy. By the time sign-up comes up, someone has already written a prompt, waited through generation and picked a label. Walking away would mean losing that effort, and signing up is how they keep it. An email gate at the start would have asked for commitment before they had anything to lose.</p>
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2"><strong>Then it stopped.</strong> The developer left partway through the build. We're a small business, so priorities shifted and the generator never launched, which means the sign-up bet was never tested.</p>
+</CsSection>
+
+<CsSection id="brief" label="03 Round 2 · The brief gets bigger">
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2">This summer I returned to the project, and the scope grew: one reusable chat component that could be integrated into all three products. Each product asks something different of AI, so the part they share had to be the interaction shell, with behavior set per product.</p>
+  <CsStates
+    headers={["PRODUCT", "AI CAN", "AI CAN'T"]}
+    rows={[
+      { when: "e-Draw · first", ui: "Generate and revise draft designs on a canvas", because: "Invent controlled values or symbols, or release a label" },
+      { when: "IPM · later", ui: "Summarize changes and report findings at a review step", because: "Approve, sign or change a released record" },
+      { when: "eIFU · later", ui: "Help employees at highly regulated companies build an on-brand, fully compliant and localized eIFU deployment through chat", because: "Replace published content, publish, or decide who receives it" },
+    ]}
+  />
+</CsSection>
+
+<CsSection id="research" label="04 Research · What should AI be allowed to do here?">
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2">The bigger brief needed a wider evidence base. enLabel had no approved AI requirements and no recorded e-Draw user research, so I built the evidence from what I could reach.</p>
+  <CsStates
+    headers={["WHERE I LOOKED", "WHAT I FOUND", "WHAT IT MEANS FOR THE DESIGN"]}
+    rows={[
+      { when: "Design tools<br/>Figma, Canva, v0", ui: "Chat captures intent, and the canvas is where people inspect and edit. Selection scopes the prompt.", because: "Prompt from the selected object, and keep manual tools beside chat" },
+      { when: "Regulated products<br/>DAX Copilot, Esko, Veeva", ui: "AI drafts or checks, and a person decides in the existing workflow. Vendor claims, public docs only.", because: "Chat creates drafts, and sign-off stays in the host product" },
+      { when: "Regulation<br/><a class=\"underline\" href=\"https://www.law.cornell.edu/cfr/text/21/820.45\">21 CFR 820.45</a>, <a class=\"underline\" href=\"https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-50\">AI Act Art. 50</a>", ui: "Device manufacturers must examine labeling before release, and people must be told when they're interacting with AI.", because: "My reading: keep AI output as a marked draft until a person releases it" },
+    ]}
+  />
+  <CsStats
+    stats={[
+      { stat: "82% → 45.5%", text: "Very experienced radiologists' accuracy with correct vs. incorrect AI suggestions. Sham AI, small subgroup (Dratsch 2023)" },
+      { stat: "9.77%", text: "of cited AI answers were actually checked, and citations raised trust even when random. Low-stakes study (Ding 2025)" },
+      { stat: "17–33%", text: "hallucination rate in commercial legal research AI, lower than GPT-4 but far from zero. Tools have since changed (Magesh 2025)" },
+    ]}
+  />
+  <CsReflection
+    wide
+    upright
+    quote="AI can be leveraged to explore, draft, and check for errors, but a qualified person must have final say in acceptance."
+  />
+</CsSection>
+
+<CsSection id="exploration" label="05 Exploration · From e-Draw wireframes to a generic shell">
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2">When I picked the project back up, my wireframes were built specifically for e-Draw. I focused on making the interactions very clear, especially scoping exactly where the AI would look and what it would touch.</p>
+  <CsBeforeAfter
+    aspect="1374/1117"
+    before={{
+      src: "/images/ai-assistant/r2-early-panel.webp",
+      alt: "Early wireframe with a bright AI Assistant button in the e-Draw header and a gray fixed panel over the canvas",
+      fit: "contain",
+      title: "A header button and a fixed panel",
+      text: "My first placement study put a loud AI button in the app header, opening a fixed block with skill suggestions under the composer.",
+    }}
+    after={{
+      src: "/images/ai-assistant/r2-window.webp",
+      alt: "AI Assistant tab hanging from the ruler, with a chat window over the canvas beside a selected object",
+      fit: "contain",
+      title: "A tab and a movable window",
+      text: "The entry point moved to a quiet tab on the canvas. The window can move, resize and minimize, because people need the rest of e-Draw during a chat. Placeholder content.",
+    }}
+  />
+  <CsAnnotated
+    separator=": "
+    heading="Two ways in, each with a clear scope"
+    items={[
+      { title: "General chat", text: "the canvas tab opens the window for document-wide requests" },
+      { title: "Targeted chat", text: "an AI button on the selection toolbar opens chat beside that object, scoping the request to what's selected" },
+      { title: "Context label", text: "the window's top bar names the data the AI is working from" },
+    ]}
+    why="Comparable tools scope prompts to the selection. In a study of simple edits, direct manipulation was 50% faster than typed prompting, which still suited global tasks (Masson 2024, n=12). So chat carries intent and the canvas stays in view."
+  />
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2"><strong>Then the canvas came out.</strong> From here, I was told to design without the e-Draw canvas context. That led me to a generic template: a standalone chat window with no canvas around it, which I filled with dummy data relating to e-Draw, like a shipping label for organic food following FDA 2026.</p>
   <CsInsights>
     <CsInsight title="Context is visible">The top bar names the data source the AI is working from, so users know what it can see in each product.</CsInsight>
     <CsInsight title="Structure beats a blank box">Quick prompts and a prompt builder turn domain choices into a complete request.</CsInsight>
     <CsInsight title="Never a black box">Progress steps, a stop button and token cost show what the AI is doing and what it spends.</CsInsight>
   </CsInsights>
+  <CsBeforeAfter
+    aspect="6/5"
+    before={{
+      src: "/images/ai-assistant/r2-builder-a.webp",
+      alt: "Prompt builder variant with a blue Clear Selection button in the builder and pills in the composer",
+      fit: "contain",
+      radius: "16px",
+      title: "Variant A: press Begin",
+      text: "Dropdown choices took a Begin click to reach the composer. Clear Selection then sat up in the builder, away from the pills it removes.",
+    }}
+    after={{
+      src: "/images/ai-assistant/r2-builder-b.webp",
+      alt: "Prompt builder variant with no button in the builder, and pills with a clear icon in the composer",
+      fit: "contain",
+      radius: "16px",
+      title: "Variant B: write straight through",
+      text: "Choices land in the composer as pills right away, and the clear icon sits next to them. The composer is the one place a prompt lives.",
+    }}
+  />
 </CsSection>
 
-<CsSection id="decisions" label="03 Key decisions">
+<CsSection id="decisions" label="06 Key decisions">
   <CsAnnotated
     src="/images/ai-assistant/landing.webp"
     alt="AI assistant window, empty state with quick prompts and prompt builder"
@@ -76,7 +195,7 @@ results:
       { title: "Build Your Prompt", text: "document type, category and standard dropdowns" },
       { title: "Editable pills", text: "choices land in the composer as a sentence (\"Shipping Label for Organic Food following FDA 2026\") the user can still change or extend" },
     ]}
-    why="In regulated labeling, a missing standard or category means a wrong label. Structured inputs make sure the critical details are in every prompt, without taking away free text."
+    why="Non-experts prompt opportunistically and overgeneralize from single results (Zamfirescu-Pereira 2023, n=10). In labeling, a missing standard or category can mean a wrong label, so structured inputs carry those details without taking away free text."
   />
   <CsDecisions>
     <CsDecision
@@ -92,23 +211,19 @@ results:
       outcome="users know what's happening, what it costs and how to bail out."
     />
   </CsDecisions>
-</CsSection>
-
-<CsSection id="states" label="04 States & edge cases">
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2">The smaller states follow the same logic: the user can see what's happening and stays in control.</p>
   <CsStates
     headers={["STATE", "DESIGN RESPONSE", "BECAUSE…"]}
     rows={[
-      { when: "First open, nothing typed", ui: "Quick prompts + prompt builder", because: "no blank-page problem" },
       { when: "Voice input", ui: "Live waveform, confirm/cancel, transcript preview before send", because: "users approve what was heard" },
       { when: "Mic permission blocked", ui: "Warning icon with \"review microphone permissions\" tooltip", because: "clear fix, not a silent failure" },
       { when: "Different needs per task", ui: "Model picker in the composer", because: "trade speed for depth" },
-      { when: "Missing details", ui: "Follow-up question card, keyboard-selectable", because: "asks before it guesses" },
       { when: "Generation fails", ui: "Plain-language cause, Retry / Edit Prompt, recovery tip", because: "recover without starting over" },
     ]}
   />
 </CsSection>
 
-<CsSection id="flow" label="05 The flow">
+<CsSection id="flow" label="07 The flow">
   <CsFlow
     label="Chat flow steps"
     steps={[
@@ -121,8 +236,8 @@ results:
   />
 </CsSection>
 
-<CsSection id="kit" label="06 Component kit · Built for reuse">
-  <p class="m-0 text-[17px] leading-[1.6] text-body-2 max-w-[680px]">Every piece is product-agnostic. Each product swaps in its own data source, quick prompts and builder fields, and the shell stays the same.</p>
+<CsSection id="kit" label="08 Component kit · Built for reuse">
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2">Every piece is product-agnostic. Each product swaps in its own data source, quick prompts and builder fields, and the shell stays the same. Components bind to usage tokens, so products can change signature color and IPM can add a compact density.</p>
   <CsKit
     tiles={[
       { src: "/images/ai-assistant/c-topbar.webp", alt: "Top bar with context label", caption: "Top bar · Context" },
@@ -135,9 +250,17 @@ results:
   />
 </CsSection>
 
-<CsSection id="reflection" label="07 Status & reflection">
+<CsSection id="next" label="09 Validation & reflection">
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2">None of this has been tested with labeling users yet, and that's the biggest open risk. Here's the plan:</p>
+  <CsInsights>
+    <CsInsight title="Discovery">Contextual interviews on how label creators and reviewers work today, and which steps AI should touch.</CsInsight>
+    <CsInsight title="Usability rounds">Moderated prototype tests of scope, question cards, proposals and history, including side panel vs. window.</CsInsight>
+    <CsInsight title="Accessibility">Screen reader task tests with NVDA, JAWS and VoiceOver, against WCAG 2.2 AA.</CsInsight>
+  </CsInsights>
   <CsReflection
+    wide
     quote="Designing a shell for many products meant deciding what stays fixed and what each product gets to change."
-    next="Handed off to developers; launch pending. Next: test with e-Draw users once it's live, then bring the same shell to eIFU and the rest of the ecosystem."
+    next="Round 1 taught me a demo isn't a product. Round 2 taught me the hardest part of an AI interface here is deciding what it must never do. Rollout starts with e-Draw, where output is a reviewable draft, then IPM and publisher-side eIFU. I'd keep chat out of the clinician-facing viewer for now, because a wrong answer at the point of care could directly affect care."
   />
+  <p class="m-0 text-[17px] leading-[1.6] text-body-2">My plan moving forward is to build a design system, with components living in Storybook, so devs and I can easily collaborate. More and more of my projects end by delivering a reusable component that can be shared across products in the company, and this kit is one of them.</p>
 </CsSection>

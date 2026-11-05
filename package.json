@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "node -e \"const fs=require('fs');['.astro','node_modules/.vite'].forEach(d=>{try{fs.rmSync(d,{recursive:true,force:true})}catch{}})\"",
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/protect-case-study.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
