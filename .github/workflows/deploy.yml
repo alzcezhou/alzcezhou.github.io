@@ -27,8 +27,6 @@ jobs:
 
       - run: npm ci
       - run: npm run build
-        env:
-          CASE_STUDY_PASSWORD: ${{ secrets.CASE_STUDY_PASSWORD }}
 
       - uses: actions/upload-pages-artifact@v3
         with:
